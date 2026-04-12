@@ -6,12 +6,12 @@ namespace YOMA.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SchoolYearsController : ControllerBase
+    public class SchoolYearController : ControllerBase
     {
         private readonly Context _context;
         private readonly ISchoolYearService _schoolYearService;
 
-        public SchoolYearsController(Context context, ISchoolYearService schoolYearService)
+        public SchoolYearController(Context context, ISchoolYearService schoolYearService)
         {
             _context = context;
             _schoolYearService = schoolYearService;
