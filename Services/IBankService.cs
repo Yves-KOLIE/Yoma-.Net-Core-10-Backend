@@ -36,16 +36,16 @@ public class BankService : IBankService
 
     public async Task<Bank?> GetBankAsync(int id)
     {
-        return await _context.Banks.FindAsync(id);
+        return await _context.Banks.AsNoTracking().FirstOrDefaultAsync(b => b.ID == id);
     }
 
     public async Task<IEnumerable<Bank>> GetBanksAsync()
     {
-        return await _context.Banks.ToListAsync();
+        return await _context.Banks.AsNoTracking().ToListAsync();
     }
 
     public async Task<IEnumerable<Bank>> GetBankBatchAsync(int[] ids)
     {
-        return await _context.Banks.Where(b => ids.Contains(b.ID)).ToListAsync();
+        return await _context.Banks.Where(b => ids.Contains(b.ID)).AsNoTracking().ToListAsync();
     }
 }

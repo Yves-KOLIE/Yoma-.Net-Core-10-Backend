@@ -36,17 +36,16 @@ public class SchoolYearService : ISchoolYearService
 
     public async Task<SchoolYear?> GetSchoolYearAsync(int id)
     {
-        return await _context.SchoolYears.FindAsync(id);
+        return await _context.SchoolYears.AsNoTracking().FirstOrDefaultAsync(sy => sy.ID == id);
     }
 
     public async Task<IEnumerable<SchoolYear>> GetSchoolYearsAsync()
     {
-        return await _context.SchoolYears.ToListAsync();
+        return await _context.SchoolYears.AsNoTracking().ToListAsync();
     }
 
     public async Task<IEnumerable<SchoolYear>> GetSchoolYearBatchAsync(int[] ids)
     {
-        return await _context.SchoolYears.Where(sy => ids.Contains(sy.ID)).ToListAsync();
+        return await _context.SchoolYears.Where(sy => ids.Contains(sy.ID)).AsNoTracking().ToListAsync();
     }
-
 }

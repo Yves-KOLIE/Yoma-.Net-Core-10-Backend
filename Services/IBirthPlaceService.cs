@@ -36,16 +36,16 @@ public class BirthPlaceService : IBirthPlaceService
 
     public async Task<BirthPlace?> GetBirthPlaceAsync(int id)
     {
-        return await _context.BirthPlaces.FindAsync(id);
+        return await _context.BirthPlaces.AsNoTracking().FirstOrDefaultAsync(b => b.ID == id);
     }
 
     public async Task<IEnumerable<BirthPlace>> GetBirthPlacesAsync()
     {
-        return await _context.BirthPlaces.ToListAsync();
+        return await _context.BirthPlaces.AsNoTracking().ToListAsync();
     }
 
     public async Task<IEnumerable<BirthPlace>> GetBirthPlaceBatchAsync(int[] ids)
     {
-        return await _context.BirthPlaces.Where(b => ids.Contains(b.ID)).ToListAsync();
+        return await _context.BirthPlaces.Where(b => ids.Contains(b.ID)).AsNoTracking().ToListAsync();
     }
 }
