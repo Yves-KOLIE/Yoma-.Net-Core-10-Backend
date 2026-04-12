@@ -12,6 +12,7 @@ builder.Services.AddControllers()
 builder.Services.AddScoped<ISchoolYearService, SchoolYearService>();
 builder.Services.AddScoped<IBankService, BankService>();
 builder.Services.AddScoped<IBirthPlaceService, BirthPlaceService>();
+builder.Services.AddScoped<IBusFessService, BusFessService>();
 
 builder.Services.AddDbContext<Context>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
