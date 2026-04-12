@@ -29,6 +29,7 @@ namespace YOMA.Controllers
             return await _schoolYearService.GetSchoolYearsAsync();
         }
 
+        // Exemple : http://localhost:5079/api/SchoolYears/GetSchoolYearBatch?ids=1&ids=5&ids=10
         [HttpGet("GetSchoolYearBatch")]
         public async Task<IEnumerable<SchoolYear?>> GetSchoolYearBatch([FromQuery] int[] ids)
         {
@@ -36,7 +37,7 @@ namespace YOMA.Controllers
         }
 
         [HttpPut("UpdateSchoolYear")]
-        public async Task<SchoolYear> UpdateSchoolYear(SchoolYear schoolYear)
+        public async Task<SchoolYear> UpdateSchoolYear([FromBody] SchoolYear schoolYear)
         {
             return await _schoolYearService.UpdateSchoolYearAsync(schoolYear);
         }
