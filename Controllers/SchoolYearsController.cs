@@ -17,6 +17,12 @@ namespace YOMA.Controllers
             _schoolYearService = schoolYearService;
         }
 
+        [HttpPost("CreateSchoolYear")]
+        public async Task<SchoolYear> CreateSchoolYear([FromBody] SchoolYear schoolYear)
+        {
+            return await _schoolYearService.CreateSchoolYearAsync(schoolYear);
+        }
+
         [HttpGet("GetSchoolYear/{id}")]
         public async Task<SchoolYear?> GetSchoolYear(int id)
         {

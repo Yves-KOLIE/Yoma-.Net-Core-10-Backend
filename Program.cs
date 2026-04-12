@@ -8,7 +8,11 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = null;
     });
+    
 builder.Services.AddScoped<ISchoolYearService, SchoolYearService>();
+builder.Services.AddScoped<IBankService, BankService>();
+builder.Services.AddScoped<IBirthPlaceService, BirthPlaceService>();
+
 builder.Services.AddDbContext<Context>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
