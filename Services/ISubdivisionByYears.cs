@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using YOMA.Models;
 using YOMA.Models.Tables;
+using YOMA.Models.Views;
 
 public interface ISubdivisionByYears
 {
     Task<IEnumerable<SubdivisionByYear>> GetSubdivisionByYearsAsync(int? schoolYearId = null);
-    Task<List<SubdivisionByYear>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYear> subdivisionByYears);
+    Task<List<SubdivisionByYearViewModel>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYearViewModel> subdivisionByYearViewModelList);
 }
 
 public class SubdivisionByYearService : ISubdivisionByYears
@@ -34,6 +35,7 @@ public class SubdivisionByYearService : ISubdivisionByYears
         }
 
         var activeYear = await _schoolYearService.GetActivedSchoolYear();
+
         if(activeYear != null)
         {
             return await _context.SubdivisionByYears
@@ -49,10 +51,25 @@ public class SubdivisionByYearService : ISubdivisionByYears
 
     }
 
-    public async Task<List<SubdivisionByYear>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYear> subdivisionByYears)
+    public async Task<List<SubdivisionByYearViewModel>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYearViewModel> subdivisionByYearViewModelList)
     {   
-        _context.SubdivisionByYears.UpdateRange(subdivisionByYears);
+        var subdivisionByYearList = subdivisionByYearViewModelList.SelectMany(s => s.SUBDIVISION_BY_YEAR_LIST.Select(sb => new
+        {
+            sb.SUBDIVISION_BY_YEAR_ID,
+            sb.IS_CHECK
+        })).ToList();
+
+        foreach(var subdivisionByYear in subdivisionByYearList)
+        {
+            var subdivisionByYearToUpdate = await _context.SubdivisionByYears.FirstOrDefaultAsync(sy => sy.ID == subdivisionByYear.SUBDIVISION_BY_YEAR_ID);
+            if(subdivisionByYearToUpdate != null)
+            {
+                subdivisionByYearToUpdate.IS_CHECK = subdivisionByYear.IS_CHECK;
+                _context.SubdivisionByYears.Update(subdivisionByYearToUpdate);
+            }
+        }
+
         await _context.SaveChangesAsync();
-        return subdivisionByYears;
+        return subdivisionByYearViewModelList;
     }
 }

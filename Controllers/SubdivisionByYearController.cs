@@ -74,9 +74,9 @@ namespace YOMA.Controllers
         }
 
         [HttpPut("BatchUpdateSubdivisionByYear")]
-        public async Task<List<SubdivisionByYear>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYear> subdivisionByYears)
+        public async Task<List<SubdivisionByYearViewModel>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYearViewModel> subdivisionByYearViewModelList)
         {
-            return await _subdivisionByYearsService.BatchUpdateSubdivisionByYearAsync(subdivisionByYears);
+            return await _subdivisionByYearsService.BatchUpdateSubdivisionByYearAsync(subdivisionByYearViewModelList);
         }
     }
 }
