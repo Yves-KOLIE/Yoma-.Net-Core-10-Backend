@@ -22,50 +22,39 @@ public class SubdivisionByYearService : ISubdivisionByYears
 
     public async Task<IEnumerable<SubdivisionByYear>> GetSubdivisionByYearsAsync(int? schoolYearId = null)
     {
-        if(schoolYearId != null)
-        {
-            return await _context.SubdivisionByYears
-                .Where(sy => sy.SCHOOL_YEAR_ID == schoolYearId)
-                .Include(sy => sy.SCHOOL_YEAR)
-                .Include(sy => sy.SUBDIVISION)
-                .Include(sy => sy.EDUCATION_LEVEL)
-                .OrderBy(sy => sy.ID)
-                .AsNoTracking()
-            .ToListAsync();
-        }
-
-        var activeYear = await _schoolYearService.GetActivedSchoolYear();
-
-        if(activeYear != null)
-        {
-            return await _context.SubdivisionByYears
-                .Where(sy => sy.SCHOOL_YEAR_ID == activeYear.ID)
-                .AsNoTracking()
-                .Include(sy => sy.SCHOOL_YEAR)
-                .Include(sy => sy.SUBDIVISION)
-                .Include(sy => sy.EDUCATION_LEVEL)
-                .OrderBy(sy => sy.ID)
-            .ToListAsync();
-        }
-        return new List<SubdivisionByYear>();
-
+        int id = schoolYearId ?? (await _schoolYearService.GetActivedSchoolYear())?.ID ?? 0;
+        return await _context.SubdivisionByYears
+            .Where(sy => sy.SCHOOL_YEAR_ID == id)
+            .Include(sy => sy.SCHOOL_YEAR)
+            .Include(sy => sy.SUBDIVISION)
+            .Include(sy => sy.EDUCATION_LEVEL)
+                .ThenInclude(se => se.SCHOOL_EDUCATION)
+            .Include(sy => sy.EDUCATION_LEVEL)
+                .ThenInclude(se => se.HIGH_SCHOOL_OPTION)
+            .OrderBy(sy => sy.ID)
+            .AsNoTracking()
+        .ToListAsync();
     }
 
     public async Task<List<SubdivisionByYearViewModel>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYearViewModel> subdivisionByYearViewModelList)
     {   
-        var subdivisionByYearList = subdivisionByYearViewModelList.SelectMany(s => s.SUBDIVISION_BY_YEAR_LIST.Select(sb => new
-        {
-            sb.SUBDIVISION_BY_YEAR_ID,
-            sb.IS_CHECK
-        })).ToList();
+        var updates = subdivisionByYearViewModelList
+            .SelectMany(s => s.SUBDIVISION_BY_YEAR_LIST)
+            .Select(sb => new { ID = sb.ID, IS_CHECK = sb.IS_CHECK })
+        .ToList();
 
-        foreach(var subdivisionByYear in subdivisionByYearList)
+        // Étape 2: Charger TOUTES les entités en une seule requête (évite N+1)
+        var ids = updates.Select(u => u.ID).Distinct().ToList();
+        var entitiesToUpdate = await _context.SubdivisionByYears
+            .Where(sy => ids.Contains(sy.ID))
+            .AsNoTracking()
+        .ToDictionaryAsync(sy => sy.ID);
+
+        foreach (var update in updates)
         {
-            var subdivisionByYearToUpdate = await _context.SubdivisionByYears.FirstOrDefaultAsync(sy => sy.ID == subdivisionByYear.SUBDIVISION_BY_YEAR_ID);
-            if(subdivisionByYearToUpdate != null)
+            if (entitiesToUpdate.TryGetValue(update.ID, out var entity))
             {
-                subdivisionByYearToUpdate.IS_CHECK = subdivisionByYear.IS_CHECK;
-                _context.SubdivisionByYears.Update(subdivisionByYearToUpdate);
+                entity.IS_CHECK = update.IS_CHECK;
             }
         }
 

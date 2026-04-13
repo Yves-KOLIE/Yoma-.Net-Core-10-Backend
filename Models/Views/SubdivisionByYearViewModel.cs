@@ -1,3 +1,5 @@
+using YOMA.Models.Tables;
+
 namespace YOMA.Models.Views
 {
     public class SubdivisionByYearsView
@@ -10,6 +12,6 @@ namespace YOMA.Models.Views
     {
         public required int? SCHOOL_YEAR_ID { get; set; }
         public required string EDUCATION_LEVEL { get; set; }
-        public required List<SubdivisionByYearsView> SUBDIVISION_BY_YEAR_LIST { get; set; }
+        public required List<SubdivisionByYear> SUBDIVISION_BY_YEAR_LIST { get; set; }
     }
 }
