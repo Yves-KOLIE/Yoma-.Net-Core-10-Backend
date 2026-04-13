@@ -1,9 +1,3 @@
-
-
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using YOMA.Models.Tables;
-
 namespace YOMA.Models.Views
 {
     public class SubdivisionByYearsView
