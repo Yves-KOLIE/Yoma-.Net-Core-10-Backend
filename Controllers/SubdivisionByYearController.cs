@@ -23,7 +23,7 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("GetSubdivisionByYears/{schoolYearId?}")]
-        public async Task<ActionResult<CustomMessage>> GetSubdivisionByYearsAsync(int? schoolYearId = null)
+        public async Task<ActionResult<ApiResult>> GetSubdivisionByYearsAsync(int? schoolYearId = null)
         {
             var subdivisionByYears = await _subdivisionByYearsService.GetSubdivisionByYearsAsync(schoolYearId);
             var educationLevels = await _context.EducationLevels.AsNoTracking().ToListAsync();
@@ -58,7 +58,7 @@ namespace YOMA.Controllers
                 if(activeYear != null) updatedRows.ForEach(f => f.SCHOOL_YEAR_ID = activeYear.ID);
             }
 
-            var customMessage = new CustomMessage(Message, false, updatedRows);
+            var customMessage = new ApiResult(Message, false, updatedRows);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -67,12 +67,12 @@ namespace YOMA.Controllers
         }
 
         [HttpPut("BatchUpdateSubdivisionByYear")]
-        public async Task<ActionResult<CustomMessage>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYearViewModel> subdivisionByYearViewModelList)
+        public async Task<ActionResult<ApiResult>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYearViewModel> subdivisionByYearViewModelList)
         {
             try
             {
                 var updatedRows = await _subdivisionByYearsService.BatchUpdateSubdivisionByYearAsync(subdivisionByYearViewModelList);
-                var customMessage = new CustomMessage(Message, false, updatedRows);
+                var customMessage = new ApiResult(Message, false, updatedRows);
                 return Ok(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -82,7 +82,7 @@ namespace YOMA.Controllers
             catch (Exception ex)
             {
                 string errorMessage = "Une erreur s'est produite lors de la mise à jour des subdivisions par année.";
-                var customMessage = new CustomMessage(errorMessage, true, null);
+                var customMessage = new ApiResult(errorMessage, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,

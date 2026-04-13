@@ -1,12 +1,12 @@
 namespace YOMA
 {
-  public class CustomMessage
+  public class ApiResult
   {
     public bool IsError;
     public string Message;
     public object? Data;
 
-    public CustomMessage(string message, bool isError = false, object? data = null)
+    public ApiResult(string message, bool isError = false, object? data = null)
     {
       this.Message = message;
       this.IsError = isError;

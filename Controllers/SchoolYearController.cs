@@ -19,12 +19,12 @@ namespace YOMA.Controllers
         }
 
         [HttpPost("CreateSchoolYear")]
-        public async Task<ActionResult<CustomMessage>> CreateSchoolYear([FromBody] SchoolYear schoolYear)
+        public async Task<ActionResult<ApiResult>> CreateSchoolYear([FromBody] SchoolYear schoolYear)
         {
             try
             {
                 var createdSchoolYear = await _schoolYearService.CreateSchoolYearAsync(schoolYear);
-                var customMessage = new CustomMessage(Message, false, createdSchoolYear);
+                var customMessage = new ApiResult(Message, false, createdSchoolYear);
                 return Ok(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -33,7 +33,7 @@ namespace YOMA.Controllers
             }
             catch (Exception ex)
             {
-                var customMessage = new CustomMessage(Message, true, null);
+                var customMessage = new ApiResult(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -44,10 +44,10 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("GetSchoolYear/{id}")]
-        public async Task<ActionResult<CustomMessage>> GetSchoolYear(int id)
+        public async Task<ActionResult<ApiResult>> GetSchoolYear(int id)
         {
             var schoolYear = await _schoolYearService.GetSchoolYearAsync(id);
-            var customMessage = new CustomMessage(Message, false, schoolYear);
+            var customMessage = new ApiResult(Message, false, schoolYear);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -56,10 +56,10 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("GetSchoolYears")]
-        public async Task<ActionResult<CustomMessage>> GetSchoolYears()
+        public async Task<ActionResult<ApiResult>> GetSchoolYears()
         {
             var schoolYears = await _schoolYearService.GetSchoolYearsAsync();
-            var customMessage = new CustomMessage(Message, false, schoolYears);
+            var customMessage = new ApiResult(Message, false, schoolYears);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -69,10 +69,10 @@ namespace YOMA.Controllers
 
         // Exemple : http://localhost:5079/api/SchoolYears/GetSchoolYearBatch?ids=1&ids=5&ids=10
         [HttpGet("GetSchoolYearBatch")]
-        public async Task<ActionResult<CustomMessage>> GetSchoolYearBatch([FromQuery] int[] ids)
+        public async Task<ActionResult<ApiResult>> GetSchoolYearBatch([FromQuery] int[] ids)
         {
             var schoolYears = await _schoolYearService.GetSchoolYearBatchAsync(ids);
-            var customMessage = new CustomMessage(Message, false, schoolYears);
+            var customMessage = new ApiResult(Message, false, schoolYears);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -81,12 +81,12 @@ namespace YOMA.Controllers
         }
 
         [HttpPut("UpdateSchoolYear")]
-        public async Task<ActionResult<CustomMessage>> UpdateSchoolYear([FromBody] SchoolYear schoolYear)
+        public async Task<ActionResult<ApiResult>> UpdateSchoolYear([FromBody] SchoolYear schoolYear)
         {
             try
             {
                 var updatedSchoolYear = await _schoolYearService.UpdateSchoolYearAsync(schoolYear);
-                var customMessage = new CustomMessage(Message, false, updatedSchoolYear);
+                var customMessage = new ApiResult(Message, false, updatedSchoolYear);
                 return Ok(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -95,7 +95,7 @@ namespace YOMA.Controllers
             }
             catch (Exception ex)
             {
-                var customMessage = new CustomMessage(Message, true, null);
+                var customMessage = new ApiResult(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,

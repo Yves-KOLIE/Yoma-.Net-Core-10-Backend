@@ -19,10 +19,10 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("GetSubdivisions")]
-        public async Task<ActionResult<CustomMessage>> GetSubdivisions()
+        public async Task<ActionResult<ApiResult>> GetSubdivisions()
         {
             var subdivisions = await _subdivisionService.GetBanksAsync();
-            var customMessage = new CustomMessage(Message, false, subdivisions);
+            var customMessage = new ApiResult(Message, false, subdivisions);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,

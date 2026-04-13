@@ -19,12 +19,12 @@ namespace YOMA.Controllers
         }
 
         [HttpPost("CreateBank")]
-        public async Task<ActionResult<CustomMessage>> CreateBank([FromBody] Bank bank)
+        public async Task<ActionResult<ApiResult>> CreateBank([FromBody] Bank bank)
         {
             try
             {
                 var createdBank = await _bankService.CreateBankAsync(bank);
-                var customMessage = new CustomMessage(Message, false, createdBank);
+                var customMessage = new ApiResult(Message, false, createdBank);
                 return Ok(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -33,7 +33,7 @@ namespace YOMA.Controllers
             }
             catch (Exception ex)
             {
-                var customMessage = new CustomMessage(Message, true, null);
+                var customMessage = new ApiResult(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -45,10 +45,10 @@ namespace YOMA.Controllers
 
 
         [HttpGet("GetBank/{id}")]
-        public async Task<ActionResult<CustomMessage>> GetBank(int id)
+        public async Task<ActionResult<ApiResult>> GetBank(int id)
         {
             var bank = await _bankService.GetBankAsync(id);
-            var customMessage = new CustomMessage(Message, false, bank);
+            var customMessage = new ApiResult(Message, false, bank);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -57,10 +57,10 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("GetBanks")]
-        public async Task<ActionResult<CustomMessage>> GetBanks()
+        public async Task<ActionResult<ApiResult>> GetBanks()
         {
             var banks = await _bankService.GetBanksAsync();
-            var customMessage = new CustomMessage(Message, false, banks);
+            var customMessage = new ApiResult(Message, false, banks);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -70,10 +70,10 @@ namespace YOMA.Controllers
 
         // Exemple : http://localhost:5079/api/Banks/GetBankBatch?ids=1&ids=5&ids=10
         [HttpGet("GetBankBatch")]
-        public async Task<ActionResult<CustomMessage>> GetBankBatch([FromQuery] int[] ids)
+        public async Task<ActionResult<ApiResult>> GetBankBatch([FromQuery] int[] ids)
         {
             var banks = await _bankService.GetBankBatchAsync(ids);
-            var customMessage = new CustomMessage(Message, false, banks);
+            var customMessage = new ApiResult(Message, false, banks);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -82,12 +82,12 @@ namespace YOMA.Controllers
         }
 
         [HttpPut("UpdateBank")]
-        public async Task<ActionResult<CustomMessage>> UpdateBank([FromBody] Bank bank)
+        public async Task<ActionResult<ApiResult>> UpdateBank([FromBody] Bank bank)
         {
             try
             {
                 var updatedBank = await _bankService.UpdateBankAsync(bank);
-                var customMessage = new CustomMessage(Message, false, updatedBank);
+                var customMessage = new ApiResult(Message, false, updatedBank);
                 return Ok(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -96,7 +96,7 @@ namespace YOMA.Controllers
             }
             catch (Exception ex)
             {
-                var customMessage = new CustomMessage(Message, true, null);
+                var customMessage = new ApiResult(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,

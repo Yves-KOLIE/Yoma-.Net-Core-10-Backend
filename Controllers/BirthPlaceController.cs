@@ -19,12 +19,12 @@ namespace YOMA.Controllers
         }
 
         [HttpPost("CreateBirthPlace")]
-        public async Task<ActionResult<CustomMessage>> CreateBirthPlace([FromBody] BirthPlace birthPlace)
+        public async Task<ActionResult<ApiResult>> CreateBirthPlace([FromBody] BirthPlace birthPlace)
         {
             try
             {
                 var createdBirthPlace = await _birthPlaceService.CreateBirthPlaceAsync(birthPlace);
-                var customMessage = new CustomMessage(Message, false, createdBirthPlace);
+                var customMessage = new ApiResult(Message, false, createdBirthPlace);
                 return Ok(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -33,7 +33,7 @@ namespace YOMA.Controllers
             }
             catch (Exception ex)
             {
-                var customMessage = new CustomMessage(Message, true, null);
+                var customMessage = new ApiResult(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -44,10 +44,10 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("GetBirthPlace/{id}")]
-        public async Task<ActionResult<CustomMessage>> GetBirthPlace(int id)
+        public async Task<ActionResult<ApiResult>> GetBirthPlace(int id)
         {
             var birthPlace = await _birthPlaceService.GetBirthPlaceAsync(id);
-            var customMessage = new CustomMessage(Message, false, birthPlace);
+            var customMessage = new ApiResult(Message, false, birthPlace);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -56,10 +56,10 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("GetBirthPlaces")]
-        public async Task<ActionResult<CustomMessage>> GetBirthPlaces()
+        public async Task<ActionResult<ApiResult>> GetBirthPlaces()
         {
             var birthPlaces = await _birthPlaceService.GetBirthPlacesAsync();
-            var customMessage = new CustomMessage(Message, false, birthPlaces);
+            var customMessage = new ApiResult(Message, false, birthPlaces);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -69,10 +69,10 @@ namespace YOMA.Controllers
 
         // Exemple : http://localhost:5079/api/BirthPlaces/GetBirthPlaceBatch?ids=1&ids=5&ids=10
         [HttpGet("GetBirthPlaceBatch")]
-        public async Task<ActionResult<CustomMessage>> GetBirthPlaceBatch([FromQuery] int[] ids)
+        public async Task<ActionResult<ApiResult>> GetBirthPlaceBatch([FromQuery] int[] ids)
         {
             var birthPlaces = await _birthPlaceService.GetBirthPlaceBatchAsync(ids);
-            var customMessage = new CustomMessage(Message, false, birthPlaces);
+            var customMessage = new ApiResult(Message, false, birthPlaces);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -81,12 +81,12 @@ namespace YOMA.Controllers
         }
 
         [HttpPut("UpdateBirthPlace")]
-        public async Task<ActionResult<CustomMessage>> UpdateBirthPlace([FromBody] BirthPlace birthPlace)
+        public async Task<ActionResult<ApiResult>> UpdateBirthPlace([FromBody] BirthPlace birthPlace)
         {
             try
             {
                 var updatedBirthPlace = await _birthPlaceService.UpdateBirthPlaceAsync(birthPlace);
-                var customMessage = new CustomMessage(Message, false, updatedBirthPlace);
+                var customMessage = new ApiResult(Message, false, updatedBirthPlace);
                 return Ok(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -95,7 +95,7 @@ namespace YOMA.Controllers
             }
             catch (Exception ex)
             {
-                var customMessage = new CustomMessage(Message, true, null);
+                var customMessage = new ApiResult(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,

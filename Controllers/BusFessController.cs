@@ -19,10 +19,10 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("GetBusFess/{id}")]
-        public async Task<ActionResult<CustomMessage>> GetBusFess(int id)
+        public async Task<ActionResult<ApiResult>> GetBusFess(int id)
         {
             var busFess = await _busFessService.GetBusFessAsync(id);
-            var customMessage = new CustomMessage(Message, false, busFess);
+            var customMessage = new ApiResult(Message, false, busFess);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -31,10 +31,10 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("GetBusFesses")]
-        public async Task<ActionResult<CustomMessage>> GetBusFesses()
+        public async Task<ActionResult<ApiResult>> GetBusFesses()
         {
             var busFesses = await _busFessService.GetBusFessesAsync();
-            var customMessage = new CustomMessage(Message, false, busFesses);
+            var customMessage = new ApiResult(Message, false, busFesses);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -43,12 +43,12 @@ namespace YOMA.Controllers
         }
 
         [HttpPut("UpdateBusFess")]
-        public async Task<ActionResult<CustomMessage>> UpdateBusFess([FromBody] BusFess busFess)
+        public async Task<ActionResult<ApiResult>> UpdateBusFess([FromBody] BusFess busFess)
         {
             try
             {
                 var updatedBusFess = await _busFessService.UpdateBusFessAsync(busFess);
-                var customMessage = new CustomMessage(Message, false, updatedBusFess);
+                var customMessage = new ApiResult(Message, false, updatedBusFess);
                 return Ok(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -57,7 +57,7 @@ namespace YOMA.Controllers
             }
             catch (Exception ex)
             {
-                var customMessage = new CustomMessage(Message, true, null);
+                var customMessage = new ApiResult(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
