@@ -9,6 +9,7 @@ public interface ISchoolYearService
     Task<SchoolYear?> GetSchoolYearAsync(int id);
     Task<IEnumerable<SchoolYear>> GetSchoolYearsAsync();
     Task<IEnumerable<SchoolYear>> GetSchoolYearBatchAsync(int[] ids);
+    Task<SchoolYear?> GetActivedSchoolYear();
 }
 
 public class SchoolYearService : ISchoolYearService
@@ -47,5 +48,10 @@ public class SchoolYearService : ISchoolYearService
     public async Task<IEnumerable<SchoolYear>> GetSchoolYearBatchAsync(int[] ids)
     {
         return await _context.SchoolYears.Where(sy => ids.Contains(sy.ID)).AsNoTracking().ToListAsync();
+    }
+
+    public async Task<SchoolYear?> GetActivedSchoolYear()
+    {
+        return await _context.SchoolYears.AsNoTracking().FirstOrDefaultAsync(sy => sy.IS_ACTIVE == true);
     }
 }

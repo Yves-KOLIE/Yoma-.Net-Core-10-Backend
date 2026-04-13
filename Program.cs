@@ -18,6 +18,7 @@ builder.Services.AddScoped<IBankService, BankService>();
 builder.Services.AddScoped<IBirthPlaceService, BirthPlaceService>();
 builder.Services.AddScoped<IBusFessService, BusFessService>();
 builder.Services.AddScoped<ISubdivision, SubdivisionService>();
+builder.Services.AddScoped<ISubdivisionByYears, SubdivisionByYearService>();
 
 builder.Services.AddDbContext<Context>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
