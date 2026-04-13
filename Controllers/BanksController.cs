@@ -10,6 +10,7 @@ namespace YOMA.Controllers
     {
         private readonly Context _context;
         private readonly IBankService _bankService;
+        private readonly string Message = "Banques";
 
         public BanksController(Context context, BankService bankService)
         {
@@ -18,35 +19,91 @@ namespace YOMA.Controllers
         }
 
         [HttpPost("CreateBank")]
-        public async Task<Bank> CreateBank([FromBody] Bank bank)
+        public async Task<ActionResult<CustomMessage>> CreateBank([FromBody] Bank bank)
         {
-            return await _bankService.CreateBankAsync(bank);
+            try
+            {
+                var createdBank = await _bankService.CreateBankAsync(bank);
+                var customMessage = new CustomMessage(Message, false, createdBank);
+                return Ok(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.Error,
+                    Data = customMessage.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var customMessage = new CustomMessage(Message, true, null);
+                return BadRequest(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.Error,
+                    Data = customMessage.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
 
         [HttpGet("GetBank/{id}")]
-        public async Task<Bank?> GetBank(int id)
+        public async Task<ActionResult<CustomMessage>> GetBank(int id)
         {
-            return await _bankService.GetBankAsync(id);
+            var bank = await _bankService.GetBankAsync(id);
+            var customMessage = new CustomMessage(Message, false, bank);
+            return Ok(new { 
+                Message = customMessage.Message,
+                IsError = customMessage.Error,
+                Data = customMessage.Data 
+            });
         }
 
         [HttpGet("GetBanks")]
-        public async Task<IEnumerable<Bank?>> GetBanks()
+        public async Task<ActionResult<CustomMessage>> GetBanks()
         {
-            return await _bankService.GetBanksAsync();
+            var banks = await _bankService.GetBanksAsync();
+            var customMessage = new CustomMessage(Message, false, banks);
+            return Ok(new { 
+                Message = customMessage.Message,
+                IsError = customMessage.Error,
+                Data = customMessage.Data 
+            });
         }
 
         // Exemple : http://localhost:5079/api/Banks/GetBankBatch?ids=1&ids=5&ids=10
         [HttpGet("GetBankBatch")]
-        public async Task<IEnumerable<Bank?>> GetBankBatch([FromQuery] int[] ids)
+        public async Task<ActionResult<CustomMessage>> GetBankBatch([FromQuery] int[] ids)
         {
-            return await _bankService.GetBankBatchAsync(ids);
+            var banks = await _bankService.GetBankBatchAsync(ids);
+            var customMessage = new CustomMessage(Message, false, banks);
+            return Ok(new { 
+                Message = customMessage.Message,
+                IsError = customMessage.Error,
+                Data = customMessage.Data 
+            });
         }
 
         [HttpPut("UpdateBank")]
-        public async Task<Bank> UpdateBank([FromBody] Bank bank)
+        public async Task<ActionResult<CustomMessage>> UpdateBank([FromBody] Bank bank)
         {
-            return await _bankService.UpdateBankAsync(bank);
+            try
+            {
+                var updatedBank = await _bankService.UpdateBankAsync(bank);
+                var customMessage = new CustomMessage(Message, false, updatedBank);
+                return Ok(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.Error,
+                    Data = customMessage.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var customMessage = new CustomMessage(Message, true, null);
+                return BadRequest(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.Error,
+                    Data = customMessage.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
     }
 }

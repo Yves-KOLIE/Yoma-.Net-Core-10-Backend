@@ -10,6 +10,7 @@ namespace YOMA.Controllers
     {
         private readonly Context _context;
         private readonly IBirthPlaceService _birthPlaceService;
+        private readonly string Message = "Lieux de naissance";
 
         public BirthPlaceController(Context context, BirthPlaceService birthPlaceService)
         {
@@ -18,34 +19,90 @@ namespace YOMA.Controllers
         }
 
         [HttpPost("CreateBirthPlace")]
-        public async Task<BirthPlace> CreateBirthPlace([FromBody] BirthPlace birthPlace)
+        public async Task<ActionResult<CustomMessage>> CreateBirthPlace([FromBody] BirthPlace birthPlace)
         {
-            return await _birthPlaceService.CreateBirthPlaceAsync(birthPlace);
+            try
+            {
+                var createdBirthPlace = await _birthPlaceService.CreateBirthPlaceAsync(birthPlace);
+                var customMessage = new CustomMessage(Message, false, createdBirthPlace);
+                return Ok(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.Error,
+                    Data = customMessage.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var customMessage = new CustomMessage(Message, true, null);
+                return BadRequest(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.Error,
+                    Data = customMessage.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpGet("GetBirthPlace/{id}")]
-        public async Task<BirthPlace?> GetBirthPlace(int id)
+        public async Task<ActionResult<CustomMessage>> GetBirthPlace(int id)
         {
-            return await _birthPlaceService.GetBirthPlaceAsync(id);
+            var birthPlace = await _birthPlaceService.GetBirthPlaceAsync(id);
+            var customMessage = new CustomMessage(Message, false, birthPlace);
+            return Ok(new { 
+                Message = customMessage.Message,
+                IsError = customMessage.Error,
+                Data = customMessage.Data 
+            });
         }
 
         [HttpGet("GetBirthPlaces")]
-        public async Task<IEnumerable<BirthPlace>> GetBirthPlaces()
+        public async Task<ActionResult<CustomMessage>> GetBirthPlaces()
         {
-            return await _birthPlaceService.GetBirthPlacesAsync();
+            var birthPlaces = await _birthPlaceService.GetBirthPlacesAsync();
+            var customMessage = new CustomMessage(Message, false, birthPlaces);
+            return Ok(new { 
+                Message = customMessage.Message,
+                IsError = customMessage.Error,
+                Data = customMessage.Data 
+            });
         }
 
         // Exemple : http://localhost:5079/api/BirthPlaces/GetBirthPlaceBatch?ids=1&ids=5&ids=10
         [HttpGet("GetBirthPlaceBatch")]
-        public async Task<IEnumerable<BirthPlace?>> GetBirthPlaceBatch([FromQuery] int[] ids)
+        public async Task<ActionResult<CustomMessage>> GetBirthPlaceBatch([FromQuery] int[] ids)
         {
-            return await _birthPlaceService.GetBirthPlaceBatchAsync(ids);
+            var birthPlaces = await _birthPlaceService.GetBirthPlaceBatchAsync(ids);
+            var customMessage = new CustomMessage(Message, false, birthPlaces);
+            return Ok(new { 
+                Message = customMessage.Message,
+                IsError = customMessage.Error,
+                Data = customMessage.Data 
+            });
         }
 
         [HttpPut("UpdateBirthPlace")]
-        public async Task<BirthPlace> UpdateBirthPlace([FromBody] BirthPlace birthPlace)
+        public async Task<ActionResult<CustomMessage>> UpdateBirthPlace([FromBody] BirthPlace birthPlace)
         {
-            return await _birthPlaceService.UpdateBirthPlaceAsync(birthPlace);
+            try
+            {
+                var updatedBirthPlace = await _birthPlaceService.UpdateBirthPlaceAsync(birthPlace);
+                var customMessage = new CustomMessage(Message, false, updatedBirthPlace);
+                return Ok(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.Error,
+                    Data = customMessage.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var customMessage = new CustomMessage(Message, true, null);
+                return BadRequest(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.Error,
+                    Data = customMessage.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
     }
 }

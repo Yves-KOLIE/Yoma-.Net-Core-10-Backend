@@ -10,6 +10,7 @@ namespace YOMA.Controllers
     {
         private readonly Context _context;
         private readonly ISubdivision _subdivisionService;
+        private readonly string Message = "Subdivisions";
 
         public SubdivisionController(Context context, ISubdivision subdivisionService)
         {
@@ -18,9 +19,15 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("GetSubdivisions")]
-        public async Task<IEnumerable<Subdivision?>> GetSubdivisions()
+        public async Task<ActionResult<CustomMessage>> GetSubdivisions()
         {
-            return await _subdivisionService.GetBanksAsync();
+            var subdivisions = await _subdivisionService.GetBanksAsync();
+            var customMessage = new CustomMessage(Message, false, subdivisions);
+            return Ok(new { 
+                Message = customMessage.Message,
+                IsError = customMessage.Error,
+                Data = customMessage.Data 
+            });
         }
     }
 }
