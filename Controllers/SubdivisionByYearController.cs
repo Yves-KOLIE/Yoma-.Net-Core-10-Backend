@@ -61,7 +61,7 @@ namespace YOMA.Controllers
             var customMessage = new CustomMessage(Message, false, updatedRows);
             return Ok(new { 
                 Message = customMessage.Message,
-                IsError = customMessage.Error,
+                IsError = customMessage.IsError,
                 Data = customMessage.Data 
             });
         }
@@ -75,7 +75,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(Message, false, updatedRows);
                 return Ok(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data 
                 });
             }
@@ -85,7 +85,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(errorMessage, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data,
                     ErrorDetails = ex.Message
                 });

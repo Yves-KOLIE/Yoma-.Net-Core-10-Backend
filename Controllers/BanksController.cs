@@ -27,7 +27,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(Message, false, createdBank);
                 return Ok(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data 
                 });
             }
@@ -36,7 +36,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data,
                     ErrorDetails = ex.Message
                 });
@@ -51,7 +51,7 @@ namespace YOMA.Controllers
             var customMessage = new CustomMessage(Message, false, bank);
             return Ok(new { 
                 Message = customMessage.Message,
-                IsError = customMessage.Error,
+                IsError = customMessage.IsError,
                 Data = customMessage.Data 
             });
         }
@@ -63,7 +63,7 @@ namespace YOMA.Controllers
             var customMessage = new CustomMessage(Message, false, banks);
             return Ok(new { 
                 Message = customMessage.Message,
-                IsError = customMessage.Error,
+                IsError = customMessage.IsError,
                 Data = customMessage.Data 
             });
         }
@@ -76,7 +76,7 @@ namespace YOMA.Controllers
             var customMessage = new CustomMessage(Message, false, banks);
             return Ok(new { 
                 Message = customMessage.Message,
-                IsError = customMessage.Error,
+                IsError = customMessage.IsError,
                 Data = customMessage.Data 
             });
         }
@@ -90,7 +90,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(Message, false, updatedBank);
                 return Ok(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data 
                 });
             }
@@ -99,7 +99,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data,
                     ErrorDetails = ex.Message
                 });

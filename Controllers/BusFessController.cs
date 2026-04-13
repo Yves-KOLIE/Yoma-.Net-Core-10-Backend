@@ -25,7 +25,7 @@ namespace YOMA.Controllers
             var customMessage = new CustomMessage(Message, false, busFess);
             return Ok(new { 
                 Message = customMessage.Message,
-                IsError = customMessage.Error,
+                IsError = customMessage.IsError,
                 Data = customMessage.Data 
             });
         }
@@ -37,7 +37,7 @@ namespace YOMA.Controllers
             var customMessage = new CustomMessage(Message, false, busFesses);
             return Ok(new { 
                 Message = customMessage.Message,
-                IsError = customMessage.Error,
+                IsError = customMessage.IsError,
                 Data = customMessage.Data 
             });
         }
@@ -51,7 +51,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(Message, false, updatedBusFess);
                 return Ok(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data 
                 });
             }
@@ -60,7 +60,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data,
                     ErrorDetails = ex.Message
                 });

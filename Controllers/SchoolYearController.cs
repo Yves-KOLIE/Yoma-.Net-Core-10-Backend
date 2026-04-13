@@ -27,7 +27,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(Message, false, createdSchoolYear);
                 return Ok(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data 
                 });
             }
@@ -36,7 +36,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data,
                     ErrorDetails = ex.Message
                 });
@@ -50,7 +50,7 @@ namespace YOMA.Controllers
             var customMessage = new CustomMessage(Message, false, schoolYear);
             return Ok(new { 
                 Message = customMessage.Message,
-                IsError = customMessage.Error,
+                IsError = customMessage.IsError,
                 Data = customMessage.Data 
             });
         }
@@ -62,7 +62,7 @@ namespace YOMA.Controllers
             var customMessage = new CustomMessage(Message, false, schoolYears);
             return Ok(new { 
                 Message = customMessage.Message,
-                IsError = customMessage.Error,
+                IsError = customMessage.IsError,
                 Data = customMessage.Data 
             });
         }
@@ -75,7 +75,7 @@ namespace YOMA.Controllers
             var customMessage = new CustomMessage(Message, false, schoolYears);
             return Ok(new { 
                 Message = customMessage.Message,
-                IsError = customMessage.Error,
+                IsError = customMessage.IsError,
                 Data = customMessage.Data 
             });
         }
@@ -89,7 +89,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(Message, false, updatedSchoolYear);
                 return Ok(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data 
                 });
             }
@@ -98,7 +98,7 @@ namespace YOMA.Controllers
                 var customMessage = new CustomMessage(Message, true, null);
                 return BadRequest(new { 
                     Message = customMessage.Message,
-                    IsError = customMessage.Error,
+                    IsError = customMessage.IsError,
                     Data = customMessage.Data,
                     ErrorDetails = ex.Message
                 });

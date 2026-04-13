@@ -25,7 +25,7 @@ namespace YOMA.Controllers
             var customMessage = new CustomMessage(Message, false, subdivisions);
             return Ok(new { 
                 Message = customMessage.Message,
-                IsError = customMessage.Error,
+                IsError = customMessage.IsError,
                 Data = customMessage.Data 
             });
         }
