@@ -9,7 +9,7 @@ namespace YOMA.Controllers
     public class BanksController : ControllerBase
     {
         private readonly Context _context;
-        private readonly IBankService _bankService;
+        private readonly BankService _bankService;
         private readonly string Message = "Banques";
 
         public BanksController(Context context, BankService bankService)

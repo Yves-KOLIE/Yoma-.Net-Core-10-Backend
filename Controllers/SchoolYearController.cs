@@ -9,10 +9,10 @@ namespace YOMA.Controllers
     public class SchoolYearController : ControllerBase
     {
         private readonly Context _context;
-        private readonly ISchoolYearService _schoolYearService;
+        private readonly SchoolYearService _schoolYearService;
         private readonly string Message = "Année scolaire";
 
-        public SchoolYearController(Context context, ISchoolYearService schoolYearService)
+        public SchoolYearController(Context context, SchoolYearService schoolYearService)
         {
             _context = context;
             _schoolYearService = schoolYearService;

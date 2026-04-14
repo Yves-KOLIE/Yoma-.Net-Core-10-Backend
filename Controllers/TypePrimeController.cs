@@ -9,10 +9,10 @@ namespace YOMA.Controllers
     public class TypePrimeController : ControllerBase
     {
         private readonly Context _context;
-        private readonly ITypePrime _typePrimeService;
+        private readonly TypePrimeService _typePrimeService;
         private readonly string Message = "Types de primes";
 
-        public TypePrimeController(Context context, ITypePrime typePrimeService)
+        public TypePrimeController(Context context, TypePrimeService typePrimeService)
         {
             _context = context;
             _typePrimeService = typePrimeService;

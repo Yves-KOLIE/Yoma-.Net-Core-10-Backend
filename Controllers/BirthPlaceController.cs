@@ -9,7 +9,7 @@ namespace YOMA.Controllers
     public class BirthPlaceController : ControllerBase
     {
         private readonly Context _context;
-        private readonly IBirthPlaceService _birthPlaceService;
+        private readonly BirthPlaceService _birthPlaceService;
         private readonly string Message = "Lieux de naissance";
 
         public BirthPlaceController(Context context, BirthPlaceService birthPlaceService)

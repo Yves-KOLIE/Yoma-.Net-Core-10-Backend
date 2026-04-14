@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using YOMA.Models;
 using YOMA.Models.Tables;
 
-public interface ITypePrime
+public interface ITypePrimeService
 {
     Task<TypePrime> CreateTypePrimeAsync(TypePrime typePrime);
     Task<TypePrime> UpdateTypePrimeAsync(TypePrime typePrime);
@@ -10,7 +10,7 @@ public interface ITypePrime
     Task<IEnumerable<TypePrime>> GetTypePrimesAsync();
 }
 
-public class TypePrimeService : ITypePrime
+public class TypePrimeService : ITypePrimeService
 {
     private readonly Context _context;
 

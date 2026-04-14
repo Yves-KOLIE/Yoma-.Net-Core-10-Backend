@@ -9,10 +9,10 @@ namespace YOMA.Controllers
     public class SubdivisionController : ControllerBase
     {
         private readonly Context _context;
-        private readonly ISubdivision _subdivisionService;
+        private readonly SubdivisionService _subdivisionService;
         private readonly string Message = "Subdivisions";
 
-        public SubdivisionController(Context context, ISubdivision subdivisionService)
+        public SubdivisionController(Context context, SubdivisionService subdivisionService)
         {
             _context = context;
             _subdivisionService = subdivisionService;

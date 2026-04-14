@@ -13,12 +13,15 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.WriteIndented = true;
 });
 
-builder.Services.AddScoped<ISchoolYearService, SchoolYearService>();
-builder.Services.AddScoped<IBankService, BankService>();
-builder.Services.AddScoped<IBirthPlaceService, BirthPlaceService>();
-builder.Services.AddScoped<IBusFessService, BusFessService>();
-builder.Services.AddScoped<ISubdivision, SubdivisionService>();
-builder.Services.AddScoped<ISubdivisionByYear, SubdivisionByYearService>();
+builder.Services.AddScoped<BankService>();
+builder.Services.AddScoped<BirthPlaceService>();
+builder.Services.AddScoped<BusFessService>();
+builder.Services.AddScoped<SchoolYearService>();
+builder.Services.AddScoped<SubdivisionByYearService>();
+builder.Services.AddScoped<SubdivisionService>();
+builder.Services.AddScoped<TypePrimeService>();
+builder.Services.AddScoped<EducationLevelService>();
+
 
 builder.Services.AddDbContext<Context>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));

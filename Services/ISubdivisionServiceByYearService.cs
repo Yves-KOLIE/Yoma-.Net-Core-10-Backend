@@ -3,27 +3,29 @@ using YOMA.Models;
 using YOMA.Models.Tables;
 using YOMA.Models.Views;
 
-public interface ISubdivisionByYear
+public interface ISubdivisionServiceByYearService
 {
     Task<IEnumerable<SubdivisionByYear>> GetSubdivisionByYearsAsync(int? schoolYearId = null);
     Task<List<SubdivisionByYearViewModel>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYearViewModel> subdivisionByYearViewModelList);
 }
 
-public class SubdivisionByYearService : ISubdivisionByYear
+public class SubdivisionByYearService : ISubdivisionServiceByYearService
 {
     private readonly Context _context;
-    private readonly ISchoolYearService _schoolYearService;
+    private readonly SchoolYearService _schoolYearService;
+    private readonly EducationLevelService _educationLevelService;
 
-    public SubdivisionByYearService(Context context, ISchoolYearService schoolYearService)
+    public SubdivisionByYearService(Context context, SchoolYearService schoolYearService, EducationLevelService educationLevelService)
     {
         _context = context;
         _schoolYearService = schoolYearService;
+        _educationLevelService = educationLevelService;
     }
 
     public async Task<IEnumerable<SubdivisionByYear>> GetSubdivisionByYearsAsync(int? schoolYearId = null)
     {
         int id = schoolYearId ?? (await _schoolYearService.GetActivedSchoolYear())?.ID ?? 0;
-        return await _context.SubdivisionByYears
+        var subdivisionByYearsList = await _context.SubdivisionByYears
             .Where(sy => sy.SCHOOL_YEAR_ID == id)
             .Include(sy => sy.SCHOOL_YEAR)
             .Include(sy => sy.SUBDIVISION)
@@ -34,6 +36,17 @@ public class SubdivisionByYearService : ISubdivisionByYear
             .OrderBy(sy => sy.ID)
             .AsNoTracking()
         .ToListAsync();
+
+        var educationLevels = await _educationLevelService.GetEducationLevelsByYearIdAsync(id);
+        var educationLevelDict = educationLevels.ToDictionary(el => el.ID, el => el);
+
+        foreach (var subdivisionByYear in subdivisionByYearsList)
+        {
+            var key = new { subdivisionByYear.SCHOOL_YEAR_ID, subdivisionByYear.EDUCATION_LEVEL_ID, subdivisionByYear.SUBDIVISION_ID };
+            subdivisionByYear.EDUCATION_LEVEL.STUDENT_REGISTRATED_COUNT = educationLevelDict.TryGetValue(subdivisionByYear.EDUCATION_LEVEL_ID, out var educationLevel) ? educationLevel.STUDENT_REGISTRATED_COUNT : 0;
+        }
+
+        return subdivisionByYearsList;
     }
 
     public async Task<List<SubdivisionByYearViewModel>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYearViewModel> subdivisionByYearViewModelList)

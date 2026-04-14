@@ -2,12 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using YOMA.Models;
 using YOMA.Models.Tables;
 
-public interface ISubdivision
+public interface ISubdivisionService
 {
     Task<IEnumerable<Subdivision>> GetBanksAsync();
 }
 
-public class SubdivisionService : ISubdivision
+public class SubdivisionService : ISubdivisionService
 {
     private readonly Context _context;
 

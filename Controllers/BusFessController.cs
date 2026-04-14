@@ -9,10 +9,10 @@ namespace YOMA.Controllers
     public class BusFessController : ControllerBase
     {
         private readonly Context _context;
-        private readonly IBusFessService _busFessService;
+        private readonly BusFessService _busFessService;
         private readonly string Message = "Frais de bus";
 
-        public BusFessController(Context context, IBusFessService busFessService)
+        public BusFessController(Context context, BusFessService busFessService)
         {
             _context = context;
             _busFessService = busFessService;

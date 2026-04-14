@@ -18,6 +18,8 @@ namespace YOMA.Models.Tables
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;
         
+        [NotMapped]
+        public int STUDENT_REGISTRATED_COUNT { get; set; } = 0;
 
         [ForeignKey("SCHOOL_EDUCATION")]
         public required int SCHOOL_EDUCATION_ID { get; set; }
