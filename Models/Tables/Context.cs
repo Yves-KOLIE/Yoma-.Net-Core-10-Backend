@@ -48,5 +48,6 @@ namespace YOMA.Models
         public DbSet<User> Users { get; set; }
         public DbSet<UserPosition> UserPositions { get; set; }
         public DbSet<UserPrime> UserPrimes { get; set; }
+        public DbSet<TypePrime> TypePrimes { get; set; }
     }
 }
