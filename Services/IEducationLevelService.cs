@@ -13,7 +13,6 @@ public class EducationLevelService : IEducationLevelService
 {
     private readonly Context _context;
 
-
     public EducationLevelService(Context context)
     {
         _context = context;
@@ -34,8 +33,7 @@ public class EducationLevelService : IEducationLevelService
             .AsNoTracking()
         .ToListAsync();
 
-        // Compte séparé pour éviter N+1
-        var counts = await _context.StudentRegistrations
+        var sudentRegistrationsCount = await _context.StudentRegistrations
             .Where(sr => sr.SCHOOL_YEAR_ID == schoolYearId && sr.IS_DELETED == false)
             .GroupBy(sr => sr.EDUCATION_LEVEL_ID)
             .Select(g => new { g.Key, Count = g.Count() })
@@ -44,7 +42,7 @@ public class EducationLevelService : IEducationLevelService
 
         foreach (var el in educationLevels)
         {
-            el.STUDENT_REGISTRATED_COUNT = counts.GetValueOrDefault(el.ID, 0);
+            el.STUDENT_REGISTRATED_COUNT = sudentRegistrationsCount.GetValueOrDefault(el.ID, 0);
         }
         
         return educationLevels;

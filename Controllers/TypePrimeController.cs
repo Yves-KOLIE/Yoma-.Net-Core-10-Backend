@@ -43,7 +43,6 @@ namespace YOMA.Controllers
             }
         }
 
-
         [HttpGet("GetTypePrime/{id}")]
         public async Task<ActionResult<ApiResult>> GetTypePrime(int id)
         {
@@ -67,7 +66,6 @@ namespace YOMA.Controllers
                 Data = customMessage.Data 
             });
         }
-
 
         [HttpPut("UpdateTypePrime")]
         public async Task<ActionResult<ApiResult>> UpdateTypePrime([FromBody] TypePrime typePrime)
