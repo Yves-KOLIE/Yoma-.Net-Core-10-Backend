@@ -23,10 +23,10 @@ public class EducationLevelService : IEducationLevelService
     {
         var educationLevels = await _context.EducationLevels
             .LeftJoin(
-            _context.Set<StudentRegistration>(),
-            el => el.ID,
-            sr => sr.EDUCATION_LEVEL_ID,
-            (el, sr) => el
+                _context.Set<StudentRegistration>(),
+                el => el.ID,
+                sr => sr.EDUCATION_LEVEL_ID,
+                (el, sr) => el
             )
             .Include(el => el.SCHOOL_EDUCATION)
             .Include(el => el.HIGH_SCHOOL_OPTION)
