@@ -11,11 +11,11 @@ namespace YOMA.Controllers
     public class SubdivisionByYearController : ControllerBase
     {
         private readonly Context _context;
-        private readonly ISubdivisionByYears _subdivisionByYearsService;
+        private readonly ISubdivisionByYear _subdivisionByYearsService;
         private readonly ISchoolYearService _schoolYearService;
         private readonly string Message = "Subdivisions par année";
 
-        public SubdivisionByYearController(Context context, ISubdivisionByYears subdivisionByYearsService, ISchoolYearService schoolYearService)
+        public SubdivisionByYearController(Context context, ISubdivisionByYear subdivisionByYearsService, ISchoolYearService schoolYearService)
         {
             _context = context;
             _subdivisionByYearsService = subdivisionByYearsService;

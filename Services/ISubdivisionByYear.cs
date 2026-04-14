@@ -3,13 +3,13 @@ using YOMA.Models;
 using YOMA.Models.Tables;
 using YOMA.Models.Views;
 
-public interface ISubdivisionByYears
+public interface ISubdivisionByYear
 {
     Task<IEnumerable<SubdivisionByYear>> GetSubdivisionByYearsAsync(int? schoolYearId = null);
     Task<List<SubdivisionByYearViewModel>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYearViewModel> subdivisionByYearViewModelList);
 }
 
-public class SubdivisionByYearService : ISubdivisionByYears
+public class SubdivisionByYearService : ISubdivisionByYear
 {
     private readonly Context _context;
     private readonly ISchoolYearService _schoolYearService;
