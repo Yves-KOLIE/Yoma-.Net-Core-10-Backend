@@ -24,20 +24,20 @@ namespace YOMA.Controllers
             try
             {
                 var createdSchoolYear = await _schoolYearService.CreateSchoolYearAsync(schoolYear);
-                var customMessage = new ApiResult(Message, false, createdSchoolYear);
+                var apiResult = new ApiResult(Message, false, createdSchoolYear);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }
@@ -47,11 +47,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetSchoolYear(int id)
         {
             var schoolYear = await _schoolYearService.GetSchoolYearAsync(id);
-            var customMessage = new ApiResult(Message, false, schoolYear);
+            var apiResult = new ApiResult(Message, false, schoolYear);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -59,11 +59,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetSchoolYears()
         {
             var schoolYears = await _schoolYearService.GetSchoolYearsAsync();
-            var customMessage = new ApiResult(Message, false, schoolYears);
+            var apiResult = new ApiResult(Message, false, schoolYears);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -72,11 +72,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetSchoolYearBatch([FromQuery] int[] ids)
         {
             var schoolYears = await _schoolYearService.GetSchoolYearBatchAsync(ids);
-            var customMessage = new ApiResult(Message, false, schoolYears);
+            var apiResult = new ApiResult(Message, false, schoolYears);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -86,20 +86,20 @@ namespace YOMA.Controllers
             try
             {
                 var updatedSchoolYear = await _schoolYearService.UpdateSchoolYearAsync(schoolYear);
-                var customMessage = new ApiResult(Message, false, updatedSchoolYear);
+                var apiResult = new ApiResult(Message, false, updatedSchoolYear);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }
@@ -111,20 +111,20 @@ namespace YOMA.Controllers
             try
             {
                 var updatedSchoolYears = await _schoolYearService.BatchUpdateSchoolYearsAsync(schoolYears);
-                var customMessage = new ApiResult(Message, false, updatedSchoolYears);
+                var apiResult = new ApiResult(Message, false, updatedSchoolYears);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }

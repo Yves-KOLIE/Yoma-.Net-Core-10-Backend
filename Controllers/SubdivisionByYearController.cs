@@ -58,11 +58,11 @@ namespace YOMA.Controllers
                 if(activeYear != null) updatedRows.ForEach(f => f.SCHOOL_YEAR_ID = activeYear.ID);
             }
 
-            var customMessage = new ApiResult(Message, false, updatedRows);
+            var apiResult = new ApiResult(Message, false, updatedRows);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -72,21 +72,21 @@ namespace YOMA.Controllers
             try
             {
                 var updatedRows = await _subdivisionByYearsService.BatchUpdateSubdivisionByYearAsync(subdivisionByYearViewModelList);
-                var customMessage = new ApiResult(Message, false, updatedRows);
+                var apiResult = new ApiResult(Message, false, updatedRows);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
                 string errorMessage = "Une erreur s'est produite lors de la mise à jour des subdivisions par année.";
-                var customMessage = new ApiResult(errorMessage, true, null);
+                var apiResult = new ApiResult(errorMessage, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }

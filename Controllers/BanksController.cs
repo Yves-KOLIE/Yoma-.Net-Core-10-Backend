@@ -24,20 +24,20 @@ namespace YOMA.Controllers
             try
             {
                 var createdBank = await _bankService.CreateBankAsync(bank);
-                var customMessage = new ApiResult(Message, false, createdBank);
+                var apiResult = new ApiResult(Message, false, createdBank);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }
@@ -48,11 +48,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetBank(int id)
         {
             var bank = await _bankService.GetBankAsync(id);
-            var customMessage = new ApiResult(Message, false, bank);
+            var apiResult = new ApiResult(Message, false, bank);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -60,11 +60,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetBanks()
         {
             var banks = await _bankService.GetBanksAsync();
-            var customMessage = new ApiResult(Message, false, banks);
+            var apiResult = new ApiResult(Message, false, banks);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -73,11 +73,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetBankBatch([FromQuery] int[] ids)
         {
             var banks = await _bankService.GetBankBatchAsync(ids);
-            var customMessage = new ApiResult(Message, false, banks);
+            var apiResult = new ApiResult(Message, false, banks);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -87,20 +87,20 @@ namespace YOMA.Controllers
             try
             {
                 var updatedBank = await _bankService.UpdateBankAsync(bank);
-                var customMessage = new ApiResult(Message, false, updatedBank);
+                var apiResult = new ApiResult(Message, false, updatedBank);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }
@@ -112,20 +112,20 @@ namespace YOMA.Controllers
             try
             {
                 var updatedBanks = await _bankService.BatchUpdateBanksAsync(banks);
-                var customMessage = new ApiResult(Message, false, updatedBanks);
+                var apiResult = new ApiResult(Message, false, updatedBanks);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }

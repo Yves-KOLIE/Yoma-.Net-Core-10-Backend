@@ -24,20 +24,20 @@ namespace YOMA.Controllers
             try
             {
                 var createdTypePrime = await _typePrimeService.CreateTypePrimeAsync(typePrime);
-                var customMessage = new ApiResult(Message, false, createdTypePrime);
+                var apiResult = new ApiResult(Message, false, createdTypePrime);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }
@@ -47,11 +47,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetTypePrime(int id)
         {
             var typePrime = await _typePrimeService.GetTypePrimeAsync(id);
-            var customMessage = new ApiResult(Message, false, typePrime);
+            var apiResult = new ApiResult(Message, false, typePrime);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -59,11 +59,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetTypePrimes()
         {
             var typePrimes = await _typePrimeService.GetTypePrimesAsync();
-            var customMessage = new ApiResult(Message, false, typePrimes);
+            var apiResult = new ApiResult(Message, false, typePrimes);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -73,20 +73,20 @@ namespace YOMA.Controllers
             try
             {
                 var updatedTypePrime = await _typePrimeService.UpdateTypePrimeAsync(typePrime);
-                var customMessage = new ApiResult(Message, false, updatedTypePrime);
+                var apiResult = new ApiResult(Message, false, updatedTypePrime);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }
@@ -98,20 +98,20 @@ namespace YOMA.Controllers
             try
             {
                 var updatedTypePrimes = await _typePrimeService.BatchUpdateTypePrimesAsync(typePrimes);
-                var customMessage = new ApiResult(Message, false, updatedTypePrimes);
+                var apiResult = new ApiResult(Message, false, updatedTypePrimes);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }

@@ -24,20 +24,20 @@ namespace YOMA.Controllers
             try
             {
                 var createdBirthPlace = await _birthPlaceService.CreateBirthPlaceAsync(birthPlace);
-                var customMessage = new ApiResult(Message, false, createdBirthPlace);
+                var apiResult = new ApiResult(Message, false, createdBirthPlace);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }
@@ -47,11 +47,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetBirthPlace(int id)
         {
             var birthPlace = await _birthPlaceService.GetBirthPlaceAsync(id);
-            var customMessage = new ApiResult(Message, false, birthPlace);
+            var apiResult = new ApiResult(Message, false, birthPlace);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -59,11 +59,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetBirthPlaces()
         {
             var birthPlaces = await _birthPlaceService.GetBirthPlacesAsync();
-            var customMessage = new ApiResult(Message, false, birthPlaces);
+            var apiResult = new ApiResult(Message, false, birthPlaces);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -72,11 +72,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetBirthPlaceBatch([FromQuery] int[] ids)
         {
             var birthPlaces = await _birthPlaceService.GetBirthPlaceBatchAsync(ids);
-            var customMessage = new ApiResult(Message, false, birthPlaces);
+            var apiResult = new ApiResult(Message, false, birthPlaces);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -86,20 +86,20 @@ namespace YOMA.Controllers
             try
             {
                 var updatedBirthPlace = await _birthPlaceService.UpdateBirthPlaceAsync(birthPlace);
-                var customMessage = new ApiResult(Message, false, updatedBirthPlace);
+                var apiResult = new ApiResult(Message, false, updatedBirthPlace);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }
@@ -111,20 +111,20 @@ namespace YOMA.Controllers
             try
             {
                 var updatedBirthPlaces = await _birthPlaceService.BatchUpdateBirthPlacesAsync(birthPlaces);
-                var customMessage = new ApiResult(Message, false, updatedBirthPlaces);
+                var apiResult = new ApiResult(Message, false, updatedBirthPlaces);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }

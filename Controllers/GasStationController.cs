@@ -24,20 +24,20 @@ namespace YOMA.Controllers
             try
             {
                 var createdGasStation = await _gasStationService.CreateGasStationAsync(gasStation);
-                var customMessage = new ApiResult(Message, false, createdGasStation);
+                var apiResult = new ApiResult(Message, false, createdGasStation);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }
@@ -47,11 +47,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetGasStation(int id)
         {
             var gasStation = await _gasStationService.GetGasStationAsync(id);
-            var customMessage = new ApiResult(Message, false, gasStation);
+            var apiResult = new ApiResult(Message, false, gasStation);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -59,11 +59,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetGasStations()
         {
             var gasStations = await _gasStationService.GetGasStationsAsync();
-            var customMessage = new ApiResult(Message, false, gasStations);
+            var apiResult = new ApiResult(Message, false, gasStations);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -73,20 +73,20 @@ namespace YOMA.Controllers
             try
             {
                 var updatedGasStation = await _gasStationService.UpdateGasStationAsync(gasStation);
-                var customMessage = new ApiResult(Message, false, updatedGasStation);
+                var apiResult = new ApiResult(Message, false, updatedGasStation);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }
@@ -98,20 +98,20 @@ namespace YOMA.Controllers
             try
             {
                 var updatedGasStations = await _gasStationService.BatchUpdateGasStationsAsync(gasStations);
-                var customMessage = new ApiResult(Message, false, updatedGasStations);
+                var apiResult = new ApiResult(Message, false, updatedGasStations);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }

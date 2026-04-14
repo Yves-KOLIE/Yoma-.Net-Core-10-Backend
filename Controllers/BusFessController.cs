@@ -22,11 +22,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetBusFess(int id)
         {
             var busFess = await _busFessService.GetBusFessAsync(id);
-            var customMessage = new ApiResult(Message, false, busFess);
+            var apiResult = new ApiResult(Message, false, busFess);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -34,11 +34,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetBusFesses()
         {
             var busFesses = await _busFessService.GetBusFessesAsync();
-            var customMessage = new ApiResult(Message, false, busFesses);
+            var apiResult = new ApiResult(Message, false, busFesses);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
 
@@ -48,20 +48,20 @@ namespace YOMA.Controllers
             try
             {
                 var updatedBusFess = await _busFessService.UpdateBusFessAsync(busFess);
-                var customMessage = new ApiResult(Message, false, updatedBusFess);
+                var apiResult = new ApiResult(Message, false, updatedBusFess);
                 return Ok(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
             catch (Exception ex)
             {
-                var customMessage = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(Message, true, null);
                 return BadRequest(new { 
-                    Message = customMessage.Message,
-                    IsError = customMessage.IsError,
-                    Data = customMessage.Data,
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
                     ErrorDetails = ex.Message
                 });
             }

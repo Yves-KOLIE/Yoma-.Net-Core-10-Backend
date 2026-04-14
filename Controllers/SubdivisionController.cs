@@ -22,11 +22,11 @@ namespace YOMA.Controllers
         public async Task<ActionResult<ApiResult>> GetSubdivisions()
         {
             var subdivisions = await _subdivisionService.GetBanksAsync();
-            var customMessage = new ApiResult(Message, false, subdivisions);
+            var apiResult = new ApiResult(Message, false, subdivisions);
             return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
+                Message = apiResult.Message,
+                IsError = apiResult.IsError,
+                Data = apiResult.Data 
             });
         }
     }
