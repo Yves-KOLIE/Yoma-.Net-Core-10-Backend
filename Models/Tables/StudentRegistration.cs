@@ -12,11 +12,11 @@ namespace YOMA.Models.Tables
 		public int ID { get; set; }
         public string? FOLDER_INFORMATION { get; set; } = null;
         public bool IS_ACTIVE { get; set; } = true;
-        public bool IS_SUPPORTED { get; set; }
-        public bool IS_DISCOUNTED { get; set; }
         public bool IS_DELETED { get; set; }
         public bool IS_ABANDON { get; set; }
 
+        public bool SCHOOL_FESS_IS_SUPPORTED { get; set; }
+        public bool SCHOOL_FESS_IS_DISCOUNTED { get; set; }
         public required int REGISTRATION_FESS { get; set; }
         public required int PRICE_FESS_1 { get; set; }
         public required int PRICE_FESS_2 { get; set; }
@@ -30,6 +30,12 @@ namespace YOMA.Models.Tables
         public bool IS_SUBSCRIBE_TO_THE_BUS_FESS_1 { get; set; }
         public bool IS_SUBSCRIBE_TO_THE_BUS_FESS_2 { get; set; }
         public bool IS_SUBSCRIBE_TO_THE_BUS_FESS_3 { get; set; }
+
+        public bool BUS_PRICE_IS_SUPPORTED { get; set; }
+        public bool BUS_PRICE_IS_DISCOUNTED { get; set; }
+        public int? BUS_PRICE_1 { get; set; } = null;
+        public int? BUS_PRICE_2 { get; set; } = null;
+        public int? BUS_PRICE_3 { get; set; } = null;
 
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;
