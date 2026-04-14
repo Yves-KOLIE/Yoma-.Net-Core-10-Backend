@@ -6,25 +6,25 @@ namespace YOMA.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BirthPlaceController : ControllerBase
+    public class GasStationController : ControllerBase
     {
         private readonly Context _context;
-        private readonly BirthPlaceService _birthPlaceService;
-        private readonly string Message = "Lieux de naissance";
+        private readonly GasStationService _gasStationService;
+        private readonly string Message = "Station de carburant";
 
-        public BirthPlaceController(Context context, BirthPlaceService birthPlaceService)
+        public GasStationController(Context context, GasStationService gasStationService)
         {
             _context = context;
-            _birthPlaceService = birthPlaceService;
+            _gasStationService = gasStationService;
         }
 
-        [HttpPost("CreateBirthPlace")]
-        public async Task<ActionResult<ApiResult>> CreateBirthPlace([FromBody] BirthPlace birthPlace)
+        [HttpPost("CreateGasStation")]
+        public async Task<ActionResult<ApiResult>> CreateGasStation([FromBody] GasStation gasStation)
         {
             try
             {
-                var createdBirthPlace = await _birthPlaceService.CreateBirthPlaceAsync(birthPlace);
-                var customMessage = new ApiResult(Message, false, createdBirthPlace);
+                var createdGasStation = await _gasStationService.CreateGasStationAsync(gasStation);
+                var customMessage = new ApiResult(Message, false, createdGasStation);
                 return Ok(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -43,11 +43,11 @@ namespace YOMA.Controllers
             }
         }
 
-        [HttpGet("GetBirthPlace/{id}")]
-        public async Task<ActionResult<ApiResult>> GetBirthPlace(int id)
+        [HttpGet("GetGasStation/{id}")]
+        public async Task<ActionResult<ApiResult>> GetGasStation(int id)
         {
-            var birthPlace = await _birthPlaceService.GetBirthPlaceAsync(id);
-            var customMessage = new ApiResult(Message, false, birthPlace);
+            var gasStation = await _gasStationService.GetGasStationAsync(id);
+            var customMessage = new ApiResult(Message, false, gasStation);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -55,11 +55,11 @@ namespace YOMA.Controllers
             });
         }
 
-        [HttpGet("GetBirthPlaces")]
-        public async Task<ActionResult<ApiResult>> GetBirthPlaces()
+        [HttpGet("GetGasStations")]
+        public async Task<ActionResult<ApiResult>> GetGasStations()
         {
-            var birthPlaces = await _birthPlaceService.GetBirthPlacesAsync();
-            var customMessage = new ApiResult(Message, false, birthPlaces);
+            var gasStations = await _gasStationService.GetGasStationsAsync();
+            var customMessage = new ApiResult(Message, false, gasStations);
             return Ok(new { 
                 Message = customMessage.Message,
                 IsError = customMessage.IsError,
@@ -67,26 +67,13 @@ namespace YOMA.Controllers
             });
         }
 
-        // Exemple : http://localhost:5079/api/BirthPlaces/GetBirthPlaceBatch?ids=1&ids=5&ids=10
-        [HttpGet("GetBirthPlaceBatch")]
-        public async Task<ActionResult<ApiResult>> GetBirthPlaceBatch([FromQuery] int[] ids)
-        {
-            var birthPlaces = await _birthPlaceService.GetBirthPlaceBatchAsync(ids);
-            var customMessage = new ApiResult(Message, false, birthPlaces);
-            return Ok(new { 
-                Message = customMessage.Message,
-                IsError = customMessage.IsError,
-                Data = customMessage.Data 
-            });
-        }
-
-        [HttpPut("UpdateBirthPlace")]
-        public async Task<ActionResult<ApiResult>> UpdateBirthPlace([FromBody] BirthPlace birthPlace)
+        [HttpPut("UpdateGasStation")]
+        public async Task<ActionResult<ApiResult>> UpdateGasStation([FromBody] GasStation gasStation)
         {
             try
             {
-                var updatedBirthPlace = await _birthPlaceService.UpdateBirthPlaceAsync(birthPlace);
-                var customMessage = new ApiResult(Message, false, updatedBirthPlace);
+                var updatedGasStation = await _gasStationService.UpdateGasStationAsync(gasStation);
+                var customMessage = new ApiResult(Message, false, updatedGasStation);
                 return Ok(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,
@@ -105,13 +92,13 @@ namespace YOMA.Controllers
             }
         }
 
-        [HttpPut("BatchUpdateBirthPlaces")]
-        public async Task<ActionResult<ApiResult>> BatchUpdateBirthPlaces([FromBody] List<BirthPlace> birthPlaces)
+        [HttpPut("BatchUpdateGasStations")]
+        public async Task<ActionResult<ApiResult>> BatchUpdateGasStations([FromBody] List<GasStation> gasStations)
         {
             try
             {
-                var updatedBirthPlaces = await _birthPlaceService.BatchUpdateBirthPlacesAsync(birthPlaces);
-                var customMessage = new ApiResult(Message, false, updatedBirthPlaces);
+                var updatedGasStations = await _gasStationService.BatchUpdateGasStationsAsync(gasStations);
+                var customMessage = new ApiResult(Message, false, updatedGasStations);
                 return Ok(new { 
                     Message = customMessage.Message,
                     IsError = customMessage.IsError,

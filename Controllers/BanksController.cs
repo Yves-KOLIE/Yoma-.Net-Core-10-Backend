@@ -105,5 +105,30 @@ namespace YOMA.Controllers
                 });
             }
         }
+
+        [HttpPut("BatchUpdateBanks")]
+        public async Task<ActionResult<ApiResult>> BatchUpdateBanks([FromBody] List<Bank> banks)
+        {
+            try
+            {
+                var updatedBanks = await _bankService.BatchUpdateBanksAsync(banks);
+                var customMessage = new ApiResult(Message, false, updatedBanks);
+                return Ok(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.IsError,
+                    Data = customMessage.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var customMessage = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.IsError,
+                    Data = customMessage.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ public interface IBirthPlaceService
 {
     Task<BirthPlace> CreateBirthPlaceAsync(BirthPlace birthPlace);
     Task<BirthPlace> UpdateBirthPlaceAsync(BirthPlace birthPlace);
+    Task<IEnumerable<BirthPlace>> BatchUpdateBirthPlacesAsync(List<BirthPlace> birthPlaces);
     Task<BirthPlace?> GetBirthPlaceAsync(int id);
     Task<IEnumerable<BirthPlace>> GetBirthPlacesAsync();
     Task<IEnumerable<BirthPlace>> GetBirthPlaceBatchAsync(int[] ids);
@@ -32,6 +33,13 @@ public class BirthPlaceService : IBirthPlaceService
         _context.BirthPlaces.Update(birthPlace);
         await _context.SaveChangesAsync();
         return birthPlace;
+    }
+
+    public async Task<IEnumerable<BirthPlace>> BatchUpdateBirthPlacesAsync(List<BirthPlace> birthPlaces)
+    {
+        _context.BirthPlaces.UpdateRange(birthPlaces);
+        await _context.SaveChangesAsync();
+        return birthPlaces;
     }
 
     public async Task<BirthPlace?> GetBirthPlaceAsync(int id)

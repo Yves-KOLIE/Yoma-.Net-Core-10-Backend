@@ -21,6 +21,7 @@ builder.Services.AddScoped<SubdivisionByYearService>();
 builder.Services.AddScoped<SubdivisionService>();
 builder.Services.AddScoped<TypePrimeService>();
 builder.Services.AddScoped<EducationLevelService>();
+builder.Services.AddScoped<GasStationService>();
 
 
 builder.Services.AddDbContext<Context>(options =>

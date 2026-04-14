@@ -6,6 +6,7 @@ public interface ITypePrimeService
 {
     Task<TypePrime> CreateTypePrimeAsync(TypePrime typePrime);
     Task<TypePrime> UpdateTypePrimeAsync(TypePrime typePrime);
+    Task<IEnumerable<TypePrime>> BatchUpdateTypePrimesAsync(List<TypePrime> typePrimes);
     Task<TypePrime?> GetTypePrimeAsync(int id);
     Task<IEnumerable<TypePrime>> GetTypePrimesAsync();
 }
@@ -31,6 +32,13 @@ public class TypePrimeService : ITypePrimeService
         _context.TypePrimes.Update(typePrime);
         await _context.SaveChangesAsync();
         return typePrime;
+    }
+
+    public async Task<IEnumerable<TypePrime>> BatchUpdateTypePrimesAsync(List<TypePrime> typePrimes)
+    {
+        _context.TypePrimes.UpdateRange(typePrimes);
+        await _context.SaveChangesAsync();
+        return typePrimes;
     }
 
     public async Task<TypePrime?> GetTypePrimeAsync(int id)

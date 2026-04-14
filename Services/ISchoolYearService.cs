@@ -6,6 +6,7 @@ public interface ISchoolYearService
 {
     Task<SchoolYear> CreateSchoolYearAsync(SchoolYear schoolYear);
     Task<SchoolYear> UpdateSchoolYearAsync(SchoolYear schoolYear);
+    Task<IEnumerable<SchoolYear>> BatchUpdateSchoolYearsAsync(List<SchoolYear> schoolYears);
     Task<SchoolYear?> GetSchoolYearAsync(int id);
     Task<IEnumerable<SchoolYear>> GetSchoolYearsAsync();
     Task<IEnumerable<SchoolYear>> GetSchoolYearBatchAsync(int[] ids);
@@ -33,6 +34,13 @@ public class SchoolYearService : ISchoolYearService
         _context.SchoolYears.Update(schoolYear);
         await _context.SaveChangesAsync();
         return schoolYear;
+    }
+
+    public async Task<IEnumerable<SchoolYear>> BatchUpdateSchoolYearsAsync(List<SchoolYear> schoolYears)
+    {
+        _context.SchoolYears.UpdateRange(schoolYears);
+        await _context.SaveChangesAsync();
+        return schoolYears;
     }
 
     public async Task<SchoolYear?> GetSchoolYearAsync(int id)

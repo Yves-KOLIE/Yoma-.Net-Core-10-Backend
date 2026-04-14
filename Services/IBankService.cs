@@ -6,6 +6,7 @@ public interface IBankService
 {
     Task<Bank> CreateBankAsync(Bank bank);
     Task<Bank> UpdateBankAsync(Bank bank);
+    Task<IEnumerable<Bank>> BatchUpdateBanksAsync(List<Bank> banks);
     Task<Bank?> GetBankAsync(int id);
     Task<IEnumerable<Bank>> GetBanksAsync();
     Task<IEnumerable<Bank>> GetBankBatchAsync(int[] ids);
@@ -32,6 +33,13 @@ public class BankService : IBankService
         _context.Banks.Update(bank);
         await _context.SaveChangesAsync();
         return bank;
+    }
+
+    public async Task<IEnumerable<Bank>> BatchUpdateBanksAsync(List<Bank> banks)
+    {
+        _context.Banks.UpdateRange(banks);
+        await _context.SaveChangesAsync();
+        return banks;
     }
 
     public async Task<Bank?> GetBankAsync(int id)

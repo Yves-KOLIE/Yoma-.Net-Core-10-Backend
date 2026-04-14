@@ -91,5 +91,30 @@ namespace YOMA.Controllers
                 });
             }
         }
+
+        [HttpPut("BatchUpdateTypePrimes")]
+        public async Task<ActionResult<ApiResult>> BatchUpdateTypePrimes([FromBody] List<TypePrime> typePrimes)
+        {
+            try
+            {
+                var updatedTypePrimes = await _typePrimeService.BatchUpdateTypePrimesAsync(typePrimes);
+                var customMessage = new ApiResult(Message, false, updatedTypePrimes);
+                return Ok(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.IsError,
+                    Data = customMessage.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var customMessage = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.IsError,
+                    Data = customMessage.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
+        }
     }
 }

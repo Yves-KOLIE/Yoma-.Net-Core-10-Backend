@@ -104,5 +104,31 @@ namespace YOMA.Controllers
                 });
             }
         }
+
+        [HttpPut("BatchUpdateSchoolYears")]
+        public async Task<ActionResult<ApiResult>> BatchUpdateSchoolYears([FromBody] List<SchoolYear> schoolYears)
+        {
+            try
+            {
+                var updatedSchoolYears = await _schoolYearService.BatchUpdateSchoolYearsAsync(schoolYears);
+                var customMessage = new ApiResult(Message, false, updatedSchoolYears);
+                return Ok(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.IsError,
+                    Data = customMessage.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var customMessage = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = customMessage.Message,
+                    IsError = customMessage.IsError,
+                    Data = customMessage.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
+        }
+
     }
 }
