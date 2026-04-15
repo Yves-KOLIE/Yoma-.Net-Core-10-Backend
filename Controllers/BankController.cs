@@ -6,13 +6,13 @@ namespace YOMA.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BanksController : ControllerBase
+    public class BankController : ControllerBase
     {
         private readonly Context _context;
         private readonly BankService _bankService;
         private readonly string Message = "Banques";
 
-        public BanksController(Context context, BankService bankService)
+        public BankController(Context context, BankService bankService)
         {
             _context = context;
             _bankService = bankService;

@@ -23,6 +23,7 @@ builder.Services.AddScoped<TypePrimeService>();
 builder.Services.AddScoped<EducationLevelService>();
 builder.Services.AddScoped<GasStationService>();
 builder.Services.AddScoped<MonthOfSalaryService>();
+builder.Services.AddScoped<MonthlySalaryAssignmentService>();
 
 
 builder.Services.AddDbContext<Context>(options =>
