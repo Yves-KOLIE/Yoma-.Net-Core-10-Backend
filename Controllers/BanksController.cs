@@ -72,7 +72,7 @@ namespace YOMA.Controllers
         [HttpGet("GetBankBatch")]
         public async Task<ActionResult<ApiResult>> GetBankBatch([FromQuery] int[] ids)
         {
-            var banks = await _bankService.GetBankBatchAsync(ids);
+            var banks = await _bankService.GetBankByIdsAsync(ids);
             var apiResult = new ApiResult(Message, false, banks);
             return Ok(new { 
                 Message = apiResult.Message,

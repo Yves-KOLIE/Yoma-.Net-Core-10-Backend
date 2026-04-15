@@ -16,7 +16,7 @@ namespace backend.Migrations
                 {
                     ID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    IS_ACTIVE = table.Column<bool>(type: "boolean", nullable: false),
+                    IS_ACTIVE = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true, defaultValue: null),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true, defaultValue: null),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
@@ -50,6 +50,26 @@ namespace backend.Migrations
                 name: "IX_MonthOfSalaries_SCHOOL_YEAR_ID",
                 table: "MonthOfSalaries",
                 column: "SCHOOL_YEAR_ID");
+
+            migrationBuilder.InsertData(
+                table: "MonthOfSalaries",
+                columns: new[] { "ID", "SCHOOL_YEAR_ID", "MONTH_ID" },
+                values: new object[,]
+                {
+                    { 1, 1, 1},
+                    { 2, 1, 2},
+                    { 3, 1, 3},
+                    { 4, 1, 4},
+                    { 5, 1, 5},
+                    { 6, 1, 6},
+                    { 7, 1, 7},
+                    { 8, 1, 8},
+                    { 9, 1, 9},
+                    { 10, 1, 10},
+                    { 11, 1, 11},
+                    { 12, 1, 12},
+                },
+            schema: null);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

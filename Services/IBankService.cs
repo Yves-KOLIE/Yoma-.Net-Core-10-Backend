@@ -9,7 +9,7 @@ public interface IBankService
     Task<IEnumerable<Bank>> BatchUpdateBanksAsync(List<Bank> banks);
     Task<Bank?> GetBankAsync(int id);
     Task<IEnumerable<Bank>> GetBanksAsync();
-    Task<IEnumerable<Bank>> GetBankBatchAsync(int[] ids);
+    Task<IEnumerable<Bank>> GetBankByIdsAsync(int[] ids);
 }
 
 public class BankService : IBankService
@@ -52,7 +52,7 @@ public class BankService : IBankService
         return await _context.Banks.AsNoTracking().ToListAsync();
     }
 
-    public async Task<IEnumerable<Bank>> GetBankBatchAsync(int[] ids)
+    public async Task<IEnumerable<Bank>> GetBankByIdsAsync(int[] ids)
     {
         return await _context.Banks.Where(b => ids.Contains(b.ID)).AsNoTracking().ToListAsync();
     }

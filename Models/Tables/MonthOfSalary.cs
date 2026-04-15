@@ -1,5 +1,3 @@
-
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,7 +8,7 @@ namespace YOMA.Models.Tables
     {
         [Key]
 		public int ID { get; set; }
-        public bool IS_ACTIVE { get; set; } = true;
+        public bool IS_ACTIVE { get; set; }
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;
         public DateTime CREATION_DATE { get; set; } = new DateTime();
