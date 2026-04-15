@@ -34,7 +34,11 @@ public class EducationLevelService : IEducationLevelService
         .ToListAsync();
 
         var sudentRegistrationsCount = await _context.StudentRegistrations
-            .Where(sr => sr.SCHOOL_YEAR_ID == schoolYearId && sr.IS_DELETED == false)
+            .Where(sr => 
+                sr.SCHOOL_YEAR_ID == schoolYearId 
+                && sr.IS_DELETED == false 
+                && sr.IS_ABANDON == false
+            )
             .GroupBy(sr => sr.EDUCATION_LEVEL_ID)
             .Select(g => new { g.Key, Count = g.Count() })
             .AsNoTracking()
