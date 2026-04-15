@@ -50,5 +50,7 @@ namespace YOMA.Models
         public DbSet<UserPrime> UserPrimes { get; set; }
         public DbSet<TypePrime> TypePrimes { get; set; }
         public DbSet<MonthOfSalary> MonthOfSalaries { get; set; }
+        public DbSet<MonthlySalaryAssignment> MonthlySalaryAssignments { get; set; }
+        public DbSet<PayrollValidation> PayrollValidations { get; set; }
     }
 }
