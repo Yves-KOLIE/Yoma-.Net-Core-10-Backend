@@ -46,25 +46,51 @@ namespace YOMA.Controllers
         [HttpGet("GetTypePrime/{id}")]
         public async Task<ActionResult<ApiResult>> GetTypePrime(int id)
         {
-            var typePrime = await _typePrimeService.GetTypePrimeAsync(id);
-            var apiResult = new ApiResult(Message, false, typePrime);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var typePrime = await _typePrimeService.GetTypePrimeAsync(id);
+                var apiResult = new ApiResult(Message, false, typePrime);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpGet("GetTypePrimes")]
         public async Task<ActionResult<ApiResult>> GetTypePrimes()
         {
-            var typePrimes = await _typePrimeService.GetTypePrimesAsync();
-            var apiResult = new ApiResult(Message, false, typePrimes);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var typePrimes = await _typePrimeService.GetTypePrimesAsync();
+                var apiResult = new ApiResult(Message, false, typePrimes);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpPut("UpdateTypePrime")]

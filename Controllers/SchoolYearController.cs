@@ -46,38 +46,77 @@ namespace YOMA.Controllers
         [HttpGet("GetSchoolYear/{id}")]
         public async Task<ActionResult<ApiResult>> GetSchoolYear(int id)
         {
-            var schoolYear = await _schoolYearService.GetSchoolYearAsync(id);
-            var apiResult = new ApiResult(Message, false, schoolYear);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var schoolYear = await _schoolYearService.GetSchoolYearAsync(id);
+                var apiResult = new ApiResult(Message, false, schoolYear);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpGet("GetSchoolYears")]
         public async Task<ActionResult<ApiResult>> GetSchoolYears()
         {
-            var schoolYears = await _schoolYearService.GetSchoolYearsAsync();
-            var apiResult = new ApiResult(Message, false, schoolYears);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var schoolYears = await _schoolYearService.GetSchoolYearsAsync();
+                var apiResult = new ApiResult(Message, false, schoolYears);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         // Exemple : http://localhost:5079/api/SchoolYears/GetSchoolYearBatch?ids=1&ids=5&ids=10
         [HttpGet("GetSchoolYearBatch")]
         public async Task<ActionResult<ApiResult>> GetSchoolYearBatch([FromQuery] int[] ids)
         {
-            var schoolYears = await _schoolYearService.GetSchoolYearBatchAsync(ids);
-            var apiResult = new ApiResult(Message, false, schoolYears);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var schoolYears = await _schoolYearService.GetSchoolYearBatchAsync(ids);
+                var apiResult = new ApiResult(Message, false, schoolYears);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpPut("UpdateSchoolYear")]

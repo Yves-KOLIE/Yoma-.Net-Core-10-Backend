@@ -25,45 +25,58 @@ namespace YOMA.Controllers
         [HttpGet("GetSubdivisionByYears/{schoolYearId?}")]
         public async Task<ActionResult<ApiResult>> GetSubdivisionByYearsAsync(int? schoolYearId = null)
         {
-            var subdivisionByYears = await _subdivisionByYearsService.GetSubdivisionByYearsAsync(schoolYearId);
-            var educationLevels = await _context.EducationLevels.AsNoTracking().ToListAsync();
-
-            var updatedRows = new List<SubdivisionByYearViewModel>();
-
-            foreach (var educationLevel in educationLevels)
+            try
             {
-                var subdivisionList = subdivisionByYears
-                    .Where(sy => sy.EDUCATION_LEVEL_ID == educationLevel.ID && sy.SUBDIVISION.IS_ACTIVE == true)
-                    .OrderBy(sy => sy.ID)
-                .ToList();
+                var subdivisionByYears = await _subdivisionByYearsService.GetSubdivisionByYearsAsync(schoolYearId);
+                var educationLevels = await _context.EducationLevels.AsNoTracking().ToListAsync();
 
-                var subdivisionByYearsList = new List<SubdivisionByYear>();
+                var updatedRows = new List<SubdivisionByYearViewModel>();
 
-                foreach (var subdivision in subdivisionList)
+                foreach (var educationLevel in educationLevels)
                 {
-                    subdivisionByYearsList.Add(subdivision);
+                    var subdivisionList = subdivisionByYears
+                        .Where(sy => sy.EDUCATION_LEVEL_ID == educationLevel.ID && sy.SUBDIVISION.IS_ACTIVE == true)
+                        .OrderBy(sy => sy.ID)
+                    .ToList();
+
+                    var subdivisionByYearsList = new List<SubdivisionByYear>();
+
+                    foreach (var subdivision in subdivisionList)
+                    {
+                        subdivisionByYearsList.Add(subdivision);
+                    }
+
+                    updatedRows.Add(new SubdivisionByYearViewModel
+                    {
+                        SCHOOL_YEAR_ID = schoolYearId,
+                        EDUCATION_LEVEL = educationLevel.DESCRIPTION,
+                        SUBDIVISION_BY_YEAR_LIST = subdivisionByYearsList
+                    });
                 }
 
-                updatedRows.Add(new SubdivisionByYearViewModel
+                if(schoolYearId == null)
                 {
-                    SCHOOL_YEAR_ID = schoolYearId,
-                    EDUCATION_LEVEL = educationLevel.DESCRIPTION,
-                    SUBDIVISION_BY_YEAR_LIST = subdivisionByYearsList
+                    var activeYear = await _schoolYearService.GetActivedSchoolYear();
+                    if(activeYear != null) updatedRows.ForEach(f => f.SCHOOL_YEAR_ID = activeYear.ID);
+                }
+
+                var apiResult = new ApiResult(Message, false, updatedRows);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
                 });
             }
-
-            if(schoolYearId == null)
+            catch (Exception ex)
             {
-                var activeYear = await _schoolYearService.GetActivedSchoolYear();
-                if(activeYear != null) updatedRows.ForEach(f => f.SCHOOL_YEAR_ID = activeYear.ID);
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
             }
-
-            var apiResult = new ApiResult(Message, false, updatedRows);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
         }
 
         [HttpPut("BatchUpdateSubdivisionByYear")]

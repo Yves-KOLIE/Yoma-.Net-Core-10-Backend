@@ -21,13 +21,26 @@ namespace YOMA.Controllers
         [HttpGet("GetMonthsOfSalariesByYear/{schoolYearId?}")]
         public async Task<ActionResult<ApiResult>> GetMonthsOfSalariesByYear(int? schoolYearId = null)
         {
-            var months = await _salaryOfMonthService.GetMonthsOfSalariesByYearAsync(schoolYearId);
-            var apiResult = new ApiResult(Message, false, months);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var months = await _salaryOfMonthService.GetMonthsOfSalariesByYearAsync(schoolYearId);
+                var apiResult = new ApiResult(Message, false, months);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpPut("BatchUpdateMonthOfSalaries")]

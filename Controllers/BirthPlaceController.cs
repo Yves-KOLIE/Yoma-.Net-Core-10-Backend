@@ -46,38 +46,77 @@ namespace YOMA.Controllers
         [HttpGet("GetBirthPlace/{id}")]
         public async Task<ActionResult<ApiResult>> GetBirthPlace(int id)
         {
-            var birthPlace = await _birthPlaceService.GetBirthPlaceAsync(id);
-            var apiResult = new ApiResult(Message, false, birthPlace);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var birthPlace = await _birthPlaceService.GetBirthPlaceAsync(id);
+                var apiResult = new ApiResult(Message, false, birthPlace);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpGet("GetBirthPlaces")]
         public async Task<ActionResult<ApiResult>> GetBirthPlaces()
         {
-            var birthPlaces = await _birthPlaceService.GetBirthPlacesAsync();
-            var apiResult = new ApiResult(Message, false, birthPlaces);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var birthPlaces = await _birthPlaceService.GetBirthPlacesAsync();
+                var apiResult = new ApiResult(Message, false, birthPlaces);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         // Exemple : http://localhost:5079/api/BirthPlaces/GetBirthPlaceBatch?ids=1&ids=5&ids=10
         [HttpGet("GetBirthPlaceBatch")]
         public async Task<ActionResult<ApiResult>> GetBirthPlaceBatch([FromQuery] int[] ids)
         {
-            var birthPlaces = await _birthPlaceService.GetBirthPlaceBatchAsync(ids);
-            var apiResult = new ApiResult(Message, false, birthPlaces);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var birthPlaces = await _birthPlaceService.GetBirthPlaceBatchAsync(ids);
+                var apiResult = new ApiResult(Message, false, birthPlaces);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpPut("UpdateBirthPlace")]

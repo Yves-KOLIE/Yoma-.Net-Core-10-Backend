@@ -21,13 +21,26 @@ namespace YOMA.Controllers
         [HttpGet("GetSubdivisions")]
         public async Task<ActionResult<ApiResult>> GetSubdivisions()
         {
-            var subdivisions = await _subdivisionService.GetBanksAsync();
-            var apiResult = new ApiResult(Message, false, subdivisions);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var subdivisions = await _subdivisionService.GetBanksAsync();
+                var apiResult = new ApiResult(Message, false, subdivisions);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
     }
 }

@@ -21,25 +21,51 @@ namespace YOMA.Controllers
         [HttpGet("GetBusFess/{id}")]
         public async Task<ActionResult<ApiResult>> GetBusFess(int id)
         {
-            var busFess = await _busFessService.GetBusFessAsync(id);
-            var apiResult = new ApiResult(Message, false, busFess);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var busFess = await _busFessService.GetBusFessAsync(id);
+                var apiResult = new ApiResult(Message, false, busFess);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpGet("GetBusFesses")]
         public async Task<ActionResult<ApiResult>> GetBusFesses()
         {
-            var busFesses = await _busFessService.GetBusFessesAsync();
-            var apiResult = new ApiResult(Message, false, busFesses);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var busFesses = await _busFessService.GetBusFessesAsync();
+                var apiResult = new ApiResult(Message, false, busFesses);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                }); 
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpPut("UpdateBusFess")]

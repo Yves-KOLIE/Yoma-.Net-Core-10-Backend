@@ -46,25 +46,51 @@ namespace YOMA.Controllers
         [HttpGet("GetGasStation/{id}")]
         public async Task<ActionResult<ApiResult>> GetGasStation(int id)
         {
-            var gasStation = await _gasStationService.GetGasStationAsync(id);
-            var apiResult = new ApiResult(Message, false, gasStation);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var gasStation = await _gasStationService.GetGasStationAsync(id);
+                var apiResult = new ApiResult(Message, false, gasStation);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpGet("GetGasStations")]
         public async Task<ActionResult<ApiResult>> GetGasStations()
         {
-            var gasStations = await _gasStationService.GetGasStationsAsync();
-            var apiResult = new ApiResult(Message, false, gasStations);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var gasStations = await _gasStationService.GetGasStationsAsync();
+                var apiResult = new ApiResult(Message, false, gasStations);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpPut("UpdateGasStation")]

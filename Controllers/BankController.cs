@@ -47,38 +47,77 @@ namespace YOMA.Controllers
         [HttpGet("GetBank/{id}")]
         public async Task<ActionResult<ApiResult>> GetBank(int id)
         {
-            var bank = await _bankService.GetBankAsync(id);
-            var apiResult = new ApiResult(Message, false, bank);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var bank = await _bankService.GetBankAsync(id);
+                var apiResult = new ApiResult(Message, false, bank);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpGet("GetBanks")]
         public async Task<ActionResult<ApiResult>> GetBanks()
         {
-            var banks = await _bankService.GetBanksAsync();
-            var apiResult = new ApiResult(Message, false, banks);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var banks = await _bankService.GetBanksAsync();
+                var apiResult = new ApiResult(Message, false, banks);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         // Exemple : http://localhost:5079/api/Banks/GetBankBatch?ids=1&ids=5&ids=10
         [HttpGet("GetBankBatch")]
         public async Task<ActionResult<ApiResult>> GetBankBatch([FromQuery] int[] ids)
         {
-            var banks = await _bankService.GetBankByIdsAsync(ids);
-            var apiResult = new ApiResult(Message, false, banks);
-            return Ok(new { 
-                Message = apiResult.Message,
-                IsError = apiResult.IsError,
-                Data = apiResult.Data 
-            });
+            try
+            {
+                var banks = await _bankService.GetBankByIdsAsync(ids);
+                var apiResult = new ApiResult(Message, false, banks);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
         }
 
         [HttpPut("UpdateBank")]
