@@ -32,5 +32,8 @@ namespace YOMA.Models.Tables
         [ForeignKey("EDUCATION_LEVEL")]
         public int EDUCATION_LEVEL_ID { get; set; }
         public required EducationLevel EDUCATION_LEVEL { get; set; }
+
+        [NotMapped]
+        public bool IS_DISABLED { get; set; }
     }
 }

@@ -18,6 +18,11 @@ namespace YOMA.Models.Tables
 		public DateTime MODIFICATION_DATE { get; set; } = new DateTime();
 
 
+        [ForeignKey("SCHOOL_YEAR")]
+        public required int SCHOOL_YEAR_ID { get; set; }
+        public required SchoolYear SCHOOL_YEAR { get; set; }
+
+
         [ForeignKey("STUDENT")]
         public required int STUDENT_ID { get; set; }
         public required Student STUDENT { get; set; }

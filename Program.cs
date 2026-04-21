@@ -20,10 +20,13 @@ builder.Services.AddScoped<SchoolYearService>();
 builder.Services.AddScoped<SubdivisionByYearService>();
 builder.Services.AddScoped<SubdivisionService>();
 builder.Services.AddScoped<TypePrimeService>();
+builder.Services.AddScoped<SchoolEducationService>();
+builder.Services.AddScoped<HightSchoolOptionService>();
 builder.Services.AddScoped<EducationLevelService>();
 builder.Services.AddScoped<GasStationService>();
 builder.Services.AddScoped<MonthOfSalaryService>();
 builder.Services.AddScoped<MonthlySalaryAssignmentService>();
+builder.Services.AddScoped<NoteMonthService>();
 
 
 builder.Services.AddDbContext<Context>(options =>
