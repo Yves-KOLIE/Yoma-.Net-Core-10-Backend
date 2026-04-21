@@ -24,5 +24,8 @@ namespace YOMA.Models.Tables
         [ForeignKey("MONTH")]
         public required int MONTH_ID { get; set; }
         public required Month MONTH { get; set; }
+
+        [NotMapped]
+        public bool IS_DISABLED { get; set; }
     }
 }

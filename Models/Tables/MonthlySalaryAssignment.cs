@@ -11,6 +11,7 @@ namespace YOMA.Models.Tables
         public required int[] USER_POSITION_IDS { get; set; }
         public required int[] MONTH_IDS { get; set; }
         public int MONTHLY_SALARY { get; set; } = 0;
+        public bool IS_PAYED { get; set; }
 
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;

@@ -24,9 +24,9 @@ public class SubdivisionByYearService : ISubdivisionServiceByYearService
 
     public async Task<IEnumerable<SubdivisionByYear>> GetSubdivisionByYearsAsync(int? schoolYearId = null)
     {
-        int id = schoolYearId ?? (await _schoolYearService.GetActivedSchoolYear())?.ID ?? 0;
+        schoolYearId = schoolYearId ?? (await _schoolYearService.GetActivedSchoolYear())?.ID ?? 0;
         var subdivisionByYearsList = await _context.SubdivisionByYears
-            .Where(sy => sy.SCHOOL_YEAR_ID == id)
+            .Where(sy => sy.SCHOOL_YEAR_ID == schoolYearId)
             .Include(sy => sy.SCHOOL_YEAR)
             .Include(sy => sy.SUBDIVISION)
             .Include(sy => sy.EDUCATION_LEVEL)
@@ -37,7 +37,7 @@ public class SubdivisionByYearService : ISubdivisionServiceByYearService
             .AsNoTracking()
         .ToListAsync();
 
-        var educationLevels = await _educationLevelService.GetEducationLevelsByYearIdAsync(id);
+        var educationLevels = await _educationLevelService.GetEducationLevelsByYearIdAsync(schoolYearId ?? 0);
         var educationLevelDict = educationLevels.ToDictionary(el => el.ID, el => el);
 
         foreach (var subdivisionByYear in subdivisionByYearsList)

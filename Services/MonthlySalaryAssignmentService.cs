@@ -23,9 +23,9 @@ public class MonthlySalaryAssignmentService : IMonthlySalaryAssignmentService
 
     public async Task<IEnumerable<MonthlySalaryAssignment>> GetMonthlySalaryAssignmentByYearIdAsync(int? schoolYearId)
     {
-        int id = schoolYearId ?? (await _schoolYearService.GetActivedSchoolYear())?.ID ?? 0;
+        schoolYearId = schoolYearId ?? (await _schoolYearService.GetActivedSchoolYear())?.ID ?? 0;
         return await _context.MonthlySalaryAssignments
-            .Where(msa => msa.SCHOOL_YEAR_ID == id)
+            .Where(msa => msa.SCHOOL_YEAR_ID == schoolYearId)
             .Include(x => x.USER)
             .Include(x => x.SCHOOL_YEAR)
             .AsNoTracking()
