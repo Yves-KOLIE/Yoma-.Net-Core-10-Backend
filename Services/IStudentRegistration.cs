@@ -88,6 +88,24 @@ public class StudentRegistrationService : IStudentRegistration
             _context.StudentRegistrations.Add(studentRegistration);
             await _context.SaveChangesAsync();
 
+            if(studentRegistration.EDUCATION_LEVEL.IS_EXAM_CLASS)
+            {
+                var newExamClass = new ExamClass
+                {
+                    ID = 0,
+                    IS_ADMITTED = false,
+                    CREATED_USER_ID = null,
+                    UPDATED_USER_ID = null,
+                    CREATION_DATE = DateTime.UtcNow,
+                    MODIFICATION_DATE = null,
+                    STUDENT_REGISTRATION_ID = studentRegistration.ID,
+                    STUDENT_REGISTRATION = studentRegistration
+                };
+
+                _context.ExamClasses.Add(newExamClass);
+                await _context.SaveChangesAsync();
+            }
+
             var noteMonthList = await _context.NoteMonths
                 .Where(X =>
                     X.SCHOOL_YEAR_ID == studentRegistration.SCHOOL_YEAR_ID

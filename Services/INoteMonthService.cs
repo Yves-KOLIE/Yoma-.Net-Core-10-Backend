@@ -194,7 +194,8 @@ public class NoteMonthService : INoteMonthService
 
                                     if(oldNode == null)
                                     {
-                                        var student = await _context.Students.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT_ID);                                    var newNote = new NoteHightSchool
+                                        var student = await _context.Students.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT_ID);                                    
+                                        var newNote = new NoteHightSchool
                                         {
                                             ID = 0,
                                             NOTE = 0.00f,
