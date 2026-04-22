@@ -27,6 +27,7 @@ builder.Services.AddScoped<GasStationService>();
 builder.Services.AddScoped<MonthOfSalaryService>();
 builder.Services.AddScoped<MonthlySalaryAssignmentService>();
 builder.Services.AddScoped<NoteMonthService>();
+builder.Services.AddScoped<CoursService>();
 
 
 builder.Services.AddDbContext<Context>(options =>
