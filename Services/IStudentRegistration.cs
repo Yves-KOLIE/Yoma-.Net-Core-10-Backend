@@ -43,6 +43,13 @@ public class StudentRegistrationService : IStudentRegistration
                     studentRegistration.PRICE_FESS_2 = schoolFess.PRICE_FESS_2;
                     studentRegistration.PRICE_FESS_3 = schoolFess.PRICE_FESS_3;
                 }
+                else
+                {
+                    studentRegistration.REGISTRATION_FESS = 0;
+                    studentRegistration.PRICE_FESS_1 = 0;
+                    studentRegistration.PRICE_FESS_2 = 0;
+                    studentRegistration.PRICE_FESS_3 = 0;
+                }
             }
 
             if(studentRegistration.BUS_PRICE_IS_SUPPORTED)
@@ -59,12 +66,18 @@ public class StudentRegistrationService : IStudentRegistration
 
                 if(busFesses != null)
                 {
-                    studentRegistration.PRICE_FESS_1 = busFesses.PRICE_FESS_1;
-                    studentRegistration.PRICE_FESS_2 = busFesses.PRICE_FESS_2;
-                    studentRegistration.PRICE_FESS_3 = busFesses.PRICE_FESS_3;
+                    studentRegistration.BUS_PRICE_1 = studentRegistration.IS_SUBSCRIBE_TO_THE_BUS_FESS_1 ? busFesses.PRICE_FESS_1 : null;
+                    studentRegistration.BUS_PRICE_2 = studentRegistration.IS_SUBSCRIBE_TO_THE_BUS_FESS_2 ? busFesses.PRICE_FESS_2 : null;
+                    studentRegistration.BUS_PRICE_3 = studentRegistration.IS_SUBSCRIBE_TO_THE_BUS_FESS_3 ? busFesses.PRICE_FESS_3 : null;
+                }
+                else
+                {
+                    studentRegistration.BUS_PRICE_1 = null;
+                    studentRegistration.BUS_PRICE_2 = null;
+                    studentRegistration.BUS_PRICE_2 = null;
                 }
             }
-            
+
             studentRegistration.CREATION_DATE = DateTime.UtcNow;
 
             studentRegistration.AVERAGE_QUARTER_1 = 0.00f;
