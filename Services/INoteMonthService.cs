@@ -75,8 +75,86 @@ public class NoteMonthService : INoteMonthService
     
     public async Task<IEnumerable<NoteMonth>> BatchUpdateNoteMonthsAsync(List<NoteMonth> noteMonths)
     {
-        _context.NoteMonths.UpdateRange(noteMonths);
-        await _context.SaveChangesAsync();
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+        try
+        {
+            foreach (var noteMonth in noteMonths)
+            {
+                if(noteMonth.IS_TRIMESTER_1 == false && noteMonth.IS_TRIMESTER_2 == false && noteMonth.IS_TRIMESTER_3 == false && noteMonth.IS_COMPOSITION_MONTH == false)
+                {
+                    switch(noteMonth.EDUCATION_LEVEL.SCHOOL_EDUCATION_ID)
+                    {
+                        case 2: // Primaire
+                            await _context.NotePrimaries
+                                .Where(x => 
+                                    x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
+                                    && x.NOTE_MONTH_ID == noteMonth.MONTH_ID
+                                )
+                            .ExecuteDeleteAsync();
+                        break;
+
+                        case 3: // Collège
+                            await _context.NoteMiddleSchools
+                                .Where(x => 
+                                    x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
+                                    && x.NOTE_MONTH_ID == noteMonth.MONTH_ID
+                                )
+                            .ExecuteDeleteAsync();
+                        break;
+
+                        case 4: // Lycée
+                            await _context.NoteHightSchools
+                                .Where(x => 
+                                    x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
+                                    && x.NOTE_MONTH_ID == noteMonth.MONTH_ID
+                                )
+                            .ExecuteDeleteAsync();
+                        break;
+                    }
+                }
+                else
+                {
+                    switch(noteMonth.EDUCATION_LEVEL.SCHOOL_EDUCATION_ID)
+                    {
+                        case 2: // Primaire
+                            // await _context.NotePrimaries
+                            //     .Where(x => 
+                            //         x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
+                            //         && x.NOTE_MONTH_ID == noteMonth.MONTH_ID
+                            //     )
+                            // .ExecuteDeleteAsync();
+                        break;
+
+                        case 3: // Collège
+                            // await _context.NoteMiddleSchools
+                            //     .Where(x => 
+                            //         x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
+                            //         && x.NOTE_MONTH_ID == noteMonth.MONTH_ID
+                            //     )
+                            // .ExecuteDeleteAsync();
+                        break;
+
+                        case 4: // Lycée
+                            // await _context.NoteHightSchools
+                            //     .Where(x => 
+                            //         x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
+                            //         && x.NOTE_MONTH_ID == noteMonth.MONTH_ID
+                            //     )
+                            // .ExecuteDeleteAsync();
+                        break;
+                    }
+                }
+            } 
+
+            _context.NoteMonths.UpdateRange(noteMonths);
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+        }
+
         return noteMonths;
     }
 }
