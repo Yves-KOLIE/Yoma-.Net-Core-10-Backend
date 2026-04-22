@@ -37,5 +37,9 @@ namespace YOMA.Models.Tables
         [ForeignKey("PROFESSIONAL_QUALIFICATION")]
         public int PROFESSIONAL_QUALIFICATION_ID { get; set; }
         public required ProfessionalQualification PROFESSIONAL_QUALIFICATION { get; set; }
+
+        [ForeignKey("USER_ROLE")]
+        public int USER_ROLE_ID { get; set; }
+        public required UserRole USER_ROLE { get; set; }
     }
 }

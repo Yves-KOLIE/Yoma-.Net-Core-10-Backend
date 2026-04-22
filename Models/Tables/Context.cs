@@ -53,5 +53,6 @@ namespace YOMA.Models
         public DbSet<MonthlySalaryAssignment> MonthlySalaryAssignments { get; set; }
         public DbSet<PayrollValidation> PayrollValidations { get; set; }
         public DbSet<ExamClass> ExamClasses { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
     }
 }

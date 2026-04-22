@@ -38,13 +38,15 @@ namespace YOMA.Models.Tables
         public required BirthPlace BIRTH_PLACE { get; set; }
 
 
-        [NotMapped]
-        public int PARENT_1_ID { get; set; }
-        public required StudentParent PARENT_1 { get; set; }
+        // [NotMapped]
+        // public int PARENT_1_ID { get; set; }
+        // [NotMapped]
+        // public required StudentParent PARENT_1 { get; set; }
 
 
-        [NotMapped]
-        public int PARENT_2_ID { get; set; }
-        public required StudentParent PARENT_2 { get; set; }
+        // [NotMapped]
+        // public int PARENT_2_ID { get; set; }
+        // [NotMapped]
+        // public required StudentParent PARENT_2 { get; set; }
     }
 }
