@@ -46,7 +46,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -71,7 +71,7 @@ namespace backend.Migrations
                     b.Property<DateTime>("CREATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("PLACE")
@@ -109,7 +109,7 @@ namespace backend.Migrations
                     b.Property<DateTime?>("DEADLINE_FESS_3")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("PRICE_FESS_1")
@@ -170,7 +170,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_FESS_3")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("PAYMENT_METHOD_ID")
@@ -229,7 +229,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SCHOOL_YEAR_ID")
@@ -274,7 +274,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SCHOOL_EDUCATION_ID")
@@ -313,7 +313,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -349,7 +349,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -384,7 +384,7 @@ namespace backend.Migrations
                     b.Property<int>("HOURS_SALARY")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SCHOOL_YEAR_ID")
@@ -436,7 +436,7 @@ namespace backend.Migrations
                     b.Property<int>("HOURS_SALARY")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SCHOOL_YEAR_ID")
@@ -488,7 +488,7 @@ namespace backend.Migrations
                     b.Property<int>("HOURS_SALARY")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SCHOOL_YEAR_ID")
@@ -541,7 +541,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -572,7 +572,7 @@ namespace backend.Migrations
                     b.Property<string>("INFOS")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<float>("NOTE")
@@ -618,7 +618,7 @@ namespace backend.Migrations
                     b.Property<string>("INFOS")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<float>("NOTE")
@@ -673,7 +673,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_TRIMESTER_3")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("MONTH_ID")
@@ -716,7 +716,7 @@ namespace backend.Migrations
                     b.Property<string>("INFOS")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<float>("NOTE")
@@ -766,7 +766,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_PAYED")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("MONTH_ID")
@@ -821,7 +821,7 @@ namespace backend.Migrations
                     b.Property<DateTime?>("LOCK_DATE")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NAME")
@@ -885,7 +885,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<char>("SEXE")
@@ -920,7 +920,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -955,7 +955,7 @@ namespace backend.Migrations
                     b.Property<int>("HOURS_SALARY")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SCHOOL_YEAR_ID")
@@ -1008,7 +1008,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -1039,7 +1039,7 @@ namespace backend.Migrations
                     b.Property<string>("INFOS")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("MONTH_ID")
@@ -1103,7 +1103,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_PAYED")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("MONTH_ID")
@@ -1174,7 +1174,7 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -1210,7 +1210,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -1247,7 +1247,7 @@ namespace backend.Migrations
                     b.Property<int>("EDUCATION_LEVEL_ID")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("PRICE_FESS_1")
@@ -1316,7 +1316,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_REGISTRATION")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("PAYMENT_METHOD_ID")
@@ -1365,7 +1365,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -1415,7 +1415,7 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NAME")
@@ -1470,7 +1470,7 @@ namespace backend.Migrations
                     b.Property<DateTime>("CREATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("PARENT_ID")
@@ -1549,7 +1549,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_SUPPORTED")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("PRICE_FESS_1")
@@ -1610,7 +1610,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -1641,7 +1641,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_CHECK")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SCHOOL_YEAR_ID")
@@ -1678,7 +1678,7 @@ namespace backend.Migrations
                     b.Property<DateTime>("CREATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<float>("SUM")
@@ -1723,7 +1723,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -1755,7 +1755,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -1787,7 +1787,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -1837,7 +1837,7 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NAME")
@@ -1915,7 +1915,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_ACTIVE")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("UPDATED_USER_ID")
@@ -1946,7 +1946,7 @@ namespace backend.Migrations
                     b.Property<bool>("IS_PAYED")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("MODIFICATION_DATE")
+                    b.Property<DateTime?>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("MONTH_ID")

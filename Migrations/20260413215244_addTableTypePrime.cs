@@ -21,7 +21,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: true, defaultValue: null)
                 },
                 constraints: table =>
                 {
