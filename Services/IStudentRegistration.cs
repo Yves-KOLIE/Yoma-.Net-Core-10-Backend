@@ -22,7 +22,56 @@ public class StudentRegistrationService : IStudentRegistration
         await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
+            if(studentRegistration.SCHOOL_FESS_IS_SUPPORTED) // Si les frais de scolarité sont pris en charge par l'école
+            {
+                studentRegistration.REGISTRATION_FESS = 0;
+                studentRegistration.PRICE_FESS_1 = 0;
+                studentRegistration.PRICE_FESS_2 = 0;
+                studentRegistration.PRICE_FESS_3 = 0;
+            }
+            else if(studentRegistration.SCHOOL_FESS_IS_DISCOUNTED == false)
+            {
+                var schoolFess = await _context.SchoolFesses.FirstOrDefaultAsync(x => 
+                    x.SCHOOL_YEAR_ID == studentRegistration.SCHOOL_YEAR_ID
+                    && x.EDUCATION_LEVEL_ID == studentRegistration.EDUCATION_LEVEL_ID
+                );
+
+                if(schoolFess != null)
+                {
+                    studentRegistration.REGISTRATION_FESS = schoolFess.REGISTRATION_FESS;
+                    studentRegistration.PRICE_FESS_1 = schoolFess.PRICE_FESS_1;
+                    studentRegistration.PRICE_FESS_2 = schoolFess.PRICE_FESS_2;
+                    studentRegistration.PRICE_FESS_3 = schoolFess.PRICE_FESS_3;
+                }
+            }
+
+            if(studentRegistration.BUS_PRICE_IS_SUPPORTED)
+            {
+                studentRegistration.BUS_PRICE_1 = null;
+                studentRegistration.BUS_PRICE_2 = null;
+                studentRegistration.BUS_PRICE_2 = null;
+            }
+            else if(studentRegistration.BUS_PRICE_IS_DISCOUNTED == false)
+            {
+                var busFesses = await _context.BusFesses.FirstOrDefaultAsync(x => 
+                    x.SCHOOL_YEAR_ID == studentRegistration.SCHOOL_YEAR_ID
+                );
+
+                if(busFesses != null)
+                {
+                    studentRegistration.PRICE_FESS_1 = busFesses.PRICE_FESS_1;
+                    studentRegistration.PRICE_FESS_2 = busFesses.PRICE_FESS_2;
+                    studentRegistration.PRICE_FESS_3 = busFesses.PRICE_FESS_3;
+                }
+            }
             
+            studentRegistration.CREATION_DATE = DateTime.UtcNow;
+
+            studentRegistration.AVERAGE_QUARTER_1 = 0.00f;
+            studentRegistration.AVERAGE_QUARTER_2 = 0.00f;
+            studentRegistration.AVERAGE_QUARTER_3 = 0.00f;
+            studentRegistration.ANNUAL_AVERAGE = 0.00f;
+
             _context.StudentRegistrations.Add(studentRegistration);
             await _context.SaveChangesAsync();
 

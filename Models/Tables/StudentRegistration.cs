@@ -14,7 +14,6 @@ namespace YOMA.Models.Tables
         public bool IS_ACTIVE { get; set; } = true;
         public bool IS_DELETED { get; set; }
         public bool IS_ABANDON { get; set; }
-        public bool IS_SUPPORTED { get; set; }
 
         public bool SCHOOL_FESS_IS_SUPPORTED { get; set; }
         public bool SCHOOL_FESS_IS_DISCOUNTED { get; set; }
@@ -23,6 +22,7 @@ namespace YOMA.Models.Tables
         public required int PRICE_FESS_2 { get; set; }
         public required int PRICE_FESS_3 { get; set; }
 
+        // Moyenne de cours
         public required float AVERAGE_QUARTER_1 { get; set; }
         public required float AVERAGE_QUARTER_2 { get; set; }
         public required float AVERAGE_QUARTER_3 { get; set; }

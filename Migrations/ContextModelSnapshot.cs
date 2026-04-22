@@ -51,7 +51,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Banks");
+                    b.ToTable("Banks", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.BirthPlace", b =>
@@ -80,7 +80,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("BirthPlaces");
+                    b.ToTable("BirthPlaces", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.BusFess", b =>
@@ -128,7 +128,7 @@ namespace backend.Migrations
 
                     b.HasIndex("SCHOOL_YEAR_ID");
 
-                    b.ToTable("BusFess");
+                    b.ToTable("BusFess", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.BusPayment", b =>
@@ -192,7 +192,7 @@ namespace backend.Migrations
 
                     b.HasIndex("STUDENT_ID");
 
-                    b.ToTable("BusPayments");
+                    b.ToTable("BusPayments", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.Cours", b =>
@@ -241,7 +241,7 @@ namespace backend.Migrations
 
                     b.HasIndex("SCHOOL_YEAR_ID");
 
-                    b.ToTable("Cours");
+                    b.ToTable("Cours", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.EducationLevel", b =>
@@ -289,7 +289,7 @@ namespace backend.Migrations
 
                     b.HasIndex("SCHOOL_EDUCATION_ID");
 
-                    b.ToTable("EducationLevels");
+                    b.ToTable("EducationLevels", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.ExamClass", b =>
@@ -322,7 +322,7 @@ namespace backend.Migrations
 
                     b.HasIndex("STUDENT_REGISTRATION_ID");
 
-                    b.ToTable("ExamClasses");
+                    b.ToTable("ExamClasses", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.GasStation", b =>
@@ -354,7 +354,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("GasStations");
+                    b.ToTable("GasStations", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.HighSchoolOption", b =>
@@ -390,7 +390,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("HighSchoolOptions");
+                    b.ToTable("HighSchoolOptions", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.HightSchoolAssignment", b =>
@@ -442,7 +442,7 @@ namespace backend.Migrations
 
                     b.HasIndex("USER_ID");
 
-                    b.ToTable("HightSchoolAssignments");
+                    b.ToTable("HightSchoolAssignments", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.KindergartenSchoolAssignment", b =>
@@ -494,7 +494,7 @@ namespace backend.Migrations
 
                     b.HasIndex("USER_ID");
 
-                    b.ToTable("KindergartenSchoolAssignments");
+                    b.ToTable("KindergartenSchoolAssignments", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.MiddleSchoolAssignment", b =>
@@ -546,7 +546,7 @@ namespace backend.Migrations
 
                     b.HasIndex("USER_ID");
 
-                    b.ToTable("MiddleSchoolAssignments");
+                    b.ToTable("MiddleSchoolAssignments", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.Month", b =>
@@ -582,7 +582,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Months");
+                    b.ToTable("Months", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.MonthOfSalary", b =>
@@ -620,7 +620,7 @@ namespace backend.Migrations
 
                     b.HasIndex("SCHOOL_YEAR_ID");
 
-                    b.ToTable("MonthOfSalaries");
+                    b.ToTable("MonthOfSalaries", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.MonthlySalaryAssignment", b =>
@@ -669,7 +669,7 @@ namespace backend.Migrations
 
                     b.HasIndex("USER_ID");
 
-                    b.ToTable("MonthlySalaryAssignments");
+                    b.ToTable("MonthlySalaryAssignments", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.NoteHightSchool", b =>
@@ -720,7 +720,7 @@ namespace backend.Migrations
 
                     b.HasIndex("STUDENT_ID");
 
-                    b.ToTable("NoteHightSchools");
+                    b.ToTable("NoteHightSchools", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.NoteMiddleSchool", b =>
@@ -771,7 +771,7 @@ namespace backend.Migrations
 
                     b.HasIndex("STUDENT_ID");
 
-                    b.ToTable("NoteMiddleSchools");
+                    b.ToTable("NoteMiddleSchools", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.NoteMonth", b =>
@@ -823,7 +823,7 @@ namespace backend.Migrations
 
                     b.HasIndex("SCHOOL_YEAR_ID");
 
-                    b.ToTable("NoteMonths");
+                    b.ToTable("NoteMonths", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.NotePrimary", b =>
@@ -874,7 +874,7 @@ namespace backend.Migrations
 
                     b.HasIndex("STUDENT_ID");
 
-                    b.ToTable("NotePrimarys");
+                    b.ToTable("NotePrimarys", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.OtherPrime", b =>
@@ -924,7 +924,7 @@ namespace backend.Migrations
 
                     b.HasIndex("USER_ID");
 
-                    b.ToTable("OtherPrimes");
+                    b.ToTable("OtherPrimes", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.Parent", b =>
@@ -996,7 +996,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Parents");
+                    b.ToTable("Parents", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.ParentType", b =>
@@ -1031,7 +1031,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("ParentTypes");
+                    b.ToTable("ParentTypes", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.PaymentMethod", b =>
@@ -1063,7 +1063,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("PaymentMethods");
+                    b.ToTable("PaymentMethods", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.PayrollValidation", b =>
@@ -1115,7 +1115,7 @@ namespace backend.Migrations
 
                     b.HasIndex("USER_ID");
 
-                    b.ToTable("PayrollValidations");
+                    b.ToTable("PayrollValidations", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.PrimarySchoolAssignment", b =>
@@ -1167,7 +1167,7 @@ namespace backend.Migrations
 
                     b.HasIndex("USER_ID");
 
-                    b.ToTable("PrimarySchoolAssignments");
+                    b.ToTable("PrimarySchoolAssignments", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.ProfessionalQualification", b =>
@@ -1203,7 +1203,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("ProfessionalQualifications");
+                    b.ToTable("ProfessionalQualifications", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.SalaryAdvance", b =>
@@ -1254,7 +1254,7 @@ namespace backend.Migrations
 
                     b.HasIndex("USER_ID");
 
-                    b.ToTable("SalaryAdvances");
+                    b.ToTable("SalaryAdvances", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.SalaryStatus", b =>
@@ -1333,7 +1333,7 @@ namespace backend.Migrations
 
                     b.HasIndex("USER_ID");
 
-                    b.ToTable("SalaryStatus");
+                    b.ToTable("SalaryStatus", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.SchoolBus", b =>
@@ -1369,7 +1369,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("SchoolBuses");
+                    b.ToTable("SchoolBuses", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.SchoolEducation", b =>
@@ -1405,7 +1405,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("SchoolEducations");
+                    b.ToTable("SchoolEducations", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.SchoolFess", b =>
@@ -1461,7 +1461,7 @@ namespace backend.Migrations
 
                     b.HasIndex("SCHOOL_YEAR_ID");
 
-                    b.ToTable("SchoolFess");
+                    b.ToTable("SchoolFess", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.SchoolPayment", b =>
@@ -1528,7 +1528,7 @@ namespace backend.Migrations
 
                     b.HasIndex("STUDENT_ID");
 
-                    b.ToTable("SchoolPayments");
+                    b.ToTable("SchoolPayments", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.SchoolYear", b =>
@@ -1560,7 +1560,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("SchoolYears");
+                    b.ToTable("SchoolYears", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.Student", b =>
@@ -1643,7 +1643,7 @@ namespace backend.Migrations
 
                     b.HasIndex("BIRTH_PLACE_ID");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.StudentParent", b =>
@@ -1677,7 +1677,7 @@ namespace backend.Migrations
 
                     b.HasIndex("STUDENT_ID");
 
-                    b.ToTable("StudentParents");
+                    b.ToTable("StudentParents", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.StudentRegistration", b =>
@@ -1745,9 +1745,6 @@ namespace backend.Migrations
                     b.Property<bool>("IS_SUBSCRIBE_TO_THE_BUS_FESS_3")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IS_SUPPORTED")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTime>("MODIFICATION_DATE")
                         .HasColumnType("timestamp with time zone");
 
@@ -1791,7 +1788,7 @@ namespace backend.Migrations
 
                     b.HasIndex("SUBDIVISION_ID");
 
-                    b.ToTable("StudentRegistrations");
+                    b.ToTable("StudentRegistrations", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.Subdivision", b =>
@@ -1823,7 +1820,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Subdivisions");
+                    b.ToTable("Subdivisions", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.SubdivisionByYear", b =>
@@ -1866,7 +1863,7 @@ namespace backend.Migrations
 
                     b.HasIndex("SUBDIVISION_ID");
 
-                    b.ToTable("SubdivisionByYears");
+                    b.ToTable("SubdivisionByYears", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.SumSalaryAdvance", b =>
@@ -1904,7 +1901,7 @@ namespace backend.Migrations
 
                     b.HasIndex("USER_ID");
 
-                    b.ToTable("SumSalaryAdvances");
+                    b.ToTable("SumSalaryAdvances", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.TransportLoadType", b =>
@@ -1936,7 +1933,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("TransportLoadTypes");
+                    b.ToTable("TransportLoadTypes", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.TypePrime", b =>
@@ -1968,7 +1965,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("TypePrimes");
+                    b.ToTable("TypePrimes", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.TypeSalaryAdvance", b =>
@@ -2000,7 +1997,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("TypeSalaryAdvances");
+                    b.ToTable("TypeSalaryAdvances", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.User", b =>
@@ -2096,7 +2093,7 @@ namespace backend.Migrations
 
                     b.HasIndex("PROFESSIONAL_QUALIFICATION_ID");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.UserPosition", b =>
@@ -2128,7 +2125,7 @@ namespace backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("UserPositions");
+                    b.ToTable("UserPositions", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.UserPrime", b =>
@@ -2177,7 +2174,7 @@ namespace backend.Migrations
 
                     b.HasIndex("USER_ID");
 
-                    b.ToTable("UserPrimes");
+                    b.ToTable("UserPrimes", (string)null);
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.BusFess", b =>
