@@ -22,6 +22,10 @@ public class StudentRegistrationService : IStudentRegistration
         await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
+            // On joute l'élève dans la table 
+            _context.Students.Add(studentRegistration.STUDENT);
+            await _context.SaveChangesAsync();
+
             if(studentRegistration.SCHOOL_FESS_IS_SUPPORTED) // Si les frais de scolarité sont pris en charge par l'école
             {
                 studentRegistration.REGISTRATION_FESS = 0;
