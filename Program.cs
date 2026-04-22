@@ -29,6 +29,7 @@ builder.Services.AddScoped<MonthlySalaryAssignmentService>();
 builder.Services.AddScoped<NoteMonthService>();
 builder.Services.AddScoped<CoursService>();
 builder.Services.AddScoped<StudentRegistrationService>();
+builder.Services.AddScoped<StudentService>();
 
 
 builder.Services.AddDbContext<Context>(options =>

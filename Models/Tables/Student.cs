@@ -36,5 +36,15 @@ namespace YOMA.Models.Tables
         [ForeignKey("BIRTH_PLACE")]
         public required int BIRTH_PLACE_ID { get; set; }
         public required BirthPlace BIRTH_PLACE { get; set; }
+
+
+        [NotMapped]
+        public int PARENT_1_ID { get; set; }
+        public required StudentParent PARENT_1 { get; set; }
+
+
+        [NotMapped]
+        public int PARENT_2_ID { get; set; }
+        public required StudentParent PARENT_2 { get; set; }
     }
 }

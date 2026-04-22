@@ -11,10 +11,12 @@ public interface IStudentRegistration
 public class StudentRegistrationService : IStudentRegistration
 {
     private readonly Context _context;
+    private readonly StudentService _studentService;
 
-    public StudentRegistrationService(Context context)
+    public StudentRegistrationService(Context context, StudentService studentService)
     {
         _context = context;
+        _studentService = studentService;
     }
 
     public async Task<StudentRegistration> CreateStudentRegistrationAsync(StudentRegistration studentRegistration)
@@ -23,7 +25,39 @@ public class StudentRegistrationService : IStudentRegistration
         try
         {
             // On joute l'élève dans la table 
-            _context.Students.Add(studentRegistration.STUDENT);
+            studentRegistration.STUDENT = await _studentService.CreateStudentAsync(studentRegistration.STUDENT);
+
+            // On ajoute les parent de l'élève
+            var newStudentParent1 = new StudentParent
+            {
+                ID = 0,
+                CREATION_DATE = DateTime.UtcNow,
+                MODIFICATION_DATE = null,
+                STUDENT_ID = studentRegistration.STUDENT.ID,
+                STUDENT = studentRegistration.STUDENT,
+                PARENT_ID = studentRegistration.STUDENT.PARENT_1_ID,
+                PARENT = (await _context.Parents.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT.PARENT_1_ID))!,
+
+                PARENT_TYPE_ID = studentRegistration.STUDENT.PARENT_1.PARENT_ID,
+                PARENT_TYPE = (await _context.ParentTypes.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT.PARENT_1.PARENT_ID))!,
+            };
+            
+            var newStudentParent2 = new StudentParent
+            {
+                ID = 0,
+                CREATION_DATE = DateTime.UtcNow,
+                MODIFICATION_DATE = null,
+                STUDENT_ID = studentRegistration.STUDENT.ID,
+                STUDENT = studentRegistration.STUDENT,
+                PARENT_ID = studentRegistration.STUDENT.PARENT_2_ID,
+                PARENT = (await _context.Parents.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT.PARENT_2_ID))!,
+
+                PARENT_TYPE_ID = studentRegistration.STUDENT.PARENT_2.PARENT_ID,
+                PARENT_TYPE = (await _context.ParentTypes.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT.PARENT_2.PARENT_ID))!,
+            };
+
+            _context.StudentParents.Add(newStudentParent1);
+            _context.StudentParents.Add(newStudentParent2);
             await _context.SaveChangesAsync();
 
             if(studentRegistration.SCHOOL_FESS_IS_SUPPORTED) // Si les frais de scolarité sont pris en charge par l'école
@@ -135,8 +169,6 @@ public class StudentRegistrationService : IStudentRegistration
 
                 if(coursList.Count > 0)
                 {
-                    var student = await _context.Students.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT_ID);
-
                     foreach(var noteMonth in noteMonthList)
                     {
                         foreach(var cours in coursList)
@@ -156,7 +188,7 @@ public class StudentRegistrationService : IStudentRegistration
                                         SCHOOL_YEAR_ID = noteMonth.SCHOOL_YEAR_ID,
                                         SCHOOL_YEAR = noteMonth.SCHOOL_YEAR,
                                         STUDENT_ID = studentRegistration.ID,
-                                        STUDENT = student!,
+                                        STUDENT = studentRegistration.STUDENT,
                                         NOTE_MONTH_ID = noteMonth.ID,
                                         NOTE_MONTH = noteMonth,
                                         COURS_ID = cours.ID,
@@ -178,7 +210,7 @@ public class StudentRegistrationService : IStudentRegistration
                                         SCHOOL_YEAR_ID = noteMonth.SCHOOL_YEAR_ID,
                                         SCHOOL_YEAR = noteMonth.SCHOOL_YEAR,
                                         STUDENT_ID = studentRegistration.ID,
-                                        STUDENT = student!,
+                                        STUDENT = studentRegistration.STUDENT,
                                         NOTE_MONTH_ID = noteMonth.ID,
                                         NOTE_MONTH = noteMonth,
                                         COURS_ID = cours.ID,
@@ -200,7 +232,7 @@ public class StudentRegistrationService : IStudentRegistration
                                         SCHOOL_YEAR_ID = noteMonth.SCHOOL_YEAR_ID,
                                         SCHOOL_YEAR = noteMonth.SCHOOL_YEAR,
                                         STUDENT_ID = studentRegistration.ID,
-                                        STUDENT = student!,
+                                        STUDENT = studentRegistration.STUDENT,
                                         NOTE_MONTH_ID = noteMonth.ID,
                                         NOTE_MONTH = noteMonth,
                                         COURS_ID = cours.ID,
