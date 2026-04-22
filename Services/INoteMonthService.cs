@@ -12,15 +12,11 @@ public class NoteMonthService : INoteMonthService
 {
     private readonly Context _context;
     private readonly SchoolYearService _schoolYearService;
-    private readonly SchoolEducationService _schoolEducationService;
-    private readonly HightSchoolOptionService _hightSchoolOptionService;
 
-    public NoteMonthService(Context context, SchoolYearService schoolYearService, SchoolEducationService schoolEducationService, HightSchoolOptionService hightSchoolOptionService)
+    public NoteMonthService(Context context, SchoolYearService schoolYearService)
     {
         _context = context;
         _schoolYearService = schoolYearService;
-        _schoolEducationService = schoolEducationService;
-        _hightSchoolOptionService = hightSchoolOptionService;
     }
 
     public async Task<IEnumerable<NoteMonth>> GetNoteMonthsByYearAsync(int? schoolYearId = null)
@@ -80,7 +76,150 @@ public class NoteMonthService : INoteMonthService
         {
             foreach (var noteMonth in noteMonths)
             {
-                if(noteMonth.IS_TRIMESTER_1 == false && noteMonth.IS_TRIMESTER_2 == false && noteMonth.IS_TRIMESTER_3 == false && noteMonth.IS_COMPOSITION_MONTH == false)
+                // bool isExamClasses = IsExamClasses(noteMonth.EDUCATION_LEVEL);
+                if(noteMonth.IS_TRIMESTER_1 == true || noteMonth.IS_TRIMESTER_2 == true || noteMonth.IS_TRIMESTER_3 == true || noteMonth.IS_COMPOSITION_MONTH == true)
+                {
+                    // Liste des élèves inscrits
+                    var studentRegistrations = await _context.StudentRegistrations
+                        .Where(x => 
+                            x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
+                            & x.EDUCATION_LEVEL_ID == noteMonth.EDUCATION_LEVEL_ID
+                        )
+                    .ToListAsync();
+
+                    // Liste des cours pour ce niveau d'études
+                    var cours = await _context.Cours
+                        .Where(x => 
+                            x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
+                            && x.EDUCATION_LEVEL_ID == noteMonth.EDUCATION_LEVEL_ID
+                            && x.IS_ACTIVE == true
+                        )
+                    .ToListAsync();
+  
+                    switch(noteMonth.EDUCATION_LEVEL.SCHOOL_EDUCATION_ID)
+                    {
+                        case 2: // Primaire
+                            foreach(var cour in cours)
+                            {
+                                foreach(var studentRegistration in studentRegistrations)
+                                {
+                                    // On vérifie que cet élève n'a pas une note dans la table
+                                    var oldNode = await _context.NotePrimaries.FirstOrDefaultAsync(x => 
+                                        x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
+                                        && x.STUDENT_ID == studentRegistration.ID
+                                        && x.NOTE_MONTH_ID == noteMonth.ID
+                                        && x.COURS_ID == cour.ID
+                                    );
+
+                                    if(oldNode == null)
+                                    {
+                                        var student = await _context.Students.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT_ID);
+                                        var newNotePrimary = new NotePrimary
+                                        {
+                                            ID = 0,
+                                            NOTE = 0.00f,
+                                            INFOS = null,
+                                            CREATED_USER_ID = null,
+                                            UPDATED_USER_ID = null,
+                                            CREATION_DATE = DateTime.UtcNow,
+                                            MODIFICATION_DATE = DateTime.UtcNow,
+                                            SCHOOL_YEAR_ID = noteMonth.SCHOOL_YEAR_ID,
+                                            SCHOOL_YEAR = noteMonth.SCHOOL_YEAR,
+                                            STUDENT_ID = studentRegistration.ID,
+                                            STUDENT = student!,
+                                            NOTE_MONTH_ID = noteMonth.ID,
+                                            NOTE_MONTH = noteMonth,
+                                            COURS_ID = cour.ID,
+                                            COURS = cour
+                                        };
+                                        _context.NotePrimaries.Add(newNotePrimary);
+                                    }
+                                }
+                            }
+                        break;
+
+                        case 3: // Collège
+                            foreach(var cour in cours)
+                            {
+                                foreach(var studentRegistration in studentRegistrations)
+                                {
+                                    // On vérifie que cet élève n'a pas une note dans la table
+                                    var oldNode = await _context.NoteMiddleSchools.FirstOrDefaultAsync(x => 
+                                        x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
+                                        && x.STUDENT_ID == studentRegistration.ID
+                                        && x.NOTE_MONTH_ID == noteMonth.ID
+                                        && x.COURS_ID == cour.ID
+                                    );
+
+                                    if(oldNode == null)
+                                    {
+                                        var student = await _context.Students.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT_ID);
+                                        var newNote = new NoteMiddleSchool
+                                        {
+                                            ID = 0,
+                                            NOTE = 0.00f,
+                                            INFOS = null,
+                                            CREATED_USER_ID = null,
+                                            UPDATED_USER_ID = null,
+                                            CREATION_DATE = DateTime.UtcNow,
+                                            MODIFICATION_DATE = DateTime.UtcNow,
+                                            SCHOOL_YEAR_ID = noteMonth.SCHOOL_YEAR_ID,
+                                            SCHOOL_YEAR = noteMonth.SCHOOL_YEAR,
+                                            STUDENT_ID = studentRegistration.ID,
+                                            STUDENT = student!,
+                                            NOTE_MONTH_ID = noteMonth.ID,
+                                            NOTE_MONTH = noteMonth,
+                                            COURS_ID = cour.ID,
+                                            COURS = cour
+                                        };
+                                        _context.NoteMiddleSchools.Add(newNote);
+                                    }
+
+                                }
+                            }
+                        break;
+
+                        case 4: // Lycée
+                            foreach(var cour in cours)
+                            {
+                                foreach(var studentRegistration in studentRegistrations)
+                                {
+                                    // On vérifie que cet élève n'a pas une note dans la table
+                                    var oldNode = await _context.NoteHightSchools.FirstOrDefaultAsync(x => 
+                                        x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
+                                        && x.STUDENT_ID == studentRegistration.ID
+                                        && x.NOTE_MONTH_ID == noteMonth.ID
+                                        && x.COURS_ID == cour.ID
+                                    );
+
+                                    if(oldNode == null)
+                                    {
+                                        var student = await _context.Students.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT_ID);                                    var newNote = new NoteHightSchool
+                                        {
+                                            ID = 0,
+                                            NOTE = 0.00f,
+                                            INFOS = null,
+                                            CREATED_USER_ID = null,
+                                            UPDATED_USER_ID = null,
+                                            CREATION_DATE = DateTime.UtcNow,
+                                            MODIFICATION_DATE = DateTime.UtcNow,
+                                            SCHOOL_YEAR_ID = noteMonth.SCHOOL_YEAR_ID,
+                                            SCHOOL_YEAR = noteMonth.SCHOOL_YEAR,
+                                            STUDENT_ID = studentRegistration.ID,
+                                            STUDENT = student!,
+                                            NOTE_MONTH_ID = noteMonth.ID,
+                                            NOTE_MONTH = noteMonth,
+                                            COURS_ID = cour.ID,
+                                            COURS = cour
+                                        };
+                                        _context.NoteHightSchools.Add(newNote);
+                                    }
+                                }
+                            }
+                        break;
+                    }
+                }
+                else
                 {
                     switch(noteMonth.EDUCATION_LEVEL.SCHOOL_EDUCATION_ID)
                     {
@@ -112,38 +251,6 @@ public class NoteMonthService : INoteMonthService
                         break;
                     }
                 }
-                else
-                {
-                    switch(noteMonth.EDUCATION_LEVEL.SCHOOL_EDUCATION_ID)
-                    {
-                        case 2: // Primaire
-                            // await _context.NotePrimaries
-                            //     .Where(x => 
-                            //         x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
-                            //         && x.NOTE_MONTH_ID == noteMonth.MONTH_ID
-                            //     )
-                            // .ExecuteDeleteAsync();
-                        break;
-
-                        case 3: // Collège
-                            // await _context.NoteMiddleSchools
-                            //     .Where(x => 
-                            //         x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
-                            //         && x.NOTE_MONTH_ID == noteMonth.MONTH_ID
-                            //     )
-                            // .ExecuteDeleteAsync();
-                        break;
-
-                        case 4: // Lycée
-                            // await _context.NoteHightSchools
-                            //     .Where(x => 
-                            //         x.SCHOOL_YEAR_ID == noteMonth.SCHOOL_YEAR_ID
-                            //         && x.NOTE_MONTH_ID == noteMonth.MONTH_ID
-                            //     )
-                            // .ExecuteDeleteAsync();
-                        break;
-                    }
-                }
             } 
 
             _context.NoteMonths.UpdateRange(noteMonths);
@@ -157,4 +264,5 @@ public class NoteMonthService : INoteMonthService
 
         return noteMonths;
     }
+
 }
