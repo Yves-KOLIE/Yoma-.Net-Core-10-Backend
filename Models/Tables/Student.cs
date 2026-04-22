@@ -37,6 +37,10 @@ namespace YOMA.Models.Tables
         public required int BIRTH_PLACE_ID { get; set; }
         public required BirthPlace BIRTH_PLACE { get; set; }
 
+        [ForeignKey("USER_ROLE")]
+        public int USER_ROLE_ID { get; set; }
+        public required UserRole USER_ROLE { get; set; }
+
 
         // [NotMapped]
         // public int PARENT_1_ID { get; set; }

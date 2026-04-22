@@ -28,5 +28,9 @@ namespace YOMA.Models.Tables
         public DateTime? LAST_DECONNEXION_DATE { get; set; } = null;
         public DateTime CREATION_DATE { get; set; } = new DateTime();
 		public DateTime? MODIFICATION_DATE { get; set; } = null;
+
+        [ForeignKey("USER_ROLE")]
+        public int USER_ROLE_ID { get; set; }
+        public required UserRole USER_ROLE { get; set; }
     }
 }

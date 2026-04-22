@@ -63,6 +63,8 @@ namespace backend.Migrations
                     { 8, "Fondateur" },
                     { 9, "Adminiatrateur" },
                     { 10, "Super-adminiatrateur" },
+                    { 11, "Élève" },
+                    { 12, "Parent d'élèves" },
                 },
             schema: null);
         }
