@@ -16,6 +16,6 @@ namespace YOMA.Models.Tables
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;
         public DateTime CREATION_DATE { get; set; } = new DateTime();
-		public DateTime MODIFICATION_DATE { get; set; } = new DateTime();
+		public DateTime? MODIFICATION_DATE { get; set; } = null;
     }
 }

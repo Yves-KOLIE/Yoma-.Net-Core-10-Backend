@@ -30,7 +30,7 @@ namespace YOMA.Models.Tables
         public DateTime? LAST_CONNEXION_DATE { get; set; } = null;
         public DateTime? LAST_DECONNEXION_DATE { get; set; } = null;
         public DateTime CREATION_DATE { get; set; } = new DateTime();
-		public DateTime MODIFICATION_DATE { get; set; } = new DateTime();
+		public DateTime? MODIFICATION_DATE { get; set; } = null;
 
 
         [ForeignKey("BIRTH_PLACE")]

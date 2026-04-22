@@ -11,7 +11,7 @@ namespace YOMA.Models.Tables
         [Key]
 		public int ID { get; set; }
         public DateTime CREATION_DATE { get; set; } = new DateTime();
-		public DateTime MODIFICATION_DATE { get; set; } = new DateTime();
+		public DateTime? MODIFICATION_DATE { get; set; } = null;
 
 
         [ForeignKey("STUDENT")]

@@ -32,7 +32,7 @@ namespace YOMA.Models.Tables
         public DateTime? LAST_CONNEXION_DATE { get; set; } = null;
         public DateTime? LAST_DECONNEXION_DATE { get; set; } = null;
         public DateTime CREATION_DATE { get; set; } = new DateTime();
-		public DateTime MODIFICATION_DATE { get; set; } = new DateTime();
+		public DateTime? MODIFICATION_DATE { get; set; } = null;
 
         [ForeignKey("PROFESSIONAL_QUALIFICATION")]
         public int PROFESSIONAL_QUALIFICATION_ID { get; set; }
