@@ -14,6 +14,7 @@ namespace YOMA.Models.Tables
         public bool IS_ACTIVE { get; set; } = true;
         public bool IS_DELETED { get; set; }
         public bool IS_ABANDON { get; set; }
+        public bool IS_SUPPORTED { get; set; }
 
         public bool SCHOOL_FESS_IS_SUPPORTED { get; set; }
         public bool SCHOOL_FESS_IS_DISCOUNTED { get; set; }
