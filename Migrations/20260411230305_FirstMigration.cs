@@ -21,7 +21,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -38,7 +38,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -56,7 +56,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -75,7 +75,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -94,7 +94,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -124,7 +124,7 @@ namespace backend.Migrations
                     LAST_CONNEXION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LAST_DECONNEXION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -143,7 +143,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -161,7 +161,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -180,7 +180,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -199,7 +199,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -218,7 +218,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -236,7 +236,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -254,7 +254,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -272,7 +272,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -290,7 +290,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -308,7 +308,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow)
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null)
                 },
                 constraints: table =>
                 {
@@ -340,7 +340,7 @@ namespace backend.Migrations
                     LAST_CONNEXION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LAST_DECONNEXION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     BIRTH_PLACE_ID = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -382,7 +382,7 @@ namespace backend.Migrations
                     LAST_CONNEXION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LAST_DECONNEXION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     PROFESSIONAL_QUALIFICATION_ID = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -406,7 +406,7 @@ namespace backend.Migrations
                     ABREVIATION = table.Column<string>(type: "text", nullable: true),
                     IS_ACTIVE = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     SCHOOL_EDUCATION_ID = table.Column<int>(type: "integer", nullable: false),
@@ -443,7 +443,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     STUDENT_ID = table.Column<int>(type: "integer", nullable: false),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     PAYMENT_METHOD_ID = table.Column<int>(type: "integer", nullable: false),
@@ -493,7 +493,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     STUDENT_ID = table.Column<int>(type: "integer", nullable: false),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     PAYMENT_METHOD_ID = table.Column<int>(type: "integer", nullable: false),
@@ -534,7 +534,7 @@ namespace backend.Migrations
                     ID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     STUDENT_ID = table.Column<int>(type: "integer", nullable: false),
                     PARENT_ID = table.Column<int>(type: "integer", nullable: false),
                     PARENT_TYPE_ID = table.Column<int>(type: "integer", nullable: false)
@@ -574,7 +574,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     USER_ID = table.Column<int>(type: "integer", nullable: false),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     MONTH_ID = table.Column<int>(type: "integer", nullable: false)
@@ -613,7 +613,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     MONTH_ID = table.Column<int>(type: "integer", nullable: false),
                     USER_ID = table.Column<int>(type: "integer", nullable: false),
@@ -658,7 +658,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     USER_ID = table.Column<int>(type: "integer", nullable: false),
                     TYPE_SALARY_ADVANCE_ID = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -691,7 +691,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     USER_ID = table.Column<int>(type: "integer", nullable: false),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     MONTH_ID = table.Column<int>(type: "integer", nullable: false)
@@ -731,7 +731,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     DEADLINE_FESS_1 = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DEADLINE_FESS_2 = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DEADLINE_FESS_3 = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -768,7 +768,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     EDUCATION_LEVEL_ID = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -800,7 +800,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     USER_ID = table.Column<int>(type: "integer", nullable: false),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     EDUCATION_LEVEL_ID = table.Column<int>(type: "integer", nullable: false),
@@ -846,7 +846,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     USER_ID = table.Column<int>(type: "integer", nullable: false),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     EDUCATION_LEVEL_ID = table.Column<int>(type: "integer", nullable: false),
@@ -892,7 +892,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     USER_ID = table.Column<int>(type: "integer", nullable: false),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     EDUCATION_LEVEL_ID = table.Column<int>(type: "integer", nullable: false),
@@ -940,7 +940,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     MONTH_ID = table.Column<int>(type: "integer", nullable: false),
                     EDUCATION_LEVEL_ID = table.Column<int>(type: "integer", nullable: false)
@@ -979,7 +979,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     USER_ID = table.Column<int>(type: "integer", nullable: false),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     EDUCATION_LEVEL_ID = table.Column<int>(type: "integer", nullable: false),
@@ -1027,7 +1027,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     DEADLINE_FESS_1 = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DEADLINE_FESS_2 = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DEADLINE_FESS_3 = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -1077,7 +1077,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     STUDENT_ID = table.Column<int>(type: "integer", nullable: false),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     EDUCATION_LEVEL_ID = table.Column<int>(type: "integer", nullable: false),
@@ -1121,7 +1121,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     SUBDIVISION_ID = table.Column<int>(type: "integer", nullable: false),
                     EDUCATION_LEVEL_ID = table.Column<int>(type: "integer", nullable: false)
@@ -1164,7 +1164,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     USER_ID = table.Column<int>(type: "integer", nullable: false),
                     SCHOOL_YEAR_ID = table.Column<int>(type: "integer", nullable: false),
                     MONTH_ID = table.Column<int>(type: "integer", nullable: false),
@@ -1230,7 +1230,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     STUDENT_ID = table.Column<int>(type: "integer", nullable: false),
                     NOTE_MONTH_ID = table.Column<int>(type: "integer", nullable: false),
                     COURS_ID = table.Column<int>(type: "integer", nullable: false)
@@ -1269,7 +1269,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     STUDENT_ID = table.Column<int>(type: "integer", nullable: false),
                     NOTE_MONTH_ID = table.Column<int>(type: "integer", nullable: false),
                     COURS_ID = table.Column<int>(type: "integer", nullable: false)
@@ -1308,7 +1308,7 @@ namespace backend.Migrations
                     CREATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     UPDATED_USER_ID = table.Column<int>(type: "integer", nullable: true),
                     CREATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
-                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: DateTime.UtcNow),
+                    MODIFICATION_DATE = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: null),
                     STUDENT_ID = table.Column<int>(type: "integer", nullable: false),
                     NOTE_MONTH_ID = table.Column<int>(type: "integer", nullable: false),
                     COURS_ID = table.Column<int>(type: "integer", nullable: false)
