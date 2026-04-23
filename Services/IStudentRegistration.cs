@@ -41,6 +41,7 @@ public class StudentRegistrationService : IStudentRegistration
                 PARENT_TYPE_ID = studentRegistration.STUDENT.PARENT_1.PARENT_ID,
                 PARENT_TYPE = (await _context.ParentTypes.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT.PARENT_1.PARENT_ID))!,
             };
+            _context.StudentParents.Add(newStudentParent1);
             
             var newStudentParent2 = new StudentParent
             {
@@ -55,9 +56,8 @@ public class StudentRegistrationService : IStudentRegistration
                 PARENT_TYPE_ID = studentRegistration.STUDENT.PARENT_2.PARENT_ID,
                 PARENT_TYPE = (await _context.ParentTypes.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT.PARENT_2.PARENT_ID))!,
             };
-
-            _context.StudentParents.Add(newStudentParent1);
             _context.StudentParents.Add(newStudentParent2);
+
             await _context.SaveChangesAsync();
 
             if(studentRegistration.SCHOOL_FESS_IS_SUPPORTED) // Si les frais de scolarité sont pris en charge par l'école
