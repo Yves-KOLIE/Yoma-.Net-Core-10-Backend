@@ -42,15 +42,12 @@ namespace YOMA.Models.Tables
         public required UserRole USER_ROLE { get; set; }
 
 
-        // [NotMapped]
-        // public int PARENT_1_ID { get; set; }
-        // [NotMapped]
-        // public required StudentParent PARENT_1 { get; set; }
+        [ForeignKey("PARENT_1")]
+        public int PARENT_1_ID { get; set; }
+        public required StudentParent PARENT_1 { get; set; }
 
-
-        // [NotMapped]
-        // public int PARENT_2_ID { get; set; }
-        // [NotMapped]
-        // public required StudentParent PARENT_2 { get; set; }
+        [ForeignKey("PARENT_2")]
+        public int PARENT_2_ID { get; set; }
+        public required StudentParent PARENT_2 { get; set; }
     }
 }

@@ -8,6 +8,21 @@ namespace YOMA.Models
         public Context(DbContextOptions<Context> options) : base(options) { }
         public Context() { }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Student>()
+                .HasOne(s => s.PARENT_1)
+                .WithMany()  // Ou .WithOne() si one-to-one, ajustez selon votre modèle
+                .HasForeignKey(s => s.PARENT_1_ID);  // Remplacez par la FK réelle
+
+            modelBuilder.Entity<Student>()
+                .HasOne(s => s.PARENT_2)
+                .WithMany()  // Ou .WithOne() si one-to-one, ajustez selon votre modèle
+                .HasForeignKey(s => s.PARENT_2_ID);  // Remplacez par la FK réelle
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<Bank> Banks { get; set; }
         public DbSet<BirthPlace> BirthPlaces { get; set; }
         public DbSet<BusFess> BusFesses { get; set; }
