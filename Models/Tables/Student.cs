@@ -19,7 +19,7 @@ namespace YOMA.Models.Tables
         public string? TELEPHONE_2 { get; set; } = null;
         public string? EMAIL { get; set; } = null;
         public required string MATRICULE { get; set; }
-        public string? PASSWORD { get; set; } = null;
+        public required string PASSWORD { get; set; }
         public string? PHOTO { get; set; } = null;
 
         public bool IS_LOCK { get; set; }
