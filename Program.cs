@@ -39,7 +39,24 @@ builder.Services.AddDbContext<Context>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
+// 1. Ajoute les contrôleurs
+builder.Services.AddControllers();
+
+// 2. Ajoute CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularOrigins", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
+
+// 3. Active CORS (important : avant les routes)
+app.UseCors("AllowAngularOrigins");
 
 if (app.Environment.IsDevelopment())
 {
