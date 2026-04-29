@@ -12,7 +12,7 @@ namespace YOMA.Models.Tables
 		public int ID { get; set; }
         public required string NAME { get; set; }
         public required string SURNAME { get; set; }
-        public required string SEXE { get; set; }
+        public required char SEXE { get; set; }
         public required string QUARTER { get; set; }
         public required string TELEPHONE_1 { get; set; }
         public string? TELEPHONE_2 { get; set; } = null;

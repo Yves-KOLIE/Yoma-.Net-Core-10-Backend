@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using YOMA.Helpers;
 using YOMA.Models;
 using YOMA.Models.Tables;
 
@@ -19,30 +21,151 @@ namespace YOMA.Controllers
         }
 
         [HttpPost("Auth")]
-        public async Task<ActionResult> Auth([FromBody] LoginModel loginModel)
+        public async Task<ActionResult<LoginResult>> Auth([FromBody] LoginModel loginModel)
         {
             try
             {
-                // userIsConnected: boolean;
-                // error?: any;
-                // message: string;
+                switch(loginModel.userType)
+                {
+                    case 1: // Encadreur
+                        var user = await _context.Users.FirstOrDefaultAsync(x => !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.ToLower().Equals(loginModel.email.ToLower()));
+                        if(user != null)
+                        {
+                            bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, user.PASSWORD);
+                            if(isValidPassword)
+                            {
+                                if(loginModel.password.Equals(Constant.DEFAULT_PASSWORD))
+                                {
+                                    return Ok(new LoginResult 
+                                    { 
+                                        UserIsConnected = isValidPassword,
+                                        Message = $"{getDayPeriod()} {user.NAME} {user.SURNAME}",
+                                        Error = null,
+                                        StatusCode = 200,
+                                        IsChangePassword = true
+                                    }); 
+                                }
+                                else
+                                {
+                                    return Ok(new LoginResult 
+                                    { 
+                                        UserIsConnected = isValidPassword,
+                                        Message = $"{getDayPeriod()} {user.NAME} {user.SURNAME}",
+                                        Error = null,
+                                        StatusCode = 200
+                                    });
+                                }
+                            }
+                        }
+                    return Unauthorized(new LoginResult 
+                    { 
+                        UserIsConnected = false,
+                        Message = "L'adresse email et ou le mot de passe est invalide.",
+                        Error = null,
+                        StatusCode = 401
+                    });
+                    
+                    case 2: // Parent d'élèves
+                        var parent = await _context.Parents.FirstOrDefaultAsync(x => !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.ToLower().Equals(loginModel.email.ToLower()));
+                        if(parent != null)
+                        {
+                            bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, parent.PASSWORD);
+                            if(isValidPassword)
+                            {
+                                if(loginModel.password.Equals(Constant.DEFAULT_PASSWORD))
+                                {
+                                    return Ok(new LoginResult 
+                                    { 
+                                        UserIsConnected = isValidPassword,
+                                        Message = $"{getDayPeriod()} {parent.NAME} {parent.SURNAME}",
+                                        Error = null,
+                                        StatusCode = 200,
+                                        IsChangePassword = true
+                                    }); 
+                                }
+                                else
+                                {
+                                    return Ok(new LoginResult 
+                                    { 
+                                        UserIsConnected = isValidPassword,
+                                        Message = $"{getDayPeriod()} {parent.NAME} {parent.SURNAME}",
+                                        Error = null,
+                                        StatusCode = 200
+                                    });
+                                }
+                            }
+                        }
+                    return Unauthorized(new LoginResult 
+                    { 
+                        UserIsConnected = false,
+                        Message = "L'adresse email et ou le mot de passe est invalide.",
+                        Error = null,
+                        StatusCode = 401
+                    });
 
-                var tutu = 55;
+                    case 3: // Élèves
+                        var student = await _context.Students.FirstOrDefaultAsync(x => !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.ToLower().Equals(loginModel.email.ToLower()));
+                        if(student != null)
+                        {
+                            bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, student.PASSWORD);
+                            if(isValidPassword)
+                            {
+                                if(loginModel.password.Equals(Constant.DEFAULT_PASSWORD))
+                                {
+                                    return Ok(new LoginResult 
+                                    { 
+                                        UserIsConnected = isValidPassword,
+                                        Message = $"{getDayPeriod()} {student.NAME} {student.SURNAME}",
+                                        Error = null,
+                                        StatusCode = 200,
+                                        IsChangePassword = true
+                                    }); 
+                                }
+                                else
+                                {
+                                    return Ok(new LoginResult 
+                                    { 
+                                        UserIsConnected = isValidPassword,
+                                        Message = $"{getDayPeriod()} {student.NAME} {student.SURNAME}",
+                                        Error = null,
+                                        StatusCode = 200
+                                    });
+                                }
+                            }
+                        }
+                    return Unauthorized(new LoginResult 
+                    { 
+                        UserIsConnected = false,
+                        Message = "L'adresse email et ou le mot de passe est invalide.",
+                        Error = null,
+                        StatusCode = 401
+                    });
 
-                return Ok(new { 
-                    userIsConnected = true,
-                    error = "",
-                    message = ""
-                });
+                    default:
+                        return BadRequest(new LoginResult 
+                        { 
+                            UserIsConnected = false,
+                            Message = "Le choix du type d'utilisateur est obligatoire.",
+                            Error = null,
+                            StatusCode = 401
+                        });
+                }
             }
             catch (Exception ex)
             {
-                return Ok(new { 
-                    userIsConnected = true,
-                    error = ex,
-                    message = ""
+                return BadRequest(new LoginResult 
+                { 
+                    UserIsConnected = false,
+                    Message = "Une erreur coté serveur s'est produite.",
+                    Error = ex,
+                    StatusCode = 500
                 });
             }
+        }
+
+        private string getDayPeriod()
+        {
+            return DateTime.UtcNow.Hour < 12 ? "Bonjour" : "Bonsoir";
         }
 
     }
