@@ -2,6 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace YOMA.Models.Tables
 {
@@ -18,6 +19,7 @@ namespace YOMA.Models.Tables
         public string? TELEPHONE_2 { get; set; } = null;
         public string? EMAIL { get; set; } = null;
         public required string MATRICULE { get; set; }
+        [JsonIgnore]
         public required string PASSWORD { get; set; }
         public string? PHOTO { get; set; } = null;
         public bool IS_LOCK { get; set; }

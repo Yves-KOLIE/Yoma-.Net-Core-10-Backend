@@ -2,6 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace YOMA.Models.Tables
 {
@@ -19,6 +20,7 @@ namespace YOMA.Models.Tables
         public string? TELEPHONE_2 { get; set; } = null;
         public string? EMAIL { get; set; } = null;
         public required string MATRICULE { get; set; }
+        [JsonIgnore]
         public required string PASSWORD { get; set; }
         public string? PHOTO { get; set; } = null;
 
@@ -36,6 +38,7 @@ namespace YOMA.Models.Tables
         [ForeignKey("BIRTH_PLACE")]
         public required int BIRTH_PLACE_ID { get; set; }
         public required BirthPlace BIRTH_PLACE { get; set; }
+        
 
         [ForeignKey("USER_ROLE")]
         public int USER_ROLE_ID { get; set; }

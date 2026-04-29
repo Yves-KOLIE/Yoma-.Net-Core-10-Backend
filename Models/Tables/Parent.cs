@@ -2,6 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace YOMA.Models.Tables
 {
@@ -17,7 +18,8 @@ namespace YOMA.Models.Tables
         public string? TELEPHONE_2 { get; set; } = null;
         public required string QUARTER { get; set; }
         public string? EMAIL { get; set; } = null;
-          public required string PASSWORD { get; set; }
+        [JsonIgnore]
+        public required string PASSWORD { get; set; }
         public string? PHOTO { get; set; } = null;
         public bool IS_LOCK { get; set; }
         public int? CREATED_USER_ID { get; set; } = null;
@@ -28,6 +30,10 @@ namespace YOMA.Models.Tables
         public DateTime? LAST_DECONNEXION_DATE { get; set; } = null;
         public DateTime CREATION_DATE { get; set; } = new DateTime();
 		public DateTime? MODIFICATION_DATE { get; set; } = null;
+
+        [ForeignKey("PROFESSIONAL_QUALIFICATION")]
+        public int PROFESSIONAL_QUALIFICATION_ID { get; set; }
+        public required ProfessionalQualification PROFESSIONAL_QUALIFICATION { get; set; }
 
         [ForeignKey("USER_ROLE")]
         public int USER_ROLE_ID { get; set; }
