@@ -34,6 +34,7 @@ namespace YOMA.Controllers
                         .FirstOrDefaultAsync(x => 
                             !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.ToLower().Equals(loginModel.email.ToLower())
                         );
+
                         if(user != null)
                         {
                             bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, user.PASSWORD);
@@ -47,7 +48,8 @@ namespace YOMA.Controllers
                                         Message = $"{getDayPeriod()} {user.NAME} {user.SURNAME}",
                                         Error = null,
                                         StatusCode = 200,
-                                        IsChangePassword = true
+                                        IsChangePassword = true,
+                                        ConnectedUser = user
                                     }); 
                                 }
                                 else
@@ -57,7 +59,8 @@ namespace YOMA.Controllers
                                         UserIsConnected = isValidPassword,
                                         Message = $"{getDayPeriod()} {user.NAME} {user.SURNAME}",
                                         Error = null,
-                                        StatusCode = 200
+                                        StatusCode = 200,
+                                        ConnectedUser = user
                                     });
                                 }
                             }
@@ -71,10 +74,14 @@ namespace YOMA.Controllers
                     });
                     
                     case 2: // Parent d'élèves
-                        var parent = await _context.Parents.FirstOrDefaultAsync(x => 
+                        var parent = await _context.Parents
+                            .Include(x => x.PROFESSIONAL_QUALIFICATION)
+                            .Include(x => x.USER_ROLE)
+                        .FirstOrDefaultAsync(x => 
                             !string.IsNullOrEmpty(x.EMAIL) 
                             && x.EMAIL.ToLower().Equals(loginModel.email.ToLower())
                         );
+
                         if(parent != null)
                         {
                             bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, parent.PASSWORD);
@@ -88,7 +95,8 @@ namespace YOMA.Controllers
                                         Message = $"{getDayPeriod()} {parent.NAME} {parent.SURNAME}",
                                         Error = null,
                                         StatusCode = 200,
-                                        IsChangePassword = true
+                                        IsChangePassword = true,
+                                        ConnectedUser = parent
                                     }); 
                                 }
                                 else
@@ -98,7 +106,8 @@ namespace YOMA.Controllers
                                         UserIsConnected = isValidPassword,
                                         Message = $"{getDayPeriod()} {parent.NAME} {parent.SURNAME}",
                                         Error = null,
-                                        StatusCode = 200
+                                        StatusCode = 200,
+                                        ConnectedUser = parent
                                     });
                                 }
                             }
@@ -112,7 +121,12 @@ namespace YOMA.Controllers
                     });
 
                     case 3: // Élèves
-                        var student = await _context.Students.FirstOrDefaultAsync(x => !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.ToLower().Equals(loginModel.email.ToLower()));
+                        var student = await _context.Students
+                            .Include(x => x.USER_ROLE)
+                        .FirstOrDefaultAsync(x => 
+                            !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.ToLower().Equals(loginModel.email.ToLower())
+                        );
+
                         if(student != null)
                         {
                             bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, student.PASSWORD);
@@ -126,7 +140,8 @@ namespace YOMA.Controllers
                                         Message = $"{getDayPeriod()} {student.NAME} {student.SURNAME}",
                                         Error = null,
                                         StatusCode = 200,
-                                        IsChangePassword = true
+                                        IsChangePassword = true,
+                                        ConnectedUser = student
                                     }); 
                                 }
                                 else
@@ -136,7 +151,8 @@ namespace YOMA.Controllers
                                         UserIsConnected = isValidPassword,
                                         Message = $"{getDayPeriod()} {student.NAME} {student.SURNAME}",
                                         Error = null,
-                                        StatusCode = 200
+                                        StatusCode = 200,
+                                        ConnectedUser = student
                                     });
                                 }
                             }
