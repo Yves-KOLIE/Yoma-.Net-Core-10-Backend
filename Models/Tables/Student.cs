@@ -54,5 +54,9 @@ namespace YOMA.Models.Tables
         [ForeignKey("PARENT_2")]
         public int PARENT_2_ID { get; set; }
         public required StudentParent PARENT_2 { get; set; }
+
+        [ForeignKey("USER_TYPE")]
+        public int USER_TYPE_ID { get; set; }
+        public required UserType USER_TYPE { get; set; }
     }
 }

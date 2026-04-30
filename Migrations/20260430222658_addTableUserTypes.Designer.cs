@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using YOMA.Models;
@@ -11,9 +12,11 @@ using YOMA.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20260430222658_addTableUserTypes")]
+    partial class addTableUserTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1000,16 +1003,11 @@ namespace backend.Migrations
                     b.Property<int>("USER_ROLE_ID")
                         .HasColumnType("integer");
 
-                    b.Property<int>("USER_TYPE_ID")
-                        .HasColumnType("integer");
-
                     b.HasKey("ID");
 
                     b.HasIndex("PROFESSIONAL_QUALIFICATION_ID");
 
                     b.HasIndex("USER_ROLE_ID");
-
-                    b.HasIndex("USER_TYPE_ID");
 
                     b.ToTable("Parents");
                 });
@@ -1663,9 +1661,6 @@ namespace backend.Migrations
                     b.Property<int>("USER_ROLE_ID")
                         .HasColumnType("integer");
 
-                    b.Property<int>("USER_TYPE_ID")
-                        .HasColumnType("integer");
-
                     b.HasKey("ID");
 
                     b.HasIndex("BIRTH_PLACE_ID");
@@ -1675,8 +1670,6 @@ namespace backend.Migrations
                     b.HasIndex("PARENT_2_ID");
 
                     b.HasIndex("USER_ROLE_ID");
-
-                    b.HasIndex("USER_TYPE_ID");
 
                     b.ToTable("Students");
                 });
@@ -2126,16 +2119,11 @@ namespace backend.Migrations
                     b.Property<int>("USER_ROLE_ID")
                         .HasColumnType("integer");
 
-                    b.Property<int>("USER_TYPE_ID")
-                        .HasColumnType("integer");
-
                     b.HasKey("ID");
 
                     b.HasIndex("PROFESSIONAL_QUALIFICATION_ID");
 
                     b.HasIndex("USER_ROLE_ID");
-
-                    b.HasIndex("USER_TYPE_ID");
 
                     b.ToTable("Users");
                 });
@@ -2692,17 +2680,9 @@ namespace backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YOMA.Models.Tables.UserType", "USER_TYPE")
-                        .WithMany()
-                        .HasForeignKey("USER_TYPE_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("PROFESSIONAL_QUALIFICATION");
 
                     b.Navigation("USER_ROLE");
-
-                    b.Navigation("USER_TYPE");
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.PayrollValidation", b =>
@@ -2937,12 +2917,6 @@ namespace backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YOMA.Models.Tables.UserType", "USER_TYPE")
-                        .WithMany()
-                        .HasForeignKey("USER_TYPE_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("BIRTH_PLACE");
 
                     b.Navigation("PARENT_1");
@@ -2950,8 +2924,6 @@ namespace backend.Migrations
                     b.Navigation("PARENT_2");
 
                     b.Navigation("USER_ROLE");
-
-                    b.Navigation("USER_TYPE");
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.StudentParent", b =>
@@ -3076,17 +3048,9 @@ namespace backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YOMA.Models.Tables.UserType", "USER_TYPE")
-                        .WithMany()
-                        .HasForeignKey("USER_TYPE_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("PROFESSIONAL_QUALIFICATION");
 
                     b.Navigation("USER_ROLE");
-
-                    b.Navigation("USER_TYPE");
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.UserPrime", b =>

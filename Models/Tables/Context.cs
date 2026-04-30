@@ -69,5 +69,6 @@ namespace YOMA.Models
         public DbSet<PayrollValidation> PayrollValidations { get; set; }
         public DbSet<ExamClass> ExamClasses { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<UserType> UserTypes { get; set; }
     }
 }

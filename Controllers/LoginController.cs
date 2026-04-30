@@ -72,7 +72,52 @@ namespace YOMA.Controllers
                         StatusCode = 401
                     });
                     
-                    case 2: // Parent d'élèves
+                    case 2: // Élèves
+                        var student = await _context.Students
+                            .Include(x => x.USER_ROLE)
+                        .FirstOrDefaultAsync(x => 
+                            !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.ToLower().Equals(loginModel.email.ToLower())
+                        );
+
+                        if(student != null)
+                        {
+                            bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, student.PASSWORD);
+                            if(isValidPassword)
+                            {
+                                if(loginModel.password.Equals(Constant.DEFAULT_PASSWORD))
+                                {
+                                    return Ok(new LoginResult 
+                                    { 
+                                        UserIsConnected = false,
+                                        Message = $"{getDayPeriod()} {student.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                        Error = null,
+                                        StatusCode = 200,
+                                        IsChangePassword = true,
+                                        ConnectedUser = student
+                                    }); 
+                                }
+                                else
+                                {
+                                    return Ok(new LoginResult 
+                                    { 
+                                        UserIsConnected = isValidPassword,
+                                        Message = $"{getDayPeriod()} {student.NAME}",
+                                        Error = null,
+                                        StatusCode = 200,
+                                        ConnectedUser = student
+                                    });
+                                }
+                            }
+                        }
+                    return Unauthorized(new LoginResult 
+                    { 
+                        UserIsConnected = false,
+                        Message = "L'adresse email et ou le mot de passe est invalide.",
+                        Error = null,
+                        StatusCode = 401
+                    });
+
+                    case 3: // Parent d'élèves
                         var parent = await _context.Parents
                             .Include(x => x.PROFESSIONAL_QUALIFICATION)
                             .Include(x => x.USER_ROLE)
@@ -119,51 +164,6 @@ namespace YOMA.Controllers
                         StatusCode = 401
                     });
 
-                    case 3: // Élèves
-                        var student = await _context.Students
-                            .Include(x => x.USER_ROLE)
-                        .FirstOrDefaultAsync(x => 
-                            !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.ToLower().Equals(loginModel.email.ToLower())
-                        );
-
-                        if(student != null)
-                        {
-                            bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, student.PASSWORD);
-                            if(isValidPassword)
-                            {
-                                if(loginModel.password.Equals(Constant.DEFAULT_PASSWORD))
-                                {
-                                    return Ok(new LoginResult 
-                                    { 
-                                        UserIsConnected = false,
-                                        Message = $"{getDayPeriod()} {student.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
-                                        Error = null,
-                                        StatusCode = 200,
-                                        IsChangePassword = true,
-                                        ConnectedUser = student
-                                    }); 
-                                }
-                                else
-                                {
-                                    return Ok(new LoginResult 
-                                    { 
-                                        UserIsConnected = isValidPassword,
-                                        Message = $"{getDayPeriod()} {student.NAME}",
-                                        Error = null,
-                                        StatusCode = 200,
-                                        ConnectedUser = student
-                                    });
-                                }
-                            }
-                        }
-                    return Unauthorized(new LoginResult 
-                    { 
-                        UserIsConnected = false,
-                        Message = "L'adresse email et ou le mot de passe est invalide.",
-                        Error = null,
-                        StatusCode = 401
-                    });
-
                     default:
                         return BadRequest(new LoginResult 
                         { 
@@ -185,6 +185,26 @@ namespace YOMA.Controllers
                 });
             }
         }
+
+        // [HttpPost("emailValidationCode")]
+        // public async Task<ActionResult> generateEmailValidationCode(string email)
+        // {
+        //     try
+        //     {
+        //         // var 
+        //     }
+        //     catch(Exception ex)
+        //     {
+        //         return BadRequest(new 
+        //         { 
+        //             message = "Une erreur coté serveur s'est produite.",
+        //             error = ex,
+        //             success = false,
+        //             statusCode = 500
+        //         });
+        //     }
+        // }
+
 
         private string getDayPeriod()
         {

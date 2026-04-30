@@ -40,5 +40,9 @@ namespace YOMA.Models.Tables
         [ForeignKey("USER_ROLE")]
         public int USER_ROLE_ID { get; set; }
         public required UserRole USER_ROLE { get; set; }
+
+        [ForeignKey("USER_TYPE")]
+        public int USER_TYPE_ID { get; set; }
+        public required UserType USER_TYPE { get; set; }
     }
 }
