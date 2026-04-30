@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using YOMA.Helpers;
 using YOMA.Models;
-using YOMA.Models.Tables;
 
 namespace YOMA.Controllers
 {
@@ -45,7 +44,7 @@ namespace YOMA.Controllers
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = false,
-                                        Message = $"{getDayPeriod()} {user.NAME} {user.SURNAME}",
+                                        Message = $"{getDayPeriod()} {user.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                         Error = null,
                                         StatusCode = 200,
                                         IsChangePassword = true,
@@ -57,7 +56,7 @@ namespace YOMA.Controllers
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = isValidPassword,
-                                        Message = $"{getDayPeriod()} {user.NAME} {user.SURNAME}",
+                                        Message = $"{getDayPeriod()} {user.NAME}",
                                         Error = null,
                                         StatusCode = 200,
                                         ConnectedUser = user
@@ -92,7 +91,7 @@ namespace YOMA.Controllers
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = false,
-                                        Message = $"{getDayPeriod()} {parent.NAME} {parent.SURNAME}",
+                                        Message = $"{getDayPeriod()} {parent.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                         Error = null,
                                         StatusCode = 200,
                                         IsChangePassword = true,
@@ -104,7 +103,7 @@ namespace YOMA.Controllers
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = isValidPassword,
-                                        Message = $"{getDayPeriod()} {parent.NAME} {parent.SURNAME}",
+                                        Message = $"{getDayPeriod()} {parent.NAME}",
                                         Error = null,
                                         StatusCode = 200,
                                         ConnectedUser = parent
@@ -137,7 +136,7 @@ namespace YOMA.Controllers
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = false,
-                                        Message = $"{getDayPeriod()} {student.NAME} {student.SURNAME}",
+                                        Message = $"{getDayPeriod()} {student.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                         Error = null,
                                         StatusCode = 200,
                                         IsChangePassword = true,
@@ -149,7 +148,7 @@ namespace YOMA.Controllers
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = isValidPassword,
-                                        Message = $"{getDayPeriod()} {student.NAME} {student.SURNAME}",
+                                        Message = $"{getDayPeriod()} {student.NAME}",
                                         Error = null,
                                         StatusCode = 200,
                                         ConnectedUser = student
