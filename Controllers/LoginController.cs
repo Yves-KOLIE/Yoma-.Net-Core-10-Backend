@@ -27,7 +27,7 @@ namespace YOMA.Controllers
             {
                 switch(loginModel.userType)
                 {
-                    case 1: // Encadreur
+                    case 1: // Professeur
                         var user = await _context.Users
                             .Include(x => x.PROFESSIONAL_QUALIFICATION)
                             .Include(x => x.USER_ROLE)
