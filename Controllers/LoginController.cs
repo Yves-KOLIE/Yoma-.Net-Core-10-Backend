@@ -24,7 +24,7 @@ namespace YOMA.Controllers
         {
             try
             {
-                switch(loginModel.userType)
+                switch(loginModel.userTypeId)
                 {
                     case 1: // Professeur
                         var user = await _context.Users
@@ -163,16 +163,15 @@ namespace YOMA.Controllers
                         Error = null,
                         StatusCode = 401
                     });
-
-                    default:
-                        return BadRequest(new LoginResult 
-                        { 
-                            UserIsConnected = false,
-                            Message = "Le choix du type d'utilisateur est obligatoire.",
-                            Error = null,
-                            StatusCode = 401
-                        });
                 }
+
+                return BadRequest(new LoginResult 
+                { 
+                    UserIsConnected = false,
+                    Message = "Le choix du type d'utilisateur est obligatoire.",
+                    Error = null,
+                    StatusCode = 401
+                });
             }
             catch (Exception ex)
             {
@@ -186,24 +185,69 @@ namespace YOMA.Controllers
             }
         }
 
-        // [HttpPost("emailValidationCode")]
-        // public async Task<ActionResult> generateEmailValidationCode(string email)
-        // {
-        //     try
-        //     {
-        //         // var 
-        //     }
-        //     catch(Exception ex)
-        //     {
-        //         return BadRequest(new 
-        //         { 
-        //             message = "Une erreur coté serveur s'est produite.",
-        //             error = ex,
-        //             success = false,
-        //             statusCode = 500
-        //         });
-        //     }
-        // }
+        [HttpPost("emailValidationCode/{userType}/{email}")]
+        public async Task<ActionResult> generateEmailValidationCode(int userTypeId, string email)
+        {
+            try
+            {
+                switch(userTypeId)
+                {
+                    case 1: // Professeur
+                        var user = await _context.Users.FirstOrDefaultAsync(x => x.USER_TYPE_ID == userTypeId && !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.Equals(email));
+                        if(user != null)
+                        {
+                            
+                        }
+                        else
+                        {
+                            
+                        }
+                    break;
+
+                    case 2: // Élèves
+                        var student = await _context.Students.FirstOrDefaultAsync(x => x.USER_TYPE_ID == userTypeId && !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.Equals(email));
+                        if(student != null)
+                        {
+                            
+                        }
+                        else
+                        {
+                            
+                        }
+                    break;
+
+                    case 3: // Parent d'élèves
+                        var parent = await _context.Parents.FirstOrDefaultAsync(x => x.USER_TYPE_ID == userTypeId && !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.Equals(email));
+                        if(parent != null)
+                        {
+                            
+                        }
+                        else
+                        {
+                            
+                        }
+                    break;
+                }
+                
+                return BadRequest(new LoginResult 
+                { 
+                    UserIsConnected = false,
+                    Message = "Le choix du type d'utilisateur est obligatoire.",
+                    Error = null,
+                    StatusCode = 401
+                });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new 
+                { 
+                    message = "Une erreur coté serveur s'est produite.",
+                    error = ex,
+                    success = false,
+                    statusCode = 500
+                });
+            }
+        }
 
 
         private string getDayPeriod()

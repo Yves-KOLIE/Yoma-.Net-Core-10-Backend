@@ -70,5 +70,6 @@ namespace YOMA.Models
         public DbSet<ExamClass> ExamClasses { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
+        public DbSet<ForgotUserPassword> ForgotUserPasswords { get; set; }
     }
 }
