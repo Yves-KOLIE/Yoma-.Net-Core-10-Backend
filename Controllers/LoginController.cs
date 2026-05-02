@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using YOMA.Helpers;
-// using YOMA.Models.Tables;
 using YOMA.Models;
 
 namespace YOMA.Controllers
@@ -27,145 +26,124 @@ namespace YOMA.Controllers
         {
             try
             {
-                switch(loginModel.userTypeId)
+                var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == loginModel.email);
+                if(userEmail != null)
                 {
-                    case 1: // Professeur
-                        var user = await _context.Users
-                            .Include(x => x.PROFESSIONAL_QUALIFICATION)
-                            .Include(x => x.USER_ROLE)
-                        .FirstOrDefaultAsync(x => 
-                            !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.ToLower().Equals(loginModel.email.ToLower())
-                        );
+                    switch(userEmail.UPDATED_USER_ID)
+                    {
+                        case 1: // Professeur
+                            var user = await _context.Users
+                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
+                                .Include(x => x.USER_ROLE)
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
 
-                        if(user != null)
-                        {
-                            bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, user.PASSWORD);
-                            if(isValidPassword)
+                            if(user != null)
                             {
-                                if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
+                                bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, user.PASSWORD);
+                                if(isValidPassword)
                                 {
-                                    return Ok(new LoginResult 
-                                    { 
-                                        UserIsConnected = false,
-                                        Message = $"{GetDayPeriod()} {user.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
-                                        Error = null,
-                                        StatusCode = 200,
-                                        IsChangePassword = true,
-                                        ConnectedUser = user
-                                    }); 
-                                }
-                                else
-                                {
-                                    return Ok(new LoginResult 
-                                    { 
-                                        UserIsConnected = isValidPassword,
-                                        Message = $"{GetDayPeriod()} {user.NAME}",
-                                        Error = null,
-                                        StatusCode = 200,
-                                        ConnectedUser = user
-                                    });
+                                    if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
+                                    {
+                                        return Ok(new LoginResult 
+                                        { 
+                                            UserIsConnected = false,
+                                            Message = $"{GetDayPeriod()} {user.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            Error = null,
+                                            StatusCode = 200,
+                                            IsChangePassword = true,
+                                            ConnectedUser = user
+                                        }); 
+                                    }
+                                    else
+                                    {
+                                        return Ok(new LoginResult 
+                                        { 
+                                            UserIsConnected = isValidPassword,
+                                            Message = $"{GetDayPeriod()} {user.NAME}",
+                                            Error = null,
+                                            StatusCode = 200,
+                                            ConnectedUser = user
+                                        });
+                                    }
                                 }
                             }
-                        }
-                    return Unauthorized(new LoginResult 
-                    { 
-                        UserIsConnected = false,
-                        Message = "L'adresse email et ou le mot de passe est invalide.",
-                        Error = null,
-                        StatusCode = 401
-                    });
-                    
-                    case 2: // Élèves
-                        var student = await _context.Students
-                            .Include(x => x.USER_ROLE)
-                        .FirstOrDefaultAsync(x => 
-                            !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.ToLower().Equals(loginModel.email.ToLower())
-                        );
+                        break;
 
-                        if(student != null)
-                        {
-                            bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, student.PASSWORD);
-                            if(isValidPassword)
+                        case 2: // Élèves
+                            var student = await _context.Students
+                                .Include(x => x.USER_ROLE)
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
+
+                            if(student != null)
                             {
-                                if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
+                                bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, student.PASSWORD);
+                                if(isValidPassword)
                                 {
-                                    return Ok(new LoginResult 
-                                    { 
-                                        UserIsConnected = false,
-                                        Message = $"{GetDayPeriod()} {student.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
-                                        Error = null,
-                                        StatusCode = 200,
-                                        IsChangePassword = true,
-                                        ConnectedUser = student
-                                    }); 
-                                }
-                                else
-                                {
-                                    return Ok(new LoginResult 
-                                    { 
-                                        UserIsConnected = isValidPassword,
-                                        Message = $"{GetDayPeriod()} {student.NAME}",
-                                        Error = null,
-                                        StatusCode = 200,
-                                        ConnectedUser = student
-                                    });
+                                    if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
+                                    {
+                                        return Ok(new LoginResult 
+                                        { 
+                                            UserIsConnected = false,
+                                            Message = $"{GetDayPeriod()} {student.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            Error = null,
+                                            StatusCode = 200,
+                                            IsChangePassword = true,
+                                            ConnectedUser = student
+                                        }); 
+                                    }
+                                    else
+                                    {
+                                        return Ok(new LoginResult 
+                                        { 
+                                            UserIsConnected = isValidPassword,
+                                            Message = $"{GetDayPeriod()} {student.NAME}",
+                                            Error = null,
+                                            StatusCode = 200,
+                                            ConnectedUser = student
+                                        });
+                                    }
                                 }
                             }
-                        }
-                    return Unauthorized(new LoginResult 
-                    { 
-                        UserIsConnected = false,
-                        Message = "L'adresse email et ou le mot de passe est invalide.",
-                        Error = null,
-                        StatusCode = 401
-                    });
+                        break;
 
-                    case 3: // Parent d'élèves
-                        var parent = await _context.Parents
-                            .Include(x => x.PROFESSIONAL_QUALIFICATION)
-                            .Include(x => x.USER_ROLE)
-                        .FirstOrDefaultAsync(x => 
-                            !string.IsNullOrEmpty(x.EMAIL) 
-                            && x.EMAIL.ToLower().Equals(loginModel.email.ToLower())
-                        );
+                        case 3: // Parent d'élèves
+                            var parent = await _context.Parents
+                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
+                                .Include(x => x.USER_ROLE)
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
 
-                        if(parent != null)
-                        {
-                            bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, parent.PASSWORD);
-                            if(isValidPassword)
+                            if(parent != null)
                             {
-                                if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
+                                bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, parent.PASSWORD);
+                                if(isValidPassword)
                                 {
-                                    return Ok(new LoginResult 
-                                    { 
-                                        UserIsConnected = false,
-                                        Message = $"{GetDayPeriod()} {parent.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
-                                        Error = null,
-                                        StatusCode = 200,
-                                        IsChangePassword = true,
-                                        ConnectedUser = parent
-                                    }); 
-                                }
-                                else
-                                {
-                                    return Ok(new LoginResult 
-                                    { 
-                                        UserIsConnected = isValidPassword,
-                                        Message = $"{GetDayPeriod()} {parent.NAME}",
-                                        Error = null,
-                                        StatusCode = 200,
-                                        ConnectedUser = parent
-                                    });
+                                    if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
+                                    {
+                                        return Ok(new LoginResult 
+                                        { 
+                                            UserIsConnected = false,
+                                            Message = $"{GetDayPeriod()} {parent.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            Error = null,
+                                            StatusCode = 200,
+                                            IsChangePassword = true,
+                                            ConnectedUser = parent
+                                        }); 
+                                    }
+                                    else
+                                    {
+                                        return Ok(new LoginResult 
+                                        { 
+                                            UserIsConnected = isValidPassword,
+                                            Message = $"{GetDayPeriod()} {parent.NAME}",
+                                            Error = null,
+                                            StatusCode = 200,
+                                            ConnectedUser = parent
+                                        });
+                                    }
                                 }
                             }
-                        }
-                    return Unauthorized(new LoginResult 
-                    { 
-                        UserIsConnected = false,
-                        Message = "L'adresse email et ou le mot de passe est invalide.",
-                        Error = null,
-                        StatusCode = 401
-                    });
+                        break;
+                    }
                 }
 
                 return BadRequest(new LoginResult 
@@ -188,48 +166,46 @@ namespace YOMA.Controllers
             }
         }
 
-        [HttpGet("generateEmailValidationCode/{userTypeId}/{email}")]
-        public async Task<ActionResult> generateEmailValidationCode(int userTypeId, string email)
+        [HttpGet("generateEmailValidationCode/{email}")]
+        public async Task<ActionResult> generateEmailValidationCode(string email)
         {
             try
             {
-                switch(userTypeId)
+                var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == email);
+                if(userEmail != null)
                 {
-                    case 1: // Professeur
-                        var user = await _context.Users.FirstOrDefaultAsync(x => x.USER_TYPE_ID == userTypeId && !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.Equals(email));
-                        if(user != null)
-                        {
-                            var now = DateTime.UtcNow; 
-                            var validCode = await _context.ForgotUserPasswords
-                                .Where(x => EF.Functions.Like(x.EMAIL.ToLower(), email.ToLower()))
-                            .FirstOrDefaultAsync(x => x.EXPIRE_DATE > now);
-
-                            if(validCode != null)
+                    switch(userEmail.UPDATED_USER_ID)
+                    {
+                        case 1: // Professeur
+                            var user = await _context.Users.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
+                            if(user != null)
                             {
-                                return BadRequest(new EmailValidation 
-                                { 
-                                    Success = false,
-                                    Message = "Nous vous avons déjà envoyé un code encore valide. Passez à l'étape 2 pour valider le code reçu.",
-                                    Error = null,
-                                    StatusCode = 400
-                                });
-                            }
+                                bool isExpiredCode = await EmailHelper.IsExpiredCode(email, _context);
+                                if(isExpiredCode)
+                                {
+                                    return BadRequest(new EmailValidation 
+                                    { 
+                                        Success = false,
+                                        Message = "Nous vous avons déjà envoyé un code encore valide. Passez à l'étape 2 pour valider le code reçu.",
+                                        Error = null,
+                                        StatusCode = 400
+                                    });
+                                }
+                                else
+                                {
+                                    var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
+                                    if(forgotUserPassword != null)
+                                    {
+                                        return Ok(new EmailValidation 
+                                        { 
+                                            Success = true,
+                                            Message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
+                                            Error = null,
+                                            StatusCode = 200
+                                        }); 
+                                    }
+                                }
 
-                            var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
-                            if(forgotUserPassword != null)
-                            {
-                                // Appel de la fonction qui envoi des mail ici
-
-                                return Ok(new EmailValidation 
-                                { 
-                                    Success = true,
-                                    Message = $"Nous venons d'envoyer un code de validation à l'adresse email {user.EMAIL}.",
-                                    Error = null,
-                                    StatusCode = 200
-                                }); 
-                            }
-                            else
-                            {
                                 return BadRequest(new EmailValidation 
                                 { 
                                     Success = false,
@@ -238,57 +214,96 @@ namespace YOMA.Controllers
                                     StatusCode = 400
                                 });
                             }
-                        }
-                        else
-                        {
-                            return BadRequest(new LoginResult 
-                            { 
-                                UserIsConnected = false,
-                                Message = "L'adresse email fournit n'existe pas dans notre base de données.",
-                                Error = null,
-                                StatusCode = 400
-                            });
-                        }
+                        break;
 
-                    case 2: // Élèves
-                        var student = await _context.Students.FirstOrDefaultAsync(x => x.USER_TYPE_ID == userTypeId && !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.Equals(email));
-                        if(student != null)
-                        {
-                            
-                        }
-                        else
-                        {
-                            
-                        }
-                    break;
+                        case 2: // Élèves
+                            var student = await _context.Students.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
+                            if(student != null)
+                            {
+                                bool isExpiredCode = await EmailHelper.IsExpiredCode(email, _context);
+                                if(isExpiredCode)
+                                {
+                                    return BadRequest(new EmailValidation 
+                                    { 
+                                        Success = false,
+                                        Message = "Nous vous avons déjà envoyé un code encore valide. Passez à l'étape 2 pour valider le code reçu.",
+                                        Error = null,
+                                        StatusCode = 400
+                                    });
+                                }
+                                else
+                                {
+                                    var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
+                                    if(forgotUserPassword != null)
+                                    {
+                                        return Ok(new EmailValidation 
+                                        { 
+                                            Success = true,
+                                            Message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
+                                            Error = null,
+                                            StatusCode = 200
+                                        }); 
+                                    }
+                                }
 
-                    case 3: // Parent d'élèves
-                        var parent = await _context.Parents.FirstOrDefaultAsync(x => x.USER_TYPE_ID == userTypeId && !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.Equals(email));
-                        if(parent != null)
-                        {
-                            
-                        }
-                        else
-                        {
-                            
-                        }
-                    break;
+                                return BadRequest(new EmailValidation 
+                                { 
+                                    Success = false,
+                                    Message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
+                                    Error = null,
+                                    StatusCode = 400
+                                });
+                            }
+                        break;
+
+                        case 3: // Parent d'élèves
+                            var parent = await _context.Parents.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
+                            if(parent != null)
+                            {
+                                bool isExpiredCode = await EmailHelper.IsExpiredCode(email, _context);
+                                if(isExpiredCode)
+                                {
+                                    return BadRequest(new EmailValidation 
+                                    { 
+                                        Success = false,
+                                        Message = "Nous vous avons déjà envoyé un code encore valide. Passez à l'étape 2 pour valider le code reçu.",
+                                        Error = null,
+                                        StatusCode = 400
+                                    });
+                                }
+                                else
+                                {
+                                    var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
+                                    if(forgotUserPassword != null)
+                                    {
+                                        return Ok(new EmailValidation 
+                                        { 
+                                            Success = true,
+                                            Message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
+                                            Error = null,
+                                            StatusCode = 200
+                                        }); 
+                                    }
+                                }
+
+                                return BadRequest(new EmailValidation 
+                                { 
+                                    Success = false,
+                                    Message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
+                                    Error = null,
+                                    StatusCode = 400
+                                });
+                            }
+                        break;
+                    }
                 }
 
-                // return BadRequest(new LoginResult 
-                // { 
-                //     UserIsConnected = false,
-                //     Message = "Le choix du type d'utilisateur est obligatoire.",
-                //     Error = null,
-                //     StatusCode = 401
-                // });
-
-                return BadRequest(new 
+                return BadRequest(new LoginResult 
                 { 
-                    message = "Le choix du type d'utilisateur est obligatoire.",
-                    error = "",
-                    success = false,
-                    statusCode = 400
+                    UserIsConnected = false,
+                    Message = "Cette adresse email n'existe pas dans notre base de données.",
+                    Error = null,
+                    StatusCode = 401
                 });
             }
             catch(Exception ex)

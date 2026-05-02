@@ -17,7 +17,6 @@ namespace YOMA.Models.Tables
         public required string TELEPHONE_1 { get; set; }
         public string? TELEPHONE_2 { get; set; } = null;
         public required string QUARTER { get; set; }
-        public string? EMAIL { get; set; } = null;
         #pragma warning disable
         [JsonIgnore]
         public string PASSWORD { get; set; }
@@ -41,8 +40,8 @@ namespace YOMA.Models.Tables
         public int USER_ROLE_ID { get; set; }
         public required UserRole USER_ROLE { get; set; }
 
-        [ForeignKey("USER_TYPE")]
-        public int USER_TYPE_ID { get; set; }
-        public required UserType USER_TYPE { get; set; }
+        [ForeignKey("USER_EMAIL")]
+        public int USER_EMAIL_ID { get; set; }
+        public required UserEmail USER_EMAIL { get; set; }
     }
 }

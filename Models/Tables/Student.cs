@@ -18,7 +18,6 @@ namespace YOMA.Models.Tables
         public required string QUARTER { get; set; }
         public string? TELEPHONE_1 { get; set; } = null;
         public string? TELEPHONE_2 { get; set; } = null;
-        public string? EMAIL { get; set; } = null;
         public required string MATRICULE { get; set; }
         #pragma warning disable
         [JsonIgnore]
@@ -55,8 +54,8 @@ namespace YOMA.Models.Tables
         public int PARENT_2_ID { get; set; }
         public required StudentParent PARENT_2 { get; set; }
 
-        [ForeignKey("USER_TYPE")]
-        public int USER_TYPE_ID { get; set; }
-        public required UserType USER_TYPE { get; set; }
+        [ForeignKey("USER_EMAIL")]
+        public int USER_EMAIL_ID { get; set; }
+        public required UserEmail USER_EMAIL { get; set; }
     }
 }

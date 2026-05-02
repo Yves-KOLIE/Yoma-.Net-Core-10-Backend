@@ -1,6 +1,8 @@
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
+using YOMA.Models;
 
 namespace YOMA.Helpers
 {
@@ -130,6 +132,15 @@ namespace YOMA.Helpers
             {
                 return false;
             }
+        }
+
+        public static async Task<bool> IsExpiredCode(string receiverEmail, Context _context)
+        {
+            var now = DateTime.UtcNow; 
+            var validCode = await _context.ForgotUserPasswords
+                .Where(x => EF.Functions.Like(x.EMAIL.ToLower(), receiverEmail.ToLower()))
+            .FirstOrDefaultAsync(x => x.EXPIRE_DATE > now);
+            return validCode == null;
         }
 
     }
