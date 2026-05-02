@@ -25,11 +25,11 @@ namespace YOMA.Models.Tables
         #pragma warning restore
 
         public string? PHOTO { get; set; } = null;
-        public bool IS_LOCK { get; set; }
-        public bool IS_ACTIVE { get; set; }
-        public bool IS_PRINCIPAL_TEACHER { get; set; }
-        public int[] USER_POSITION_IDS { get; set; } = [];
-        public int[] SCHOOL_EDUCATION_IDS { get; set; } = [];
+        public bool IS_LOCK { get; set; } = false;
+        public bool IS_ACTIVE { get; set; } = true;
+        public bool IS_PRINCIPAL_TEACHER { get; set; } = false;
+        public int[]? USER_POSITION_IDS { get; set; } = null;
+        public int[]? SCHOOL_EDUCATION_IDS { get; set; } = null;
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;
         public DateTime? LOCK_DATE { get; set; } = null;
