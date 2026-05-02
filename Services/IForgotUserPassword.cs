@@ -22,7 +22,7 @@ public class ForgotUserPasswordService : IForgotUserPasswordService
         try
         {
             var now = DateTime.UtcNow;
-            var expireDate = now.AddMinutes(15);
+            var expireDate = now.AddMinutes(30);
             var randomCode = EmailHelper.GenerateCode();
 
             var forgotUserPassword = _context.ForgotUserPasswords.Add(new ForgotUserPassword
