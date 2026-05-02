@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using YOMA.Helpers;
+// using YOMA.Models.Tables;
 using YOMA.Models;
 
 namespace YOMA.Controllers
@@ -12,11 +13,13 @@ namespace YOMA.Controllers
     {
         private readonly Context _context;
         private readonly PasswordService _passwordService;
+        private readonly ForgotUserPasswordService _forgotUserPasswordService;
 
-        public LoginController(Context context, PasswordService passwordService)
+        public LoginController(Context context, PasswordService passwordService, ForgotUserPasswordService forgotUserPasswordService)
         {
             _context = context;
             _passwordService = passwordService;
+            _forgotUserPasswordService = forgotUserPasswordService;
         }
 
         [HttpPost("Auth")]
@@ -39,12 +42,12 @@ namespace YOMA.Controllers
                             bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, user.PASSWORD);
                             if(isValidPassword)
                             {
-                                if(loginModel.password.Equals(Constant.DEFAULT_PASSWORD))
+                                if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
                                 {
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = false,
-                                        Message = $"{getDayPeriod()} {user.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                        Message = $"{GetDayPeriod()} {user.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                         Error = null,
                                         StatusCode = 200,
                                         IsChangePassword = true,
@@ -56,7 +59,7 @@ namespace YOMA.Controllers
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = isValidPassword,
-                                        Message = $"{getDayPeriod()} {user.NAME}",
+                                        Message = $"{GetDayPeriod()} {user.NAME}",
                                         Error = null,
                                         StatusCode = 200,
                                         ConnectedUser = user
@@ -84,12 +87,12 @@ namespace YOMA.Controllers
                             bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, student.PASSWORD);
                             if(isValidPassword)
                             {
-                                if(loginModel.password.Equals(Constant.DEFAULT_PASSWORD))
+                                if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
                                 {
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = false,
-                                        Message = $"{getDayPeriod()} {student.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                        Message = $"{GetDayPeriod()} {student.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                         Error = null,
                                         StatusCode = 200,
                                         IsChangePassword = true,
@@ -101,7 +104,7 @@ namespace YOMA.Controllers
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = isValidPassword,
-                                        Message = $"{getDayPeriod()} {student.NAME}",
+                                        Message = $"{GetDayPeriod()} {student.NAME}",
                                         Error = null,
                                         StatusCode = 200,
                                         ConnectedUser = student
@@ -131,12 +134,12 @@ namespace YOMA.Controllers
                             bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, parent.PASSWORD);
                             if(isValidPassword)
                             {
-                                if(loginModel.password.Equals(Constant.DEFAULT_PASSWORD))
+                                if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
                                 {
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = false,
-                                        Message = $"{getDayPeriod()} {parent.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                        Message = $"{GetDayPeriod()} {parent.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                         Error = null,
                                         StatusCode = 200,
                                         IsChangePassword = true,
@@ -148,7 +151,7 @@ namespace YOMA.Controllers
                                     return Ok(new LoginResult 
                                     { 
                                         UserIsConnected = isValidPassword,
-                                        Message = $"{getDayPeriod()} {parent.NAME}",
+                                        Message = $"{GetDayPeriod()} {parent.NAME}",
                                         Error = null,
                                         StatusCode = 200,
                                         ConnectedUser = parent
@@ -170,7 +173,7 @@ namespace YOMA.Controllers
                     UserIsConnected = false,
                     Message = "Le choix du type d'utilisateur est obligatoire.",
                     Error = null,
-                    StatusCode = 401
+                    StatusCode = 400
                 });
             }
             catch (Exception ex)
@@ -185,7 +188,7 @@ namespace YOMA.Controllers
             }
         }
 
-        [HttpPost("emailValidationCode/{userType}/{email}")]
+        [HttpGet("generateEmailValidationCode/{userTypeId}/{email}")]
         public async Task<ActionResult> generateEmailValidationCode(int userTypeId, string email)
         {
             try
@@ -196,13 +199,56 @@ namespace YOMA.Controllers
                         var user = await _context.Users.FirstOrDefaultAsync(x => x.USER_TYPE_ID == userTypeId && !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.Equals(email));
                         if(user != null)
                         {
-                            
+                            var now = DateTime.UtcNow; 
+                            var validCode = await _context.ForgotUserPasswords
+                                .Where(x => EF.Functions.Like(x.EMAIL.ToLower(), email.ToLower()))
+                            .FirstOrDefaultAsync(x => x.EXPIRE_DATE > now);
+
+                            if(validCode != null)
+                            {
+                                return BadRequest(new EmailValidation 
+                                { 
+                                    Success = false,
+                                    Message = "Nous vous avons déjà envoyé un code encore valide. Passez à l'étape 2 pour valider le code reçu.",
+                                    Error = null,
+                                    StatusCode = 400
+                                });
+                            }
+
+                            var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
+                            if(forgotUserPassword != null)
+                            {
+                                // Appel de la fonction qui envoi des mail ici
+
+                                return Ok(new EmailValidation 
+                                { 
+                                    Success = true,
+                                    Message = $"Nous venons d'envoyer un code de validation à l'adresse email {user.EMAIL}.",
+                                    Error = null,
+                                    StatusCode = 200
+                                }); 
+                            }
+                            else
+                            {
+                                return BadRequest(new EmailValidation 
+                                { 
+                                    Success = false,
+                                    Message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
+                                    Error = null,
+                                    StatusCode = 400
+                                });
+                            }
                         }
                         else
                         {
-                            
+                            return BadRequest(new LoginResult 
+                            { 
+                                UserIsConnected = false,
+                                Message = "L'adresse email fournit n'existe pas dans notre base de données.",
+                                Error = null,
+                                StatusCode = 400
+                            });
                         }
-                    break;
 
                     case 2: // Élèves
                         var student = await _context.Students.FirstOrDefaultAsync(x => x.USER_TYPE_ID == userTypeId && !string.IsNullOrEmpty(x.EMAIL) && x.EMAIL.Equals(email));
@@ -228,13 +274,21 @@ namespace YOMA.Controllers
                         }
                     break;
                 }
-                
-                return BadRequest(new LoginResult 
+
+                // return BadRequest(new LoginResult 
+                // { 
+                //     UserIsConnected = false,
+                //     Message = "Le choix du type d'utilisateur est obligatoire.",
+                //     Error = null,
+                //     StatusCode = 401
+                // });
+
+                return BadRequest(new 
                 { 
-                    UserIsConnected = false,
-                    Message = "Le choix du type d'utilisateur est obligatoire.",
-                    Error = null,
-                    StatusCode = 401
+                    message = "Le choix du type d'utilisateur est obligatoire.",
+                    error = "",
+                    success = false,
+                    statusCode = 400
                 });
             }
             catch(Exception ex)
@@ -250,10 +304,18 @@ namespace YOMA.Controllers
         }
 
 
-        private string getDayPeriod()
+        private string GetDayPeriod()
         {
             return DateTime.UtcNow.Hour < 12 ? "Bonjour" : "Bonsoir";
         }
 
+        // private int RandomNumber()
+        // {
+        //     var numero = _random.Next(0, 10000);
+        //     return numero.ToString("D4");  // Force 4 chiffres avec zéros
+        // }
+
     }
+
+
 }

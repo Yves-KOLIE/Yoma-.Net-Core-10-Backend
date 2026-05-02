@@ -1,3 +1,5 @@
+using System.Text.Json;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using YOMA.Models;
 
@@ -32,6 +34,7 @@ builder.Services.AddScoped<StudentRegistrationService>();
 builder.Services.AddScoped<StudentService>();
 builder.Services.AddScoped<PasswordService>();
 builder.Services.AddScoped<UserTypeService>();
+builder.Services.AddScoped<ForgotUserPasswordService>();
 
 
 builder.Services.AddDbContext<Context>(options =>
@@ -62,6 +65,23 @@ app.UseCors("AllowAngularOrigins");
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+}
+
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+        var result = JsonSerializer.Serialize(new { error = "Une erreur serveur est survenue.", message = exception?.Message });
+        await context.Response.WriteAsync(result);
+    });
+});
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
 }
 
 app.UseHttpsRedirection();
