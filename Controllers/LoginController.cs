@@ -11,13 +11,11 @@ namespace YOMA.Controllers
     public class LoginController : ControllerBase
     {
         private readonly Context _context;
-        private readonly PasswordService _passwordService;
         private readonly ForgotUserPasswordService _forgotUserPasswordService;
 
-        public LoginController(Context context, PasswordService passwordService, ForgotUserPasswordService forgotUserPasswordService)
+        public LoginController(Context context, ForgotUserPasswordService forgotUserPasswordService)
         {
             _context = context;
-            _passwordService = passwordService;
             _forgotUserPasswordService = forgotUserPasswordService;
         }
 
@@ -40,7 +38,7 @@ namespace YOMA.Controllers
 
                             if(user != null)
                             {
-                                bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, user.PASSWORD);
+                                bool isValidPassword = PasswordHelper.IsValidPassword(loginModel.password, user.PASSWORD);
                                 if(isValidPassword)
                                 {
                                     if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
@@ -78,7 +76,7 @@ namespace YOMA.Controllers
 
                             if(student != null)
                             {
-                                bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, student.PASSWORD);
+                                bool isValidPassword = PasswordHelper.IsValidPassword(loginModel.password, student.PASSWORD);
                                 if(isValidPassword)
                                 {
                                     if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
@@ -117,7 +115,7 @@ namespace YOMA.Controllers
 
                             if(parent != null)
                             {
-                                bool isValidPassword = _passwordService.IsValidPassword(loginModel.password, parent.PASSWORD);
+                                bool isValidPassword = PasswordHelper.IsValidPassword(loginModel.password, parent.PASSWORD);
                                 if(isValidPassword)
                                 {
                                     if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
@@ -188,8 +186,8 @@ namespace YOMA.Controllers
 
                             if(user != null)
                             {
-                                bool isvalidCode = await EmailHelper.IsvalidCode(email, _context);
-                                if(isvalidCode)
+                                var isValidForgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
+                                if(isValidForgotUserPassword != null)
                                 {
                                     return BadRequest(new EmailValidation 
                                     { 
@@ -202,9 +200,8 @@ namespace YOMA.Controllers
                                 }
                                 else
                                 {
-                                    // var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
-                                    // if(forgotUserPassword != null)
-                                    if(5 > 4)
+                                    var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
+                                    if(forgotUserPassword != null)
                                     {
                                         return Ok(new EmailValidation 
                                         { 
@@ -236,8 +233,8 @@ namespace YOMA.Controllers
 
                             if(student != null)
                             {
-                                bool isvalidCode = await EmailHelper.IsvalidCode(email, _context);
-                                if(isvalidCode)
+                                var isValidForgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
+                                if(isValidForgotUserPassword != null)
                                 {
                                     return BadRequest(new EmailValidation 
                                     { 
@@ -284,8 +281,8 @@ namespace YOMA.Controllers
 
                             if(parent != null)
                             {
-                                bool isvalidCode = await EmailHelper.IsvalidCode(email, _context);
-                                if(isvalidCode)
+                                var isValidForgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
+                                if(isValidForgotUserPassword != null)
                                 {
                                     return BadRequest(new EmailValidation 
                                     { 
@@ -319,6 +316,165 @@ namespace YOMA.Controllers
                                     Error = null,
                                     StatusCode = 400,
                                     ConnectedUser = null
+                                });
+                            }
+                        break;
+                    }
+                }
+
+                return BadRequest(new EmailValidation 
+                { 
+                    Success = false,
+                    Message = "Cette adresse email n'existe pas dans notre base de données.",
+                    Error = null,
+                    StatusCode = 400,
+                    ConnectedUser = null
+                });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new EmailValidation
+                { 
+                    Success = false,
+                    Message = "Cette adresse email n'existe pas dans notre base de données.",
+                    Error = ex,
+                    StatusCode = 400,
+                    ConnectedUser = null
+                });
+            }
+        }
+
+        [HttpGet("validateEmailCode/{email}/{generedCode}")]
+        public async Task<ActionResult> validateEmailCode(string email, string generedCode)
+        {
+            try
+            {
+                var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == email);
+                if(userEmail != null)
+                {
+                    switch(userEmail.USER_TYPE_ID)
+                    {
+                        case 1: // Professeur
+                            var user = await _context.Users
+                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
+                                .Include(x => x.USER_ROLE)
+                                .Include(x => x.USER_EMAIL)
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+
+                            if(user != null)
+                            {
+                                var forgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
+                                if(forgotUserPassword != null)
+                                {
+                                    bool isValidCode = PasswordHelper.IsValidCode(generedCode, forgotUserPassword.CODE_GENERETED);
+                                    if(isValidCode)
+                                    {
+                                        // Désactiver le code validé
+                                        await _context.ForgotUserPasswords
+                                            .Where(x => x.ID == forgotUserPassword.ID)
+                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.IS_VALIDED, true));
+
+                                        return Ok(new EmailValidation 
+                                        { 
+                                            Success = true,
+                                            Message = "Code validé avec succès. Passez à l'étape 3 pour créer votre nouveau mot de passe.",
+                                            Error = null,
+                                            StatusCode = 400,
+                                            ConnectedUser = user
+                                        });
+                                    }
+                                }
+
+                                return BadRequest(new EmailValidation 
+                                { 
+                                    Success = false,
+                                    Message = "Le code que vous avez saisi a expiré ou est invalide.",
+                                    Error = null,
+                                    StatusCode = 400,
+                                    ConnectedUser = user
+                                });
+                            }
+                        break;
+
+                        case 2: // Élèves
+                            var student = await _context.Students
+                                .Include(x => x.USER_ROLE)
+                                .Include(x => x.USER_EMAIL)
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+
+                            if(student != null)
+                            {
+                                var forgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
+                                if(forgotUserPassword != null)
+                                {
+                                    bool isValidCode = PasswordHelper.IsValidCode(generedCode, forgotUserPassword.CODE_GENERETED);
+                                    if(isValidCode)
+                                    {
+                                        // Désactiver le code validé
+                                        await _context.ForgotUserPasswords
+                                            .Where(x => x.ID == forgotUserPassword.ID)
+                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.IS_VALIDED, true));
+
+                                        return Ok(new EmailValidation 
+                                        { 
+                                            Success = true,
+                                            Message = "Code validé avec succès. Passez à l'étape 3 pour créer votre nouveau mot de passe",
+                                            Error = null,
+                                            StatusCode = 400,
+                                            ConnectedUser = student
+                                        });
+                                    }
+                                }
+
+                                return BadRequest(new EmailValidation 
+                                { 
+                                    Success = false,
+                                    Message = "Le code que vous avez saisi a expiré ou est invalide.",
+                                    Error = null,
+                                    StatusCode = 400,
+                                    ConnectedUser = student
+                                });
+                            }
+                        break;
+
+                        case 3: // Parent d'élèves
+                            var parent = await _context.Parents
+                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
+                                .Include(x => x.USER_ROLE)
+                                .Include(x => x.USER_EMAIL)
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+
+                            if(parent != null)
+                            {
+                                var forgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
+                                if(forgotUserPassword != null)
+                                {
+                                    bool isValidCode = PasswordHelper.IsValidCode(generedCode, forgotUserPassword.CODE_GENERETED);
+                                    if(isValidCode)
+                                    {
+                                        // Désactiver le code validé
+                                        await _context.ForgotUserPasswords
+                                            .Where(x => x.ID == forgotUserPassword.ID)
+                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.IS_VALIDED, true));
+
+                                        return Ok(new EmailValidation 
+                                        { 
+                                            Success = true,
+                                            Message = "Code validé avec succès. Passez à l'étape 3 pour créer votre nouveau mot de passe",
+                                            Error = null,
+                                            StatusCode = 400,
+                                            ConnectedUser = parent
+                                        });
+                                    }
+                                }
+
+                                return BadRequest(new EmailValidation 
+                                { 
+                                    Success = false,
+                                    Message = "Le code que vous avez saisi a expiré ou est invalide.",
+                                    Error = null,
+                                    StatusCode = 400,
+                                    ConnectedUser = parent
                                 });
                             }
                         break;

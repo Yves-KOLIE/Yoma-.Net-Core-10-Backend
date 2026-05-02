@@ -11,12 +11,10 @@ public interface IForgotUserPasswordService
 public class ForgotUserPasswordService : IForgotUserPasswordService
 {
     private readonly Context _context;
-    private readonly PasswordService _passwordService;
 
-    public ForgotUserPasswordService(Context context, PasswordService passwordService)
+    public ForgotUserPasswordService(Context context)
     {
         _context = context;
-        _passwordService = passwordService;
     }
 
     public async Task<ForgotUserPassword?> CreateForgotPasswordAsync(string email)
@@ -30,7 +28,7 @@ public class ForgotUserPasswordService : IForgotUserPasswordService
             var forgotUserPassword = _context.ForgotUserPasswords.Add(new ForgotUserPassword
             {
                 ID = 0,
-                CODE_GENERETED = _passwordService.HashPassword(randomCode),
+                CODE_GENERETED = PasswordHelper.HashPassword(randomCode),
                 EMAIL = email.Trim().ToLower(),
                 CREATION_DATE = now,
                 EXPIRE_DATE = expireDate

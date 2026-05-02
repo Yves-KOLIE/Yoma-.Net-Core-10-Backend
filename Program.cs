@@ -32,7 +32,6 @@ builder.Services.AddScoped<NoteMonthService>();
 builder.Services.AddScoped<CoursService>();
 builder.Services.AddScoped<StudentRegistrationService>();
 builder.Services.AddScoped<StudentService>();
-builder.Services.AddScoped<PasswordService>();
 builder.Services.AddScoped<UserTypeService>();
 builder.Services.AddScoped<ForgotUserPasswordService>();
 
