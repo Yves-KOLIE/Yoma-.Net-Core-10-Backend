@@ -192,7 +192,7 @@ namespace YOMA.Controllers
                                     return BadRequest(new EmailValidation 
                                     { 
                                         Success = false,
-                                        Message = "Nous vous avons déjà envoyé un code encore valide. Passez à l'étape 2 pour valider le code reçu.",
+                                        Message = "Nous vous avons déjà envoyé un code encore valide.",
                                         Error = null,
                                         StatusCode = 400,
                                         ConnectedUser = user
@@ -239,7 +239,7 @@ namespace YOMA.Controllers
                                     return BadRequest(new EmailValidation 
                                     { 
                                         Success = false,
-                                        Message = "Nous vous avons déjà envoyé un code encore valide. Passez à l'étape 2 pour valider le code reçu.",
+                                        Message = "Nous vous avons déjà envoyé un code encore valide.",
                                         Error = null,
                                         StatusCode = 400,
                                         ConnectedUser = student
@@ -287,7 +287,7 @@ namespace YOMA.Controllers
                                     return BadRequest(new EmailValidation 
                                     { 
                                         Success = false,
-                                        Message = "Nous vous avons déjà envoyé un code encore valide. Passez à l'étape 2 pour valider le code reçu.",
+                                        Message = "Nous vous avons déjà envoyé un code encore valide.",
                                         Error = null,
                                         StatusCode = 400,
                                         ConnectedUser = parent
@@ -377,7 +377,7 @@ namespace YOMA.Controllers
                                         return Ok(new EmailValidation 
                                         { 
                                             Success = true,
-                                            Message = "Code validé avec succès. Passez à l'étape 3 pour créer votre nouveau mot de passe.",
+                                            Message = "Code validé avec succès.",
                                             Error = null,
                                             StatusCode = 400,
                                             ConnectedUser = user
@@ -418,7 +418,7 @@ namespace YOMA.Controllers
                                         return Ok(new EmailValidation 
                                         { 
                                             Success = true,
-                                            Message = "Code validé avec succès. Passez à l'étape 3 pour créer votre nouveau mot de passe",
+                                            Message = "Code validé avec succès.",
                                             Error = null,
                                             StatusCode = 400,
                                             ConnectedUser = student
@@ -460,7 +460,7 @@ namespace YOMA.Controllers
                                         return Ok(new EmailValidation 
                                         { 
                                             Success = true,
-                                            Message = "Code validé avec succès. Passez à l'étape 3 pour créer votre nouveau mot de passe",
+                                            Message = "Code validé avec succès.",
                                             Error = null,
                                             StatusCode = 400,
                                             ConnectedUser = parent
