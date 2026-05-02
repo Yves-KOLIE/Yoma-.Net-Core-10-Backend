@@ -19,6 +19,19 @@ namespace YOMA.Models
                 .HasOne(s => s.PARENT_2)
                 .WithMany()  // Ou .WithOne() si one-to-one, ajustez selon votre modèle
             .HasForeignKey(s => s.PARENT_2_ID);  // Remplacez par la FK réelle
+                            
+            modelBuilder.Entity<Student>()
+                .HasIndex(u => u.MATRICULE)
+            .IsUnique(); // Indiquer que le champs Email est unique dans la table Student
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.MATRICULE)
+            .IsUnique(); // Indiquer que le champs Email est unique dans la table User
+
+
+            modelBuilder.Entity<UserEmail>()
+                .HasIndex(u => u.EMAIL)
+            .IsUnique(); // Indiquer que le champs Email est unique dans la table UserEmail
 
             base.OnModelCreating(modelBuilder);
         }

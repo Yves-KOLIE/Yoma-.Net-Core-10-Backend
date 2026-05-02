@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using YOMA.Models;
@@ -11,9 +12,11 @@ using YOMA.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20260502172257_uniqueEmailConstraint")]
+    partial class uniqueEmailConstraint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1694,9 +1697,6 @@ namespace backend.Migrations
 
                     b.HasIndex("BIRTH_PLACE_ID");
 
-                    b.HasIndex("MATRICULE")
-                        .IsUnique();
-
                     b.HasIndex("PARENT_1_ID");
 
                     b.HasIndex("PARENT_2_ID");
@@ -2152,9 +2152,6 @@ namespace backend.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("MATRICULE")
-                        .IsUnique();
 
                     b.HasIndex("PROFESSIONAL_QUALIFICATION_ID");
 
