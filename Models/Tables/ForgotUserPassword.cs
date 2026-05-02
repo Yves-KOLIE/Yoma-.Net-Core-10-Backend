@@ -12,6 +12,7 @@ namespace YOMA.Models.Tables
 		public int ID { get; set; }
         public required string EMAIL { get; set; }
         public required string CODE_GENERETED { get; set; }
+        public bool IS_VALIDED { get; set; }
         public DateTime CREATION_DATE { get; set; }
 		public DateTime EXPIRE_DATE { get; set; }
     }

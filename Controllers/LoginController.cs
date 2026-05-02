@@ -35,6 +35,7 @@ namespace YOMA.Controllers
                             var user = await _context.Users
                                 .Include(x => x.PROFESSIONAL_QUALIFICATION)
                                 .Include(x => x.USER_ROLE)
+                                .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
                             if(user != null)
@@ -72,6 +73,7 @@ namespace YOMA.Controllers
                         case 2: // Élèves
                             var student = await _context.Students
                                 .Include(x => x.USER_ROLE)
+                                .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
                             if(student != null)
@@ -110,6 +112,7 @@ namespace YOMA.Controllers
                             var parent = await _context.Parents
                                 .Include(x => x.PROFESSIONAL_QUALIFICATION)
                                 .Include(x => x.USER_ROLE)
+                                .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
                             if(parent != null)
@@ -177,7 +180,12 @@ namespace YOMA.Controllers
                     switch(userEmail.USER_TYPE_ID)
                     {
                         case 1: // Professeur
-                            var user = await _context.Users.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+                            var user = await _context.Users
+                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
+                                .Include(x => x.USER_ROLE)
+                                .Include(x => x.USER_EMAIL)
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+
                             if(user != null)
                             {
                                 bool isvalidCode = await EmailHelper.IsvalidCode(email, _context);
@@ -188,20 +196,23 @@ namespace YOMA.Controllers
                                         Success = false,
                                         Message = "Nous vous avons déjà envoyé un code encore valide. Passez à l'étape 2 pour valider le code reçu.",
                                         Error = null,
-                                        StatusCode = 400
+                                        StatusCode = 400,
+                                        ConnectedUser = user
                                     });
                                 }
                                 else
                                 {
-                                    var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
-                                    if(forgotUserPassword != null)
+                                    // var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
+                                    // if(forgotUserPassword != null)
+                                    if(5 > 4)
                                     {
                                         return Ok(new EmailValidation 
                                         { 
                                             Success = true,
                                             Message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
                                             Error = null,
-                                            StatusCode = 200
+                                            StatusCode = 200,
+                                            ConnectedUser = user
                                         }); 
                                     }
                                 }
@@ -211,13 +222,18 @@ namespace YOMA.Controllers
                                     Success = false,
                                     Message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
                                     Error = null,
-                                    StatusCode = 400
+                                    StatusCode = 400,
+                                    ConnectedUser = null
                                 });
                             }
                         break;
 
                         case 2: // Élèves
-                            var student = await _context.Students.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+                            var student = await _context.Students
+                                .Include(x => x.USER_ROLE)
+                                .Include(x => x.USER_EMAIL)
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+
                             if(student != null)
                             {
                                 bool isvalidCode = await EmailHelper.IsvalidCode(email, _context);
@@ -228,7 +244,8 @@ namespace YOMA.Controllers
                                         Success = false,
                                         Message = "Nous vous avons déjà envoyé un code encore valide. Passez à l'étape 2 pour valider le code reçu.",
                                         Error = null,
-                                        StatusCode = 400
+                                        StatusCode = 400,
+                                        ConnectedUser = student
                                     });
                                 }
                                 else
@@ -241,7 +258,8 @@ namespace YOMA.Controllers
                                             Success = true,
                                             Message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
                                             Error = null,
-                                            StatusCode = 200
+                                            StatusCode = 200,
+                                            ConnectedUser = student
                                         }); 
                                     }
                                 }
@@ -251,13 +269,19 @@ namespace YOMA.Controllers
                                     Success = false,
                                     Message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
                                     Error = null,
-                                    StatusCode = 400
+                                    StatusCode = 400,
+                                    ConnectedUser = null
                                 });
                             }
                         break;
 
                         case 3: // Parent d'élèves
-                            var parent = await _context.Parents.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+                            var parent = await _context.Parents
+                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
+                                .Include(x => x.USER_ROLE)
+                                .Include(x => x.USER_EMAIL)
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+
                             if(parent != null)
                             {
                                 bool isvalidCode = await EmailHelper.IsvalidCode(email, _context);
@@ -268,7 +292,8 @@ namespace YOMA.Controllers
                                         Success = false,
                                         Message = "Nous vous avons déjà envoyé un code encore valide. Passez à l'étape 2 pour valider le code reçu.",
                                         Error = null,
-                                        StatusCode = 400
+                                        StatusCode = 400,
+                                        ConnectedUser = parent
                                     });
                                 }
                                 else
@@ -281,7 +306,8 @@ namespace YOMA.Controllers
                                             Success = true,
                                             Message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
                                             Error = null,
-                                            StatusCode = 200
+                                            StatusCode = 200,
+                                            ConnectedUser = parent
                                         }); 
                                     }
                                 }
@@ -291,45 +317,40 @@ namespace YOMA.Controllers
                                     Success = false,
                                     Message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
                                     Error = null,
-                                    StatusCode = 400
+                                    StatusCode = 400,
+                                    ConnectedUser = null
                                 });
                             }
                         break;
                     }
                 }
 
-                return BadRequest(new LoginResult 
+                return BadRequest(new EmailValidation 
                 { 
-                    UserIsConnected = false,
+                    Success = false,
                     Message = "Cette adresse email n'existe pas dans notre base de données.",
                     Error = null,
-                    StatusCode = 401
+                    StatusCode = 400,
+                    ConnectedUser = null
                 });
             }
             catch(Exception ex)
             {
-                return BadRequest(new 
+                return BadRequest(new EmailValidation
                 { 
-                    message = "Une erreur coté serveur s'est produite.",
-                    error = ex,
-                    success = false,
-                    statusCode = 500
+                    Success = false,
+                    Message = "Cette adresse email n'existe pas dans notre base de données.",
+                    Error = ex,
+                    StatusCode = 400,
+                    ConnectedUser = null
                 });
             }
         }
-
 
         private string GetDayPeriod()
         {
             return DateTime.UtcNow.Hour < 12 ? "Bonjour" : "Bonsoir";
         }
-
-        // private int RandomNumber()
-        // {
-        //     var numero = _random.Next(0, 10000);
-        //     return numero.ToString("D4");  // Force 4 chiffres avec zéros
-        // }
-
     }
 
 

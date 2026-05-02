@@ -138,7 +138,7 @@ namespace YOMA.Helpers
         {
             var now = DateTime.UtcNow; 
             var validCode = await _context.ForgotUserPasswords
-                .Where(x => EF.Functions.Like(x.EMAIL.ToLower(), receiverEmail.ToLower()))
+                .Where(x => EF.Functions.Like(x.EMAIL.ToLower(), receiverEmail.ToLower()) && x.IS_VALIDED == false)
             .FirstOrDefaultAsync(x => x.EXPIRE_DATE > now);
             return validCode != null;
         }
