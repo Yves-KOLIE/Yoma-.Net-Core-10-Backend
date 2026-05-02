@@ -134,13 +134,13 @@ namespace YOMA.Helpers
             }
         }
 
-        public static async Task<bool> IsExpiredCode(string receiverEmail, Context _context)
+        public static async Task<bool> IsvalidCode(string receiverEmail, Context _context)
         {
             var now = DateTime.UtcNow; 
             var validCode = await _context.ForgotUserPasswords
                 .Where(x => EF.Functions.Like(x.EMAIL.ToLower(), receiverEmail.ToLower()))
             .FirstOrDefaultAsync(x => x.EXPIRE_DATE > now);
-            return validCode == null;
+            return validCode != null;
         }
 
     }

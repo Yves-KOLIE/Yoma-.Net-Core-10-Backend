@@ -29,13 +29,13 @@ namespace YOMA.Controllers
                 var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == loginModel.email);
                 if(userEmail != null)
                 {
-                    switch(userEmail.UPDATED_USER_ID)
+                    switch(userEmail.USER_TYPE_ID)
                     {
                         case 1: // Professeur
                             var user = await _context.Users
                                 .Include(x => x.PROFESSIONAL_QUALIFICATION)
                                 .Include(x => x.USER_ROLE)
-                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
                             if(user != null)
                             {
@@ -72,7 +72,7 @@ namespace YOMA.Controllers
                         case 2: // Élèves
                             var student = await _context.Students
                                 .Include(x => x.USER_ROLE)
-                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
                             if(student != null)
                             {
@@ -110,7 +110,7 @@ namespace YOMA.Controllers
                             var parent = await _context.Parents
                                 .Include(x => x.PROFESSIONAL_QUALIFICATION)
                                 .Include(x => x.USER_ROLE)
-                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
                             if(parent != null)
                             {
@@ -174,14 +174,14 @@ namespace YOMA.Controllers
                 var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == email);
                 if(userEmail != null)
                 {
-                    switch(userEmail.UPDATED_USER_ID)
+                    switch(userEmail.USER_TYPE_ID)
                     {
                         case 1: // Professeur
-                            var user = await _context.Users.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
+                            var user = await _context.Users.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
                             if(user != null)
                             {
-                                bool isExpiredCode = await EmailHelper.IsExpiredCode(email, _context);
-                                if(isExpiredCode)
+                                bool isvalidCode = await EmailHelper.IsvalidCode(email, _context);
+                                if(isvalidCode)
                                 {
                                     return BadRequest(new EmailValidation 
                                     { 
@@ -217,11 +217,11 @@ namespace YOMA.Controllers
                         break;
 
                         case 2: // Élèves
-                            var student = await _context.Students.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
+                            var student = await _context.Students.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
                             if(student != null)
                             {
-                                bool isExpiredCode = await EmailHelper.IsExpiredCode(email, _context);
-                                if(isExpiredCode)
+                                bool isvalidCode = await EmailHelper.IsvalidCode(email, _context);
+                                if(isvalidCode)
                                 {
                                     return BadRequest(new EmailValidation 
                                     { 
@@ -257,11 +257,11 @@ namespace YOMA.Controllers
                         break;
 
                         case 3: // Parent d'élèves
-                            var parent = await _context.Parents.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.UPDATED_USER_ID);
+                            var parent = await _context.Parents.FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
                             if(parent != null)
                             {
-                                bool isExpiredCode = await EmailHelper.IsExpiredCode(email, _context);
-                                if(isExpiredCode)
+                                bool isvalidCode = await EmailHelper.IsvalidCode(email, _context);
+                                if(isvalidCode)
                                 {
                                     return BadRequest(new EmailValidation 
                                     { 
