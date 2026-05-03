@@ -145,7 +145,7 @@ namespace YOMA.Controllers
                 return BadRequest(new LoginResult 
                 { 
                     UserIsConnected = false,
-                    Message = "Le choix du type d'utilisateur est obligatoire.",
+                    Message = "Adresse email et/ou mot de passe invalide.",
                     Error = null,
                     StatusCode = 400
                 });
