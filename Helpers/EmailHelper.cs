@@ -39,7 +39,7 @@ namespace YOMA.Helpers
                         <title>Réinitialisation Mot de Passe - GROUPE SCOLAIRE YOMA</title>
                         <style type=""text/css"">
                             .container {{ max-width: 600px !important; margin: 0 auto !important; }}
-                            .header-gradient {{ background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important; }}
+                            .header-gradient {{ background: linear-gradient(135deg, #21a843 0%, #57ee7d 100%) !important; }}
                             .code-box {{ 
                                 animation: pulse 2s infinite !important;
                                 transition: all 0.3s ease !important;
@@ -68,12 +68,12 @@ namespace YOMA.Helpers
                             
                             <tr>
                                 <td style=""padding: 45px 40px;"">
-                                    <h2 style=""color: #1e3a8a; font-size: 22px; margin: 0 0 25px; font-weight: 600; line-height: 1.3;"">Réinitialisation de votre mot de passe</h2>
+                                    <h2 style=""color: #21a843; font-size: 22px; text-align:center; font-weight: 600; line-height: 1.3;"">Réinitialisation de votre mot de passe</h2>
                                     
                                     <div style=""text-align: center; margin: 35px 0;"" class=""code-box"">
-                                        <div style=""background: #f8fafc; border: 4px solid #3b82f6; border-radius: 16px; padding: 35px 25px; display: inline-block; box-shadow: 0 8px 24px rgba(59,130,246,0.15);"">
+                                        <div style=""background: #f8fafc; border: 4px solid #57ee7d; border-radius: 16px; padding: 35px 25px; display: inline-block; box-shadow: 0 8px 24px rgba(59,130,246,0.15);"">
                                             <p style=""margin: 0 0 20px; font-size: 16px; color: #64748b; font-weight: 500;"">Votre code de vérification :</p>
-                                            <div style=""font-size: 40px; font-weight: 800; color: #1e3a8a; letter-spacing: 10px; font-family: 'Courier New', 'Consolas', monospace; text-transform: uppercase; line-height: 1;"" class=""code-large"">{codeGenerated}</div>
+                                            <div style=""font-size: 40px; font-weight: 800; color: #21a843; letter-spacing: 10px; font-family: 'Courier New', 'Consolas', monospace; text-transform: uppercase; line-height: 1;"" class=""code-large"">{codeGenerated}</div>
                                         </div>
                                     </div>
                                     
@@ -109,8 +109,8 @@ namespace YOMA.Helpers
                                         </p>
                                         <p style=""margin: 0; font-size: 13px; color: #6b7280; line-height: 1.4;"">
                                             © 2026 <strong>GROUPE SCOLAIRE YOMA</strong>. Tous droits réservés.<br>
-                                            <a href=""mailto:support@yoma-ecole.com"" style=""color: #3b82f6; text-decoration: none; font-weight: 500;"">support@yoma-ecole.com</a> | 
-                                            <a href=""https://www.yoma-ecole.com"" style=""color: #3b82f6; text-decoration: none; font-weight: 500;"">www.yoma-ecole.com</a>
+                                            <a href=""mailto:support@yoma-ecole.com"" style=""color: #57ee7d; text-decoration: none; font-weight: 500;"">support@yoma-ecole.com</a> | 
+                                            <a href=""https://www.yoma-ecole.com"" style=""color: #57ee7d; text-decoration: none; font-weight: 500;"">www.yoma-ecole.com</a>
                                         </p>
                                     </div>
                                 </td>

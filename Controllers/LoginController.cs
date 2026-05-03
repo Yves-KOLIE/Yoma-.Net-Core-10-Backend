@@ -31,8 +31,6 @@ namespace YOMA.Controllers
                     {
                         case 1: // Professeur
                             var user = await _context.Users
-                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
-                                .Include(x => x.USER_ROLE)
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
@@ -70,7 +68,6 @@ namespace YOMA.Controllers
 
                         case 2: // Élèves
                             var student = await _context.Students
-                                .Include(x => x.USER_ROLE)
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
@@ -108,8 +105,6 @@ namespace YOMA.Controllers
 
                         case 3: // Parent d'élèves
                             var parent = await _context.Parents
-                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
-                                .Include(x => x.USER_ROLE)
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
@@ -168,7 +163,7 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("generateEmailValidationCode/{email}")]
-        public async Task<ActionResult> generateEmailValidationCode(string email)
+        public async Task<ActionResult> GenerateEmailValidationCode(string email)
         {
             try
             {
@@ -179,8 +174,6 @@ namespace YOMA.Controllers
                     {
                         case 1: // Professeur
                             var user = await _context.Users
-                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
-                                .Include(x => x.USER_ROLE)
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
@@ -227,7 +220,6 @@ namespace YOMA.Controllers
 
                         case 2: // Élèves
                             var student = await _context.Students
-                                .Include(x => x.USER_ROLE)
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
@@ -274,8 +266,6 @@ namespace YOMA.Controllers
 
                         case 3: // Parent d'élèves
                             var parent = await _context.Parents
-                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
-                                .Include(x => x.USER_ROLE)
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
@@ -345,7 +335,7 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("validateEmailCode/{email}/{generedCode}")]
-        public async Task<ActionResult> validateEmailCode(string email, string generedCode)
+        public async Task<ActionResult> ValidateEmailCode(string email, string generedCode)
         {
             try
             {
@@ -356,8 +346,6 @@ namespace YOMA.Controllers
                     {
                         case 1: // Professeur
                             var user = await _context.Users
-                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
-                                .Include(x => x.USER_ROLE)
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
@@ -398,7 +386,6 @@ namespace YOMA.Controllers
 
                         case 2: // Élèves
                             var student = await _context.Students
-                                .Include(x => x.USER_ROLE)
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
@@ -439,8 +426,6 @@ namespace YOMA.Controllers
 
                         case 3: // Parent d'élèves
                             var parent = await _context.Parents
-                                .Include(x => x.PROFESSIONAL_QUALIFICATION)
-                                .Include(x => x.USER_ROLE)
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
 
@@ -499,6 +484,142 @@ namespace YOMA.Controllers
                     Error = ex,
                     StatusCode = 400,
                     ConnectedUser = null
+                });
+            }
+        }
+
+        [HttpPost("ChangePassword")]
+        public async Task<ActionResult<LoginResult>> ChangePassword([FromBody] LoginModel loginModel)
+        {
+            try
+            {
+                if(loginModel.password == ConstantHelper.DEFAULT_PASSWORD)
+                {
+                    return BadRequest(new LoginResult 
+                    { 
+                        IsChangePassword = false,
+                        Message = "Le nouveau mot de passe doit-être différent du mot de passe par defaut.",
+                        Error = null,
+                        StatusCode = 400
+                    });
+                }
+                else
+                {
+                    if(loginModel.password == loginModel.confirmPassword)
+                    {
+                        var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == loginModel.email);
+                        if(userEmail != null)
+                        {
+                            var forgotUserPassword = await EmailHelper.IsValidForgotUserPassword(loginModel.email, _context);
+                            if(forgotUserPassword != null)
+                            {
+                                switch(userEmail.USER_TYPE_ID)
+                                {
+                                    case 1: // Professeur
+                                        int updateUser = await _context.Users
+                                            .Where(x => x.USER_EMAIL_ID == userEmail.ID)
+                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.PASSWORD, PasswordHelper.HashPassword(loginModel.password)));
+
+                                        if(updateUser > 0)
+                                        {
+                                            return Ok(new LoginResult 
+                                            { 
+                                                UserIsConnected = false,
+                                                Message = "Mot de passe modifié avec succès.",
+                                                Error = null,
+                                                StatusCode = 200,
+                                                IsChangePassword = true,
+                                            }); 
+                                        }
+                                    break;
+
+                                    case 2: // Élèves
+                                        int updateStudent = await _context.Students
+                                            .Where(x => x.USER_EMAIL_ID == userEmail.ID)
+                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.PASSWORD, PasswordHelper.HashPassword(loginModel.password)));
+
+                                        if(updateStudent > 0)
+                                        {
+                                            return Ok(new LoginResult 
+                                            { 
+                                                UserIsConnected = false,
+                                                Message = "Mot de passe modifié avec succès.",
+                                                Error = null,
+                                                StatusCode = 200,
+                                                IsChangePassword = true,
+                                            }); 
+                                        }
+                                    break;
+
+                                    case 3: // Parent d'élèves
+                                        int updateParent = await _context.Parents
+                                            .Where(x => x.USER_EMAIL_ID == userEmail.ID)
+                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.PASSWORD, PasswordHelper.HashPassword(loginModel.password)));
+
+                                        if(updateParent > 0)
+                                        {
+                                            return Ok(new LoginResult 
+                                            { 
+                                                UserIsConnected = false,
+                                                Message = "Mot de passe modifié avec succès.",
+                                                Error = null,
+                                                StatusCode = 200,
+                                                IsChangePassword = true,
+                                            }); 
+                                        }
+                                    break;
+                                }
+
+                                return BadRequest(new LoginResult 
+                                { 
+                                    IsChangePassword = false,
+                                    Message = "Impossible de modifié le mot de passe. Veillez reessayer plutard.",
+                                    Error = null,
+                                    StatusCode = 400
+                                });
+                            }
+                            else
+                            {
+                                return BadRequest(new LoginResult 
+                                { 
+                                    IsChangePassword = false,
+                                    Message = "Le code que vous avez saisi a expiré ou est invalide.",
+                                    Error = null,
+                                    StatusCode = 400
+                                });
+                            }
+                        }
+                        else
+                        {
+                            return BadRequest(new LoginResult 
+                            { 
+                                IsChangePassword = false,
+                                Message = "Cette adresse email est introuvable dans notre base de données.",
+                                Error = null,
+                                StatusCode = 400
+                            });
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest(new LoginResult 
+                        { 
+                            IsChangePassword = false,
+                            Message = "Les deux adresses email sont différentes.",
+                            Error = null,
+                            StatusCode = 400
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new LoginResult 
+                { 
+                    IsChangePassword = false,
+                    Message = "Une erreur coté serveur s'est produite.",
+                    Error = ex,
+                    StatusCode = 500
                 });
             }
         }
