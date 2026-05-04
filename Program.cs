@@ -33,9 +33,31 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromMinutes(1)
         };
-});
-builder.Services.AddScoped<JwtTokenService>();
 
+        // Intercepter l'erreur "invalid token" pour renvoyer un JSON explicite
+        options.Events = new JwtBearerEvents
+        {
+            OnChallenge = context =>
+            {
+                // Sur Unauthorized (token manquant ou invalide)
+                context.HandleResponse();
+                context.Response.StatusCode = 401;
+                context.Response.ContentType = "application/json";
+
+                var problem = new
+                {
+                    Message = "Token invalide ou expiré.",
+                    Error = context.Error,
+                    ErrorDescription = context.ErrorDescription
+                };
+
+                return context.Response.WriteAsync(JsonSerializer.Serialize(problem));
+            }
+        };
+});
+builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<BankService>();
 builder.Services.AddScoped<BirthPlaceService>();
 builder.Services.AddScoped<BusFessService>();
@@ -56,9 +78,6 @@ builder.Services.AddScoped<StudentService>();
 builder.Services.AddScoped<UserTypeService>();
 builder.Services.AddScoped<ForgotUserPasswordService>();
 
-
-
-// builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<Context>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
