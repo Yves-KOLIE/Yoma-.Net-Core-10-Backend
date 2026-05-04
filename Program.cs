@@ -46,7 +46,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
                 var problem = new
                 {
-                    Message = "Token invalide ou expiré.",
+                    Message = "Token invalide ou expiré. Veuillez vous déconnecté et vous reconnecté à nouveau.",
                     Error = context.Error,
                     ErrorDescription = context.ErrorDescription
                 };
