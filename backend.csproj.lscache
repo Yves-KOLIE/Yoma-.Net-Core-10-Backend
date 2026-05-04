@@ -2,12 +2,10 @@ version=1
 
 # This file caches language service data to improve the performance of C# Dev Kit.
 # It is not intended for manual editing. It can safely be deleted and will be
-# regenerated automatically.
+# regenerated automatically. For more information, see https://aka.ms/lscache
 #
-# To exclude from version control, add *.lscache to your .gitignore file.
-#
-# To disable caching, add the following to your VS Code settings:
-#   "dotnet.projectsystem.enableLanguageServiceCache": false
+# To control where cache files are stored, use the following VS Code setting:
+#   "dotnet.projectsystem.cacheInProjectFolder": true
 
 [project]
 language=C#
@@ -57,60 +55,172 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
+ApiResult.cs
+Controllers/
+ BankController.cs
+ BirthPlaceController.cs
+ BusFessController.cs
+ CoursController.cs
+ GasStationController.cs
+ LoginController.cs
+ MonthlySalaryAssignmentController.cs
+ MonthOfSalaryController.cs
+ NoteMonthController.cs
+ SchoolYearController.cs
+ StudentRegistrationController.cs
+ SubdivisionByYearController.cs
+ SubdivisionController.cs
+ TypePrimeController.cs
+ UserTypeController.cs
+EmailValidation.cs
+Helpers/
+ ConstantHelper.cs
+ EmailHelper.cs
+ PasswordHelper.cs
+LoginResult.cs
 Migrations/
  20260411230305_FirstMigration.cs
  20260411230305_FirstMigration.Designer.cs
+ 20260411231851_AddConfigurationTableItems.cs
+ 20260411231851_AddConfigurationTableItems.Designer.cs
+ 20260412184121_removeEducationLevelInBusFess.cs
+ 20260412184121_removeEducationLevelInBusFess.Designer.cs
+ 20260412193532_addFirstItemInSubdivisionByYears.cs
+ 20260412193532_addFirstItemInSubdivisionByYears.Designer.cs
+ 20260412221024_addIsCheckColumnInSubdivisionByYears.cs
+ 20260412221024_addIsCheckColumnInSubdivisionByYears.Designer.cs
+ 20260413215244_addTableTypePrime.cs
+ 20260413215244_addTableTypePrime.Designer.cs
+ 20260414141251_addReanmeColumnsInStudentRegistration.cs
+ 20260414141251_addReanmeColumnsInStudentRegistration.Designer.cs
+ 20260414230449_addTableMonthOfSalaries.cs
+ 20260414230449_addTableMonthOfSalaries.Designer.cs
+ 20260415011205_addTablesMonthlySalaryAssignmentsAndPayrollValidation.cs
+ 20260415011205_addTablesMonthlySalaryAssignmentsAndPayrollValidation.Designer.cs
+ 20260421190800_addNewColumnInTableMonthlySalaryAssignments.cs
+ 20260421190800_addNewColumnInTableMonthlySalaryAssignments.Designer.cs
+ 20260421212400_addSchoolYearIdInNoteTables.cs
+ 20260421212400_addSchoolYearIdInNoteTables.Designer.cs
+ 20260421235136_addDefaultItemsInNoteMonths.cs
+ 20260421235136_addDefaultItemsInNoteMonths.Designer.cs
+ 20260422015333_addTableExamClasses.cs
+ 20260422015333_addTableExamClasses.Designer.cs
+ 20260422100943_addColumnIsExamClassInEducationLevelsTable.cs
+ 20260422100943_addColumnIsExamClassInEducationLevelsTable.Designer.cs
+ 20260422163628_modificationDateIsNullable.cs
+ 20260422163628_modificationDateIsNullable.Designer.cs
+ 20260422201943_addUserRoleTable.cs
+ 20260422201943_addUserRoleTable.Designer.cs
+ 20260422234855_addUserRoleInParentAndStudentTable.cs
+ 20260422234855_addUserRoleInParentAndStudentTable.Designer.cs
+ 20260423155514_addStudentParentInTableStudents.cs
+ 20260423155514_addStudentParentInTableStudents.Designer.cs
+ 20260424161603_addRequiredUsersPassword.cs
+ 20260424161603_addRequiredUsersPassword.Designer.cs
+ 20260429105418_changeColumnSexeDataType.cs
+ 20260429105418_changeColumnSexeDataType.Designer.cs
+ 20260429151234_addProfessionalQualificationColumnInTableParents.cs
+ 20260429151234_addProfessionalQualificationColumnInTableParents.Designer.cs
+ 20260430222658_addTableUserTypes.cs
+ 20260430222658_addTableUserTypes.Designer.cs
+ 20260430223759_addUserTypeInUsersTables.cs
+ 20260430223759_addUserTypeInUsersTables.Designer.cs
+ 20260501011318_addForgotUserPasswordsTable.cs
+ 20260501011318_addForgotUserPasswordsTable.Designer.cs
+ 20260502153616_addNewUserEmailsTable.cs
+ 20260502153616_addNewUserEmailsTable.Designer.cs
+ 20260502161448_setUsersNulableFields.cs
+ 20260502161448_setUsersNulableFields.Designer.cs
+ 20260502163826_addNewColumnInForgotUserPasswordsTable.cs
+ 20260502163826_addNewColumnInForgotUserPasswordsTable.Designer.cs
+ 20260502172257_uniqueEmailConstraint.cs
+ 20260502172257_uniqueEmailConstraint.Designer.cs
+ 20260502172620_uniqueMatriculeConstraintInTableUserAndStudent.cs
+ 20260502172620_uniqueMatriculeConstraintInTableUserAndStudent.Designer.cs
  ContextModelSnapshot.cs
-Models/Tables/
- Bank.cs
- BirthPlace.cs
- BusFess.cs
- BusPayment.cs
- Context.cs
- Cours.cs
- EducationLevel.cs
- GasStation.cs
- HighSchoolOption.cs
- HightSchoolAssignment.cs
- KindergartenSchoolAssignment.cs
- MiddleSchoolAssignment.cs
- Month.cs
- NoteHightSchool.cs
- NoteMiddleSchool.cs
- NoteMonth.cs
- NotePrimary.cs
- OtherPrime.cs
- Parent.cs
- ParentType.cs
- PaymentMethod.cs
- PrimarySchoolAssignment.cs
- ProfessionalQualification.cs
- SalaryAdvance.cs
- SalaryStatus.cs
- SchoolBus.cs
- SchoolEducation.cs
- SchoolFess.cs
- SchoolPayment.cs
- SchoolYear.cs
- Student.cs
- StudentParent.cs
- StudentRegistration.cs
- Subdivision.cs
- SubdivisionByYear.cs
- SumSalaryAdvance.cs
- TransportLoadType.cs
- TypeSalaryAdvance.cs
- User.cs
- UserPosition.cs
- UserPrime.cs
+Models/
+ LoginModel.cs
+ Tables/
+  Bank.cs
+  BirthPlace.cs
+  BusFess.cs
+  BusPayment.cs
+  Context.cs
+  Cours.cs
+  EducationLevel.cs
+  ExamClass.cs
+  ForgotUserPassword.cs
+  GasStation.cs
+  HighSchoolOption.cs
+  HightSchoolAssignment.cs
+  KindergartenSchoolAssignment.cs
+  MiddleSchoolAssignment.cs
+  Month.cs
+  MonthlySalaryAssignment.cs
+  MonthOfSalary.cs
+  NoteHightSchool.cs
+  NoteMiddleSchool.cs
+  NoteMonth.cs
+  NotePrimary.cs
+  OtherPrime.cs
+  Parent.cs
+  ParentType.cs
+  PaymentMethod.cs
+  PayrollValidation.cs
+  PrimarySchoolAssignment.cs
+  ProfessionalQualification.cs
+  SalaryAdvance.cs
+  SalaryStatus.cs
+  SchoolBus.cs
+  SchoolEducation.cs
+  SchoolFess.cs
+  SchoolPayment.cs
+  SchoolYear.cs
+  Student.cs
+  StudentParent.cs
+  StudentRegistration.cs
+  Subdivision.cs
+  SubdivisionByYear.cs
+  SumSalaryAdvance.cs
+  TransportLoadType.cs
+  TypePrime.cs
+  TypeSalaryAdvance.cs
+  User.cs
+  UserEmail.cs
+  UserPosition.cs
+  UserPrime.cs
+  UserRole.cs
+  UserType.cs
+ Views/SubdivisionByYearViewModel.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  backend.AssemblyInfo.cs
  backend.GlobalUsings.g.cs
 Program.cs
+Services/
+ IBankService.cs
+ IBirthPlaceService.cs
+ IBusFessService.cs
+ ICoursService.cs
+ IEducationLevelService.cs
+ IForgotUserPassword.cs
+ IGasStationService.cs
+ IHightSchoolOptionService.cs
+ IJwtTokenService.cs
+ IMonthlySalaryAssignmentService.cs
+ INoteMonthService.cs
+ ISalaryOfMonth.cs
+ ISchoolEducationService.cs
+ ISchoolYearService.cs
+ IStudentRegistration.cs
+ IStudentService.cs
+ ISubdivisionService.cs
+ ISubdivisionServiceByYearService.cs
+ ITypePrimeService.cs
+ IUserTypeService.cs
 
 [metadataReferences]
-../../../Program Files/dotnet/packs/Microsoft.AspNetCore.App.Ref/10.0.4/ref/net10.0/
+<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.7/ref/net10.0/
  Microsoft.AspNetCore.Antiforgery.dll
  Microsoft.AspNetCore.Authentication.Abstractions.dll
  Microsoft.AspNetCore.Authentication.BearerToken.dll
@@ -251,7 +361,7 @@ Program.cs
  System.Formats.Cbor.dll
  System.Security.Cryptography.Xml.dll
  System.Threading.RateLimiting.dll
-../../../Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.4/ref/net10.0/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
  Microsoft.VisualBasic.dll
@@ -420,16 +530,30 @@ Program.cs
  System.Xml.XPath.XDocument.dll
  WindowsBase.dll
 <NUGET>/
+ bcrypt.net-next/4.1.0/lib/net10.0/BCrypt.Net-Next.dll
+ bouncycastle.cryptography/2.6.2/lib/net6.0/BouncyCastle.Cryptography.dll
+ mailkit/4.16.0/lib/net10.0/MailKit.dll
+ microsoft.aspnetcore.authentication.jwtbearer/10.0.7/lib/net10.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+ microsoft.aspnetcore.identity.entityframeworkcore/10.0.7/lib/net10.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
  microsoft.aspnetcore.openapi/10.0.4/lib/net10.0/Microsoft.AspNetCore.OpenApi.dll
- microsoft.entityframeworkcore.abstractions/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
- microsoft.entityframeworkcore.relational/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.Relational.dll
- microsoft.entityframeworkcore/10.0.5/lib/net10.0/Microsoft.EntityFrameworkCore.dll
+ microsoft.entityframeworkcore.abstractions/10.0.7/lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+ microsoft.entityframeworkcore.relational/10.0.7/lib/net10.0/Microsoft.EntityFrameworkCore.Relational.dll
+ microsoft.entityframeworkcore/10.0.7/lib/net10.0/Microsoft.EntityFrameworkCore.dll
+ microsoft.identitymodel.abstractions/8.18.0/lib/net10.0/Microsoft.IdentityModel.Abstractions.dll
+ microsoft.identitymodel.jsonwebtokens/8.18.0/lib/net10.0/Microsoft.IdentityModel.JsonWebTokens.dll
+ microsoft.identitymodel.logging/8.18.0/lib/net10.0/Microsoft.IdentityModel.Logging.dll
+ microsoft.identitymodel.protocols.openidconnect/8.0.1/lib/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+ microsoft.identitymodel.protocols/8.0.1/lib/net9.0/Microsoft.IdentityModel.Protocols.dll
+ microsoft.identitymodel.tokens/8.18.0/lib/net10.0/Microsoft.IdentityModel.Tokens.dll
  microsoft.openapi/2.0.0/lib/net8.0/Microsoft.OpenApi.dll
+ mimekit/4.16.0/lib/net10.0/MimeKit.dll
  npgsql.entityframeworkcore.postgresql/10.0.1/lib/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
  npgsql/10.0.2/lib/net10.0/Npgsql.dll
+ system.identitymodel.tokens.jwt/8.18.0/lib/net10.0/System.IdentityModel.Tokens.Jwt.dll
+ system.security.cryptography.pkcs/10.0.0/lib/net10.0/System.Security.Cryptography.Pkcs.dll
 
 [analyzerReferences]
-../../../Program Files/dotnet/packs/Microsoft.AspNetCore.App.Ref/10.0.4/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.7/analyzers/dotnet/cs/
  Microsoft.AspNetCore.App.Analyzers.dll
  Microsoft.AspNetCore.App.CodeFixes.dll
  Microsoft.AspNetCore.App.SourceGenerators.dll
@@ -437,21 +561,21 @@ Program.cs
  Microsoft.Extensions.Logging.Generators.dll
  Microsoft.Extensions.Options.SourceGeneration.dll
  Microsoft.Extensions.Validation.ValidationsGenerator.dll
-../../../Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.4/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/analyzers/dotnet/cs/
  Microsoft.Interop.ComInterfaceGenerator.dll
  Microsoft.Interop.JavaScript.JSImportGenerator.dll
  Microsoft.Interop.LibraryImportGenerator.dll
  Microsoft.Interop.SourceGeneration.dll
  System.Text.Json.SourceGeneration.dll
  System.Text.RegularExpressions.Generator.dll
-../../../Program Files/dotnet/sdk/10.0.104/Sdks/Microsoft.NET.Sdk.Razor/source-generators/
+<DOTNET>/sdk/10.0.107/Sdks/Microsoft.NET.Sdk.Razor/source-generators/
  Microsoft.AspNetCore.Razor.Utilities.Shared.dll
  Microsoft.CodeAnalysis.Razor.Compiler.dll
  Microsoft.Extensions.ObjectPool.dll
-../../../Program Files/dotnet/sdk/10.0.104/Sdks/Microsoft.NET.Sdk.Web/analyzers/cs/
+<DOTNET>/sdk/10.0.107/Sdks/Microsoft.NET.Sdk.Web/analyzers/cs/
  Microsoft.AspNetCore.Analyzers.dll
  Microsoft.AspNetCore.Mvc.Analyzers.dll
-../../../Program Files/dotnet/sdk/10.0.104/Sdks/Microsoft.NET.Sdk/analyzers/
+<DOTNET>/sdk/10.0.107/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
 <NUGET>/
@@ -459,8 +583,8 @@ Program.cs
  microsoft.codeanalysis.analyzers/3.11.0/analyzers/dotnet/cs/
   Microsoft.CodeAnalysis.Analyzers.dll
   Microsoft.CodeAnalysis.CSharp.Analyzers.dll
- microsoft.entityframeworkcore.analyzers/10.0.5/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
+ microsoft.entityframeworkcore.analyzers/10.0.7/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
 
 [analyzerConfigFiles]
-../../../Program Files/dotnet/sdk/10.0.104/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_default.globalconfig
+<DOTNET>/sdk/10.0.107/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_default.globalconfig
 obj/Debug/net10.0/backend.GeneratedMSBuildEditorConfig.editorconfig

@@ -12,11 +12,13 @@ namespace YOMA.Controllers
     {
         private readonly Context _context;
         private readonly ForgotUserPasswordService _forgotUserPasswordService;
+        private readonly JwtTokenService _jwtTokenService;
 
-        public LoginController(Context context, ForgotUserPasswordService forgotUserPasswordService)
+        public LoginController(Context context, ForgotUserPasswordService forgotUserPasswordService, JwtTokenService jwtTokenService)
         {
             _context = context;
             _forgotUserPasswordService = forgotUserPasswordService;
+            _jwtTokenService = jwtTokenService;
         }
 
         [HttpPost("Auth")]
@@ -66,7 +68,9 @@ namespace YOMA.Controllers
                                             user.USER_ROLE_ID = userRole.ID;
                                             user.USER_ROLE = userRole;
                                         }
-                  
+
+                                        user.TOKEN = _jwtTokenService.CreateAccessToken(user.ID, user.USER_ROLE.DESCRIPTION);
+
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = isValidPassword,
@@ -110,6 +114,8 @@ namespace YOMA.Controllers
                                             student.USER_ROLE_ID = userRole.ID;
                                             student.USER_ROLE = userRole;
                                         }
+
+                                        student.TOKEN = _jwtTokenService.CreateAccessToken(student.ID, student.USER_ROLE.DESCRIPTION);
 
                                         return Ok(new LoginResult 
                                         { 
@@ -161,6 +167,8 @@ namespace YOMA.Controllers
                                             parent.USER_ROLE_ID = userRole.ID;
                                             parent.USER_ROLE = userRole;
                                         }
+
+                                        parent.TOKEN = _jwtTokenService.CreateAccessToken(parent.ID, parent.USER_ROLE.DESCRIPTION);
 
                                         return Ok(new LoginResult 
                                         { 

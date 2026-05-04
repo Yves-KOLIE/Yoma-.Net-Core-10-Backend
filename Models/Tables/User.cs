@@ -32,6 +32,8 @@ namespace YOMA.Models.Tables
         public int[]? SCHOOL_EDUCATION_IDS { get; set; } = null;
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;
+        [NotMapped]
+        public string? TOKEN { get; set; }
         public DateTime? LOCK_DATE { get; set; } = null;
         public DateTime? UNLOCK_DATE { get; set; } = null;
         public DateTime? LAST_CONNEXION_DATE { get; set; } = null;
