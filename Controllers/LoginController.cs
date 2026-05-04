@@ -53,6 +53,20 @@ namespace YOMA.Controllers
                                     }
                                     else
                                     {
+                                        var professionalQualification = await _context.ProfessionalQualifications.FirstOrDefaultAsync(x => x.ID == user.PROFESSIONAL_QUALIFICATION_ID);
+                                        if(professionalQualification != null)
+                                        {
+                                            user.PROFESSIONAL_QUALIFICATION_ID = professionalQualification.ID;
+                                            user.PROFESSIONAL_QUALIFICATION = professionalQualification;
+                                        }
+
+                                        var userRole = await _context.UserRoles.FirstOrDefaultAsync(x => x.ID == user.USER_ROLE_ID);
+                                        if(userRole != null)
+                                        {
+                                            user.USER_ROLE_ID = userRole.ID;
+                                            user.USER_ROLE = userRole;
+                                        }
+                  
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = isValidPassword,
@@ -90,6 +104,13 @@ namespace YOMA.Controllers
                                     }
                                     else
                                     {
+                                        var userRole = await _context.UserRoles.FirstOrDefaultAsync(x => x.ID == student.USER_ROLE_ID);
+                                        if(userRole != null)
+                                        {
+                                            student.USER_ROLE_ID = userRole.ID;
+                                            student.USER_ROLE = userRole;
+                                        }
+
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = isValidPassword,
@@ -127,6 +148,20 @@ namespace YOMA.Controllers
                                     }
                                     else
                                     {
+                                        var professionalQualification = await _context.ProfessionalQualifications.FirstOrDefaultAsync(x => x.ID == parent.PROFESSIONAL_QUALIFICATION_ID);
+                                        if(professionalQualification != null)
+                                        {
+                                            parent.PROFESSIONAL_QUALIFICATION_ID = professionalQualification.ID;
+                                            parent.PROFESSIONAL_QUALIFICATION = professionalQualification;
+                                        }
+
+                                        var userRole = await _context.UserRoles.FirstOrDefaultAsync(x => x.ID == parent.USER_ROLE_ID);
+                                        if(userRole != null)
+                                        {
+                                            parent.USER_ROLE_ID = userRole.ID;
+                                            parent.USER_ROLE = userRole;
+                                        }
+
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = isValidPassword,
