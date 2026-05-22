@@ -15,8 +15,6 @@ namespace YOMA.Models.Tables
         public bool IS_DELETED { get; set; }
         public bool IS_ABANDON { get; set; }
 
-        public bool SCHOOL_FESS_IS_SUPPORTED { get; set; }
-        public bool SCHOOL_FESS_IS_DISCOUNTED { get; set; }
         public required int REGISTRATION_FESS { get; set; }
         public required int PRICE_FESS_1 { get; set; }
         public required int PRICE_FESS_2 { get; set; }
@@ -32,8 +30,6 @@ namespace YOMA.Models.Tables
         public bool IS_SUBSCRIBE_TO_THE_BUS_FESS_2 { get; set; }
         public bool IS_SUBSCRIBE_TO_THE_BUS_FESS_3 { get; set; }
 
-        public bool BUS_PRICE_IS_SUPPORTED { get; set; }
-        public bool BUS_PRICE_IS_DISCOUNTED { get; set; }
         public int? BUS_PRICE_1 { get; set; } = null;
         public int? BUS_PRICE_2 { get; set; } = null;
         public int? BUS_PRICE_3 { get; set; } = null;
@@ -62,5 +58,15 @@ namespace YOMA.Models.Tables
         [ForeignKey("SUBDIVISION")]
         public int SUBDIVISION_ID { get; set; }
         public required Subdivision SUBDIVISION { get; set; }
+
+
+        [ForeignKey("STUDENT_SCHOOL_STATUS_OF_CARE")]
+        public int STUDENT_SCHOOL_STATUS_OF_CARE_ID { get; set; }
+        public required StudentSchoolStatusOfCares STUDENT_SCHOOL_STATUS_OF_CARE { get; set; }
+        
+
+        [ForeignKey("STUDENT_BUS_STATUS_OF_CARE")]
+        public int STUDENT_BUS_STATUS_OF_CARE_ID { get; set; }
+        public required StudentBusStatusOfCare STUDENT_BUS_STATUS_OF_CARE { get; set; }
     }
 }

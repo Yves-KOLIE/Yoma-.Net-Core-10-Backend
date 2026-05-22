@@ -60,14 +60,16 @@ public class StudentRegistrationService : IStudentRegistration
 
             await _context.SaveChangesAsync();
 
-            if(studentRegistration.SCHOOL_FESS_IS_SUPPORTED) // Si les frais de scolarité sont pris en charge par l'école
+            // if(studentRegistration.SCHOOL_FESS_IS_SUPPORTED) // Si les frais de scolarité sont pris en charge par l'école
+            if(true)
             {
                 studentRegistration.REGISTRATION_FESS = 0;
                 studentRegistration.PRICE_FESS_1 = 0;
                 studentRegistration.PRICE_FESS_2 = 0;
                 studentRegistration.PRICE_FESS_3 = 0;
             }
-            else if(studentRegistration.SCHOOL_FESS_IS_DISCOUNTED == false)
+            // else if(studentRegistration.SCHOOL_FESS_IS_DISCOUNTED == false)
+            else if(false)
             {
                 var schoolFess = await _context.SchoolFesses.FirstOrDefaultAsync(x => 
                     x.SCHOOL_YEAR_ID == studentRegistration.SCHOOL_YEAR_ID
@@ -90,13 +92,15 @@ public class StudentRegistrationService : IStudentRegistration
                 }
             }
 
-            if(studentRegistration.BUS_PRICE_IS_SUPPORTED)
+            // if(studentRegistration.BUS_PRICE_IS_SUPPORTED)
+            if(true)
             {
                 studentRegistration.BUS_PRICE_1 = null;
                 studentRegistration.BUS_PRICE_2 = null;
                 studentRegistration.BUS_PRICE_2 = null;
             }
-            else if(studentRegistration.BUS_PRICE_IS_DISCOUNTED == false)
+            // else if(studentRegistration.BUS_PRICE_IS_DISCOUNTED == false)
+            else if(false)
             {
                 var busFesses = await _context.BusFesses.FirstOrDefaultAsync(x => 
                     x.SCHOOL_YEAR_ID == studentRegistration.SCHOOL_YEAR_ID
