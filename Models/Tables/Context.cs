@@ -85,7 +85,7 @@ namespace YOMA.Models
         public DbSet<UserType> UserTypes { get; set; }
         public DbSet<UserEmail> UserEmails { get; set; }
         public DbSet<ForgotUserPassword> ForgotUserPasswords { get; set; }
-        public DbSet<StudentSchoolStatusOfCares> StudentSchoolStatusOfCare { get; set; }
+        public DbSet<StudentSchoolStatusOfCare> StudentSchoolStatusOfCares { get; set; }
         public DbSet<StudentBusStatusOfCare> StudentBusStatusOfCares { get; set; }
     }
 }

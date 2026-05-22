@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace YOMA.Models.Tables
 {
     [Table("StudentSchoolStatusOfCares")]
-    public class StudentSchoolStatusOfCares
+    public class StudentSchoolStatusOfCare
     {
         [Key]
 		public int ID { get; set; }

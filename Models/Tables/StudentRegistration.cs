@@ -62,7 +62,7 @@ namespace YOMA.Models.Tables
 
         [ForeignKey("STUDENT_SCHOOL_STATUS_OF_CARE")]
         public int STUDENT_SCHOOL_STATUS_OF_CARE_ID { get; set; }
-        public required StudentSchoolStatusOfCares STUDENT_SCHOOL_STATUS_OF_CARE { get; set; }
+        public required StudentSchoolStatusOfCare STUDENT_SCHOOL_STATUS_OF_CARE { get; set; }
         
 
         [ForeignKey("STUDENT_BUS_STATUS_OF_CARE")]
