@@ -38,6 +38,12 @@ namespace YOMA.Models
                 "\"RETURN_DATE\" > \"RENTAL_DATE\""
             ));
 
+            modelBuilder.Entity<Book>()
+                .ToTable(t => t.HasCheckConstraint(
+                "CK_QteRange",
+                "\"QTE_TOTAL\" > 0"
+            ));
+
             base.OnModelCreating(modelBuilder);
         }
 

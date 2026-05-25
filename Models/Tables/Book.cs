@@ -14,6 +14,7 @@ namespace YOMA.Models.Tables
         public string? PUBLISHER { get; set; }
         public string? YEAR_OF_PUBLICATION { get; set; }
         public int DAY_RENTAL_PRICE { get; set; } = 0;
+        public required int QTE_TOTAL { get; set; }
         public bool IS_ACTIVE { get; set; } = true;
 
         [ForeignKey("BOOK_CATEGORY")]
