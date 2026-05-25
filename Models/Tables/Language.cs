@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOMA.Models.Tables
 {
-    [Table("Banks")]
-    public class Bank
+    [Table("Languages")]
+    public class Language
     {
         [Key]
 		public int ID { get; set; }

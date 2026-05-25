@@ -28,10 +28,15 @@ namespace YOMA.Models
                 .HasIndex(u => u.MATRICULE)
             .IsUnique(); // Indiquer que le champs Email est unique dans la table User
 
-
             modelBuilder.Entity<UserEmail>()
                 .HasIndex(u => u.EMAIL)
             .IsUnique(); // Indiquer que le champs Email est unique dans la table UserEmail
+
+            modelBuilder.Entity<BookRental>()
+                .ToTable(t => t.HasCheckConstraint(
+                "CK_Order_DateRange",
+                "\"RETURN_DATE\" > \"RENTAL_DATE\""
+            ));
 
             base.OnModelCreating(modelBuilder);
         }
@@ -87,5 +92,9 @@ namespace YOMA.Models
         public DbSet<ForgotUserPassword> ForgotUserPasswords { get; set; }
         public DbSet<StudentSchoolStatusOfCare> StudentSchoolStatusOfCares { get; set; }
         public DbSet<StudentBusStatusOfCare> StudentBusStatusOfCares { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<BookCategory> BookCategories { get; set; }
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<BookRental> BookRentals { get; set; }
     }
 }
