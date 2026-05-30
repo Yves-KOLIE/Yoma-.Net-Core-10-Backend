@@ -17,24 +17,20 @@ namespace YOMA.Models.Tables
         public DateTime CREATION_DATE { get; set; } = new DateTime();
 		public DateTime? MODIFICATION_DATE { get; set; } = null;
         
-
         [ForeignKey("SCHOOL_YEAR")]
-        public required int SCHOOL_YEAR_ID { get; set; }
-        public required SchoolYear SCHOOL_YEAR { get; set; }
-
+        public int SCHOOL_YEAR_ID { get; set; }
+        public SchoolYear SCHOOL_YEAR { get; set; } = null!;
 
         [ForeignKey("STUDENT")]
-        public required int STUDENT_ID { get; set; }
-        public required Student STUDENT { get; set; }
-
+        public int STUDENT_ID { get; set; }
+        public Student STUDENT { get; set; } = null!;
 
         [ForeignKey("NOTE_MONTH")]
-        public required int NOTE_MONTH_ID { get; set; }
-        public required NoteMonth NOTE_MONTH { get; set; }
-        
+        public int NOTE_MONTH_ID { get; set; }
+        public NoteMonth NOTE_MONTH { get; set; } = null!;
 
         [ForeignKey("COURS")]
         public int COURS_ID { get; set; }
-        public required Cours COURS { get; set; }
+        public Cours COURS { get; set; } = null!;
     }
 }

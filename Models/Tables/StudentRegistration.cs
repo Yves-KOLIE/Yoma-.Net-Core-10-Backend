@@ -39,34 +39,28 @@ namespace YOMA.Models.Tables
         public DateTime CREATION_DATE { get; set; } = new DateTime();
 		public DateTime? MODIFICATION_DATE { get; set; } = null;
 
-
         [ForeignKey("STUDENT")]
-        public required int STUDENT_ID { get; set; }
-        public required Student STUDENT { get; set; }
-
+        public int STUDENT_ID { get; set; }
+        public Student STUDENT { get; set; } = null!;
 
         [ForeignKey("SCHOOL_YEAR")]
-        public required int SCHOOL_YEAR_ID { get; set; }
-        public required SchoolYear SCHOOL_YEAR { get; set; }
-
+        public int SCHOOL_YEAR_ID { get; set; }
+        public SchoolYear SCHOOL_YEAR { get; set; } = null!;
 
         [ForeignKey("EDUCATION_LEVEL")]
         public int EDUCATION_LEVEL_ID { get; set; }
-        public required EducationLevel EDUCATION_LEVEL { get; set; }
-
+        public EducationLevel EDUCATION_LEVEL { get; set; } = null!;
 
         [ForeignKey("SUBDIVISION")]
         public int SUBDIVISION_ID { get; set; }
-        public required Subdivision SUBDIVISION { get; set; }
-
+        public Subdivision SUBDIVISION { get; set; } = null!;
 
         [ForeignKey("STUDENT_SCHOOL_STATUS_OF_CARE")]
         public int STUDENT_SCHOOL_STATUS_OF_CARE_ID { get; set; }
-        public required StudentSchoolStatusOfCare STUDENT_SCHOOL_STATUS_OF_CARE { get; set; }
-        
+        public StudentSchoolStatusOfCare STUDENT_SCHOOL_STATUS_OF_CARE { get; set; } = null!;
 
         [ForeignKey("STUDENT_BUS_STATUS_OF_CARE")]
         public int STUDENT_BUS_STATUS_OF_CARE_ID { get; set; }
-        public required StudentBusStatusOfCare STUDENT_BUS_STATUS_OF_CARE { get; set; }
+        public StudentBusStatusOfCare STUDENT_BUS_STATUS_OF_CARE { get; set; } = null!;
     }
 }

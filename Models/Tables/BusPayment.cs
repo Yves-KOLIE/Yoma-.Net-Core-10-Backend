@@ -23,18 +23,17 @@ namespace YOMA.Models.Tables
 
 
         [ForeignKey("STUDENT")]
-        public required int STUDENT_ID { get; set; }
-        public required Student STUDENT { get; set; }
-
+        public int STUDENT_ID { get; set; }
+        public Student STUDENT { get; set; } = null!;
 
         [ForeignKey("SCHOOL_YEAR")]
-        public required int SCHOOL_YEAR_ID { get; set; }
-        public required SchoolYear SCHOOL_YEAR { get; set; }
+        public  int SCHOOL_YEAR_ID { get; set; }
+        public SchoolYear SCHOOL_YEAR { get; set; } = null!;
 
 
         [ForeignKey("PAYMENT_METHOD")]
-        public required int PAYMENT_METHOD_ID { get; set; }
-        public required PaymentMethod PAYMENT_METHOD { get; set; }
+        public int PAYMENT_METHOD_ID { get; set; }
+        public PaymentMethod PAYMENT_METHOD { get; set; } = null!;
 
 
         [ForeignKey("BANK")]

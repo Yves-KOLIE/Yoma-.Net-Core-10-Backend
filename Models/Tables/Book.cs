@@ -18,12 +18,12 @@ namespace YOMA.Models.Tables
         public bool IS_ACTIVE { get; set; } = true;
 
         [ForeignKey("BOOK_CATEGORY")]
-        public required int BOOK_CATEGORY_ID { get; set; }
-        public required BookCategory BOOK_CATEGORY { get; set; }
+        public int BOOK_CATEGORY_ID { get; set; }
+        public BookCategory BOOK_CATEGORY { get; set; } = null!;
 
         [ForeignKey("LANGUAGE")]
-        public required int LANGUAGE_ID { get; set; }
-        public required Language LANGUAGE { get; set; }
+        public int LANGUAGE_ID { get; set; }
+        public Language LANGUAGE { get; set; } = null!;
 
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;

@@ -15,17 +15,15 @@ namespace YOMA.Models.Tables
 
 
         [ForeignKey("STUDENT")]
-        public required int STUDENT_ID { get; set; }
-        public required Student STUDENT { get; set; }
-
+        public int STUDENT_ID { get; set; }
+        public Student STUDENT { get; set; } = null!;
 
         [ForeignKey("PARENT")]
-        public required int PARENT_ID { get; set; }
-        public required Parent PARENT { get; set; }
-
+        public int PARENT_ID { get; set; }
+        public Parent PARENT { get; set; } = null!;
 
         [ForeignKey("PARENT_TYPE")]
-        public required int PARENT_TYPE_ID { get; set; }
-        public required ParentType PARENT_TYPE { get; set; }
+        public int PARENT_TYPE_ID { get; set; }
+        public ParentType PARENT_TYPE { get; set; } = null!;
     }
 }

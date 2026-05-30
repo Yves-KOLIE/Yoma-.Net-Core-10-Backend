@@ -24,37 +24,31 @@ namespace YOMA.Models.Tables
 
 
         [ForeignKey("USER")]
-        public required int USER_ID { get; set; }
-        public required User USER { get; set; }
-
+        public int USER_ID { get; set; }
+        public User USER { get; set; } = null!;
 
         [ForeignKey("SCHOOL_YEAR")]
-        public required int SCHOOL_YEAR_ID { get; set; }
-        public required SchoolYear SCHOOL_YEAR { get; set; }
-
+        public int SCHOOL_YEAR_ID { get; set; }
+        public SchoolYear SCHOOL_YEAR { get; set; } = null!;
 
         [ForeignKey("MONTH")]
-        public required int MONTH_ID { get; set; }
-        public required Month MONTH { get; set; }
-
+        public int MONTH_ID { get; set; }
+        public Month MONTH { get; set; } = null!;
 
         [ForeignKey("EDUCATION_LEVEL")]
-        public required int EDUCATION_LEVEL_ID { get; set; }
-        public required EducationLevel EDUCATION_LEVEL { get; set; }
-
+        public int EDUCATION_LEVEL_ID { get; set; }
+        public EducationLevel EDUCATION_LEVEL { get; set; } = null!;
 
         [ForeignKey("SUBDIVISION")]
-        public required int SUBDIVISION_ID { get; set; }
-        public required Subdivision SUBDIVISION { get; set; }
-
+        public int SUBDIVISION_ID { get; set; }
+        public Subdivision SUBDIVISION { get; set; } = null!;
 
         [ForeignKey("COURS")]
         public int? COURS_ID { get; set; } = null;
         public Cours? COURS { get; set; }
 
-
         [ForeignKey("TYPE_ADVANCE_SALARY")]
-        public required int TYPE_ADVANCE_SALARY_ID { get; set; }
-        public required TypeSalaryAdvance TYPE_ADVANCE_SALARY { get; set; }
+        public int TYPE_ADVANCE_SALARY_ID { get; set; }
+        public TypeSalaryAdvance TYPE_ADVANCE_SALARY { get; set; } = null!;
     }
 }

@@ -23,14 +23,12 @@ namespace YOMA.Models.Tables
 		public DateTime? DEADLINE_FESS_2 { get; set; } = null;
 		public DateTime? DEADLINE_FESS_3 { get; set; } = null;
 
-
         [ForeignKey("SCHOOL_YEAR")]
-        public required int SCHOOL_YEAR_ID { get; set; }
-        public required SchoolYear SCHOOL_YEAR { get; set; }
-
+        public int SCHOOL_YEAR_ID { get; set; }
+        public SchoolYear SCHOOL_YEAR { get; set; } = null!;
 
         [ForeignKey("EDUCATION_LEVEL")]
         public int EDUCATION_LEVEL_ID { get; set; }
-        public required EducationLevel EDUCATION_LEVEL { get; set; }
+        public EducationLevel EDUCATION_LEVEL { get; set; } = null!;
     }
 }

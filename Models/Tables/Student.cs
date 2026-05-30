@@ -39,25 +39,25 @@ namespace YOMA.Models.Tables
 
 
         [ForeignKey("BIRTH_PLACE")]
-        public required int BIRTH_PLACE_ID { get; set; }
-        public required BirthPlace BIRTH_PLACE { get; set; }
+        public int BIRTH_PLACE_ID { get; set; }
+        public BirthPlace BIRTH_PLACE { get; set; } = null!;
         
 
         [ForeignKey("USER_ROLE")]
         public int USER_ROLE_ID { get; set; }
-        public required UserRole USER_ROLE { get; set; }
+        public UserRole USER_ROLE { get; set; } = null!;
 
 
         [ForeignKey("PARENT_1")]
         public int PARENT_1_ID { get; set; }
-        public required StudentParent PARENT_1 { get; set; }
+        public StudentParent PARENT_1 { get; set; } = null!;
 
         [ForeignKey("PARENT_2")]
         public int PARENT_2_ID { get; set; }
-        public required StudentParent PARENT_2 { get; set; }
+        public StudentParent PARENT_2 { get; set; } = null!;
 
         [ForeignKey("USER_EMAIL")]
         public int USER_EMAIL_ID { get; set; }
-        public required UserEmail USER_EMAIL { get; set; }
+        public UserEmail USER_EMAIL { get; set; } = null!;
     }
 }

@@ -20,11 +20,11 @@ namespace YOMA.Models.Tables
 
 
         [ForeignKey("SCHOOL_YEAR")]
-        public required int SCHOOL_YEAR_ID { get; set; }
-        public required SchoolYear SCHOOL_YEAR { get; set; }
+        public int SCHOOL_YEAR_ID { get; set; }
+        public SchoolYear SCHOOL_YEAR { get; set; } = null!;
 
         [ForeignKey("USER")]
-        public required int USER_ID { get; set; }
-        public required User USER { get; set; }
+        public int USER_ID { get; set; }
+        public User USER { get; set; } = null!;
     }
 }

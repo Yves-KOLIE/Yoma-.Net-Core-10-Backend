@@ -20,8 +20,8 @@ namespace YOMA.Models.Tables
         public bool IS_EXAM_CLASS { get; set; }
         
         [ForeignKey("SCHOOL_EDUCATION")]
-        public required int SCHOOL_EDUCATION_ID { get; set; }
-        public required SchoolEducation SCHOOL_EDUCATION { get; set; }
+        public int SCHOOL_EDUCATION_ID { get; set; }
+        public SchoolEducation SCHOOL_EDUCATION { get; set; } = null!;
 
         [ForeignKey("HIGH_SCHOOL_OPTION")]
         public int? HIGH_SCHOOL_OPTION_ID { get; set; } = null;

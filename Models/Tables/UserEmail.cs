@@ -19,6 +19,6 @@ namespace YOMA.Models.Tables
 
         [ForeignKey("USER_TYPE")]
         public int USER_TYPE_ID { get; set; }
-        public required UserType USER_TYPE { get; set; }
+        public UserType USER_TYPE { get; set; } = null!;
     }
 }

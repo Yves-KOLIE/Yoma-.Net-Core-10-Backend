@@ -20,22 +20,19 @@ namespace YOMA.Models.Tables
 
 
         [ForeignKey("USER")]
-        public required int USER_ID { get; set; }
-        public required User USER { get; set; }
-
+        public int USER_ID { get; set; }
+        public User USER { get; set; } = null!;
 
         [ForeignKey("SCHOOL_YEAR")]
-        public required int SCHOOL_YEAR_ID { get; set; }
-        public required SchoolYear SCHOOL_YEAR { get; set; }
-
+        public int SCHOOL_YEAR_ID { get; set; }
+        public SchoolYear SCHOOL_YEAR { get; set; } = null!;
 
         [ForeignKey("EDUCATION_LEVEL")]
         public int EDUCATION_LEVEL_ID { get; set; }
-        public required EducationLevel EDUCATION_LEVEL { get; set; }
-
+        public EducationLevel EDUCATION_LEVEL { get; set; } = null!;
 
         [ForeignKey("SUBDIVISION")]
         public int SUBDIVISION_ID { get; set; }
-        public required Subdivision SUBDIVISION { get; set; }
+        public Subdivision SUBDIVISION { get; set; } = null!;
     }
 }

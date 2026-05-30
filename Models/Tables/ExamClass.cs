@@ -17,7 +17,7 @@ namespace YOMA.Models.Tables
         public DateTime? MODIFICATION_DATE { get; set; } = null;
 
         [ForeignKey("STUDENT_REGISTRATION")]
-        public required int STUDENT_REGISTRATION_ID { get; set; }
-        public required StudentRegistration STUDENT_REGISTRATION { get; set; }
+        public int STUDENT_REGISTRATION_ID { get; set; }
+        public StudentRegistration STUDENT_REGISTRATION { get; set; } = null!;
     }
 }

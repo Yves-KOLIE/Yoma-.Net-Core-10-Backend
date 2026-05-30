@@ -17,11 +17,9 @@ namespace YOMA.Models.Tables
         public DateTime CREATION_DATE { get; set; } = new DateTime();
 		public DateTime? MODIFICATION_DATE { get; set; } = null;
 
-
         [ForeignKey("USER")]
         public required int USER_ID { get; set; }
         public required User USER { get; set; }
-
 
         [ForeignKey("TYPE_SALARY_ADVANCE")]
         public int TYPE_SALARY_ADVANCE_ID { get; set; }

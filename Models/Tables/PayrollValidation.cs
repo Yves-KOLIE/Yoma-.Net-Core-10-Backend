@@ -18,15 +18,15 @@ namespace YOMA.Models.Tables
 		public DateTime? MODIFICATION_DATE { get; set; } = null;
 
         [ForeignKey("SCHOOL_YEAR")]
-        public required int SCHOOL_YEAR_ID { get; set; }
-        public required SchoolYear SCHOOL_YEAR { get; set; }
+        public int SCHOOL_YEAR_ID { get; set; }
+        public SchoolYear SCHOOL_YEAR { get; set; } = null!;
 
         [ForeignKey("MONTH")]
-        public required int MONTH_ID { get; set; }
-        public required Month MONTH { get; set; }
+        public int MONTH_ID { get; set; }
+        public Month MONTH { get; set; } = null!;
 
         [ForeignKey("USER")]
-        public required int USER_ID { get; set; }
-        public required User USER { get; set; }
+        public int USER_ID { get; set; }
+        public User USER { get; set; } = null!;
     }
 }
