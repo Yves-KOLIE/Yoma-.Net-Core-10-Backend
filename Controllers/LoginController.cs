@@ -34,7 +34,7 @@ namespace YOMA.Controllers
                         case 1: // Professeur
                             var user = await _context.Users
                                 .Include(x => x.USER_EMAIL)
-                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.ID);
 
                             if(user != null)
                             {
@@ -87,7 +87,7 @@ namespace YOMA.Controllers
                         case 2: // Élèves
                             var student = await _context.Students
                                 .Include(x => x.USER_EMAIL)
-                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.ID);
 
                             if(student != null)
                             {
@@ -133,7 +133,7 @@ namespace YOMA.Controllers
                         case 3: // Parent d'élèves
                             var parent = await _context.Parents
                                 .Include(x => x.USER_EMAIL)
-                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.USER_TYPE_ID);
+                            .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.ID);
 
                             if(parent != null)
                             {
