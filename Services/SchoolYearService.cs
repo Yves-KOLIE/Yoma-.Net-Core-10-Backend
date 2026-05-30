@@ -23,31 +23,48 @@ public class SchoolYearService : ISchoolYearService
         _context = context;
     }
 
-    private async Task CopyBusFessesAsync(SchoolYear lastSchoolYear, SchoolYear schoolYear)
+    private async Task CopyBusFessesAsync(SchoolYear? lastSchoolYear, SchoolYear schoolYear)
     {
-        // Frais de bus de l'année précédente
-        var busFessesRecords = await _context.BusFesses
-            .Where(b => b.SCHOOL_YEAR_ID == lastSchoolYear.ID)
-            .AsNoTracking()
-        .ToListAsync();
-
-        // Créer de nouvelles instances pour l'insertion
-        var newRecords = busFessesRecords.Select(b => new BusFess
+        if(lastSchoolYear != null)
         {
-            ID = 0,
-            PRICE_FESS_1 = b.PRICE_FESS_1,
-            PRICE_FESS_2 = b.PRICE_FESS_2,
-            PRICE_FESS_3 = b.PRICE_FESS_3,
-            CREATED_USER_ID = schoolYear.CREATED_USER_ID,
-            UPDATED_USER_ID = schoolYear.UPDATED_USER_ID,
-            CREATION_DATE = schoolYear.CREATION_DATE,
-            MODIFICATION_DATE = schoolYear.MODIFICATION_DATE,
-            DEADLINE_FESS_1 = b.DEADLINE_FESS_1,
-            DEADLINE_FESS_2 = b.DEADLINE_FESS_2,
-            DEADLINE_FESS_3 = b.DEADLINE_FESS_3,
-            SCHOOL_YEAR_ID = schoolYear.ID,
-        }).ToList();
-        _context.BusFesses.AddRange(newRecords);
+            // Frais de bus de l'année précédente
+            var busFessesRecords = await _context.BusFesses
+                .Where(b => b.SCHOOL_YEAR_ID == lastSchoolYear.ID)
+                .AsNoTracking()
+            .ToListAsync();
+
+            // Créer de nouvelles instances pour l'insertion
+            var newBusFessesRecords = busFessesRecords.Select(b => new BusFess
+            {
+                ID = 0,
+                PRICE_FESS_1 = b.PRICE_FESS_1,
+                PRICE_FESS_2 = b.PRICE_FESS_2,
+                PRICE_FESS_3 = b.PRICE_FESS_3,
+                CREATED_USER_ID = schoolYear.CREATED_USER_ID,
+                UPDATED_USER_ID = schoolYear.UPDATED_USER_ID,
+                CREATION_DATE = DateTime.UtcNow,
+                MODIFICATION_DATE = null,
+                DEADLINE_FESS_1 = b.DEADLINE_FESS_1,
+                DEADLINE_FESS_2 = b.DEADLINE_FESS_2,
+                DEADLINE_FESS_3 = b.DEADLINE_FESS_3,
+                SCHOOL_YEAR_ID = schoolYear.ID,
+            }).ToList();
+            _context.BusFesses.AddRange(newBusFessesRecords);
+        }
+        else
+        {
+            var newBusFesses = new BusFess {
+                SCHOOL_YEAR_ID = schoolYear.ID,
+                PRICE_FESS_1 = 100000,
+                PRICE_FESS_2 = 100000,
+                PRICE_FESS_3 = 100000,
+                CREATION_DATE = DateTime.UtcNow,
+                MODIFICATION_DATE = null,
+                CREATED_USER_ID = schoolYear.CREATED_USER_ID,
+                UPDATED_USER_ID = schoolYear.UPDATED_USER_ID,
+            };
+            _context.BusFesses.Add(newBusFesses);
+        }
         await _context.SaveChangesAsync();
     }
 
@@ -98,91 +115,137 @@ public class SchoolYearService : ISchoolYearService
             SCHOOL_YEAR = schoolYear,
             MONTH_ID = m.ID,
         }).ToList();
-
         _context.MonthOfSalaries.AddRange(newMonthOfSalaryRecords);
         await _context.SaveChangesAsync();
     }
 
-    private async Task CopyNoteMonthAsync(SchoolYear lastSchoolYear, SchoolYear schoolYear)
+    private async Task CopyNoteMonthAsync(SchoolYear schoolYear)
     {
-        // Notes mensuelles de l'année précédente
-        var noteMonthRecords = await _context.NoteMonths
-            .Where(n => n.SCHOOL_YEAR_ID == lastSchoolYear.ID)
+        // Mois de l'année
+        var monthRecords = await _context.Months
             .AsNoTracking()
         .ToListAsync();
 
-        // Créer de nouvelles instances pour l'insertion
-        var newNoteMonthRecords = noteMonthRecords.Select(n => new NoteMonth
+        // Niveau d'étude
+        var educationLevelRecords = await _context.EducationLevels
+            .AsNoTracking()
+        .ToListAsync();
+
+        List<NoteMonth> newNoteMonthRecords = new List<NoteMonth>();
+        foreach(var educationLevel in educationLevelRecords)
         {
-            ID = 0,
-            IS_COMPOSITION_MONTH = false,
-            IS_TRIMESTER_1 = false,
-            IS_TRIMESTER_2 = false,
-            IS_TRIMESTER_3 = false,
-            CREATED_USER_ID = schoolYear.CREATED_USER_ID,
-            UPDATED_USER_ID = schoolYear.UPDATED_USER_ID,
-            CREATION_DATE = schoolYear.CREATION_DATE,
-            MODIFICATION_DATE = schoolYear.MODIFICATION_DATE,
-            SCHOOL_YEAR_ID = schoolYear.ID,
-            SCHOOL_YEAR = schoolYear,
-            MONTH_ID = n.MONTH_ID,
-            EDUCATION_LEVEL_ID = n.EDUCATION_LEVEL_ID
-        }).ToList();
+            foreach(var month in monthRecords)
+            {
+                newNoteMonthRecords.Add(new NoteMonth
+                {
+                    ID = 0,
+                    IS_COMPOSITION_MONTH = false,
+                    IS_TRIMESTER_1 = false,
+                    IS_TRIMESTER_2 = false,
+                    IS_TRIMESTER_3 = false,
+                    CREATED_USER_ID = schoolYear.CREATED_USER_ID,
+                    UPDATED_USER_ID = schoolYear.UPDATED_USER_ID,
+                    CREATION_DATE = schoolYear.CREATION_DATE,
+                    MODIFICATION_DATE = schoolYear.MODIFICATION_DATE,
+                    SCHOOL_YEAR_ID = schoolYear.ID,
+                    SCHOOL_YEAR = schoolYear,
+                    MONTH_ID = month.ID,
+                    EDUCATION_LEVEL_ID = educationLevel.ID
+                });
+            }
+        }
         _context.NoteMonths.AddRange(newNoteMonthRecords);
         await _context.SaveChangesAsync();
     }
 
-    private async Task CopySchoolFessAsync(SchoolYear lastSchoolYear, SchoolYear schoolYear)
+    private async Task CopySchoolFessAsync(SchoolYear? lastSchoolYear, SchoolYear schoolYear)
     {
-        // Frais scolaires de l'année précédente
-        var schoolFessRecords = await _context.SchoolFesses
-            .Where(s => s.SCHOOL_YEAR_ID == lastSchoolYear.ID)
-            .AsNoTracking()
-        .ToListAsync();
-
-        // Créer de nouvelles instances pour l'insertion
-        var newSchoolFessRecords = schoolFessRecords.Select(s => new SchoolFess
+        if(lastSchoolYear != null)
         {
-            ID = 0,
-            REGISTRATION_FESS = s.REGISTRATION_FESS,
-            PRICE_FESS_1 = s.PRICE_FESS_1,
-            PRICE_FESS_2 = s.PRICE_FESS_2,
-            PRICE_FESS_3 = s.PRICE_FESS_3,
-            CREATED_USER_ID = schoolYear.CREATED_USER_ID,
-            UPDATED_USER_ID = schoolYear.UPDATED_USER_ID,
-            CREATION_DATE = schoolYear.CREATION_DATE,
-            MODIFICATION_DATE = schoolYear.MODIFICATION_DATE,
-            DEADLINE_FESS_1 = s.DEADLINE_FESS_1,
-            DEADLINE_FESS_2 = s.DEADLINE_FESS_2,
-            DEADLINE_FESS_3 = s.DEADLINE_FESS_3,
-            SCHOOL_YEAR_ID = schoolYear.ID,
-            EDUCATION_LEVEL_ID = s.EDUCATION_LEVEL_ID,
-        }).ToList();
-        _context.SchoolFesses.AddRange(newSchoolFessRecords);
+            // Frais scolaires de l'année précédente
+            var schoolFessRecords = await _context.SchoolFesses
+                .Where(s => s.SCHOOL_YEAR_ID == lastSchoolYear.ID)
+                .AsNoTracking()
+            .ToListAsync();
+
+            // Créer de nouvelles instances pour l'insertion
+            var newSchoolFessRecords = schoolFessRecords.Select(s => new SchoolFess
+            {
+                ID = 0,
+                REGISTRATION_FESS = s.REGISTRATION_FESS,
+                PRICE_FESS_1 = s.PRICE_FESS_1,
+                PRICE_FESS_2 = s.PRICE_FESS_2,
+                PRICE_FESS_3 = s.PRICE_FESS_3,
+                CREATED_USER_ID = schoolYear.CREATED_USER_ID,
+                UPDATED_USER_ID = schoolYear.UPDATED_USER_ID,
+                CREATION_DATE = schoolYear.CREATION_DATE,
+                MODIFICATION_DATE = schoolYear.MODIFICATION_DATE,
+                DEADLINE_FESS_1 = s.DEADLINE_FESS_1,
+                DEADLINE_FESS_2 = s.DEADLINE_FESS_2,
+                DEADLINE_FESS_3 = s.DEADLINE_FESS_3,
+                SCHOOL_YEAR_ID = schoolYear.ID,
+                EDUCATION_LEVEL_ID = s.EDUCATION_LEVEL_ID,
+            }).ToList();
+            _context.SchoolFesses.AddRange(newSchoolFessRecords);
+        }
+        else
+        {
+            // Niveau d'étude
+            var educationLevelRecords = await _context.EducationLevels
+                .AsNoTracking()
+            .ToListAsync();
+
+            List<SchoolFess> newSchoolFessRecords = new List<SchoolFess>();
+            foreach (var educationLevel in educationLevelRecords)
+            {
+                newSchoolFessRecords.Add(new SchoolFess
+                {
+                    SCHOOL_YEAR_ID = schoolYear.ID,
+                    EDUCATION_LEVEL_ID = educationLevel.ID,
+                    REGISTRATION_FESS = 100000,
+                    PRICE_FESS_1 = 100000,
+                    PRICE_FESS_2 = 100000,
+                    PRICE_FESS_3 = 100000,
+                    CREATION_DATE = DateTime.UtcNow,
+                    MODIFICATION_DATE = null,
+                });
+            }
+            _context.SchoolFesses.AddRange(newSchoolFessRecords);
+        }
         await _context.SaveChangesAsync();
     }
 
-    private async Task CopySubdivisionByYearAsync(SchoolYear lastSchoolYear, SchoolYear schoolYear)
+    private async Task CopySubdivisionByYearAsync(SchoolYear schoolYear)
     {
-        // Subdivisions by year de l'année précédente
-        var subdivisionRecords = await _context.SubdivisionByYears
-            .Where(s => s.SCHOOL_YEAR_ID == lastSchoolYear.ID)
+        // Niveau d'étude
+        var educationLevelRecords = await _context.EducationLevels
             .AsNoTracking()
         .ToListAsync();
 
-        // Créer de nouvelles instances pour l'insertion
-        var newSubdivisionRecords = subdivisionRecords.Select(s => new SubdivisionByYear
+        // Subdivision
+        var subdivisionRecords = await _context.Subdivisions
+            .AsNoTracking()
+        .ToListAsync();
+
+        List<SubdivisionByYear> newSubdivisionRecords = new List<SubdivisionByYear>();
+        foreach(var educationLevel in educationLevelRecords)
         {
-            ID = 0,
-            IS_CHECK = false,
-            CREATED_USER_ID = schoolYear.CREATED_USER_ID,
-            UPDATED_USER_ID = schoolYear.UPDATED_USER_ID,
-            CREATION_DATE = schoolYear.CREATION_DATE,
-            MODIFICATION_DATE = schoolYear.MODIFICATION_DATE,
-            SCHOOL_YEAR_ID = schoolYear.ID,
-            SUBDIVISION_ID = s.SUBDIVISION_ID,
-            EDUCATION_LEVEL_ID = s.EDUCATION_LEVEL_ID,
-        }).ToList();
+            foreach(var subdivision in subdivisionRecords)
+            {
+                newSubdivisionRecords.Add(new SubdivisionByYear
+                {
+                    ID = 0,
+                    IS_CHECK = false,
+                    CREATED_USER_ID = schoolYear.CREATED_USER_ID,
+                    UPDATED_USER_ID = schoolYear.UPDATED_USER_ID,
+                    CREATION_DATE = schoolYear.CREATION_DATE,
+                    MODIFICATION_DATE = schoolYear.MODIFICATION_DATE,
+                    SCHOOL_YEAR_ID = schoolYear.ID,
+                    SUBDIVISION_ID = subdivision.ID,
+                    EDUCATION_LEVEL_ID = educationLevel.ID,
+                });
+            }
+        }
         _context.SubdivisionByYears.AddRange(newSubdivisionRecords);
         await _context.SaveChangesAsync();
     }
@@ -197,24 +260,26 @@ public class SchoolYearService : ISchoolYearService
 
             // On recupere la dernière année différente de celle ajoutés
             var lastSchoolYear = await _context.SchoolYears
-            .OrderBy(b => b.ID)
-                .AsNoTracking()
+                .OrderBy(y => y.ID) 
             .LastOrDefaultAsync(x => x.ID != schoolYear.ID);
             
             if(lastSchoolYear != null)
             {
-                await CopyBusFessesAsync(lastSchoolYear, schoolYear);
                 await CopyCoursAsync(lastSchoolYear, schoolYear);
-                await CopyMonthOfSalaryAsync(schoolYear);
-                await CopySubdivisionByYearAsync(lastSchoolYear, schoolYear);
-                await CopySchoolFessAsync(lastSchoolYear, schoolYear);
-                await CopyNoteMonthAsync(lastSchoolYear, schoolYear);
 
-                lastSchoolYear.IS_ACTIVE = false;
-                _context.SchoolYears.Update(lastSchoolYear);
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
+                var schoolYearList = await _context.SchoolYears.Where(x => x.ID != schoolYear.ID).ToListAsync();
+                foreach (var currentSchoolYear in schoolYearList) currentSchoolYear.IS_ACTIVE = false;
+                _context.SchoolYears.UpdateRange(schoolYearList);
             }
+
+            await CopyBusFessesAsync(lastSchoolYear, schoolYear);
+            await CopySchoolFessAsync(lastSchoolYear, schoolYear);
+            await CopySubdivisionByYearAsync(schoolYear);
+            await CopyNoteMonthAsync(schoolYear);
+            await CopyMonthOfSalaryAsync(schoolYear);
+
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
             return schoolYear;
         }
         catch
@@ -324,16 +389,34 @@ public class SchoolYearService : ISchoolYearService
                 .Where(b => b.SCHOOL_YEAR_ID == schoolYear.ID)
             .ExecuteDeleteAsync();
 
-            await _context.SchoolYears
-                .Where(b => b.ID == schoolYear.ID)
-            .ExecuteDeleteAsync();
-
             var studentsToDelete = await _context.Students
                 .Where(s => !_context.StudentRegistrations
                 .Any(r => r.STUDENT_ID == s.ID))
                 .AsNoTracking()
             .ToListAsync();
             _context.Students.RemoveRange(studentsToDelete);
+
+            await _context.SchoolYears
+                .Where(b => b.ID == schoolYear.ID)
+            .ExecuteDeleteAsync();
+
+            // Verifie qu'une année n'est pas active
+            var activeSchoolYear = await _context.SchoolYears
+                .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.IS_ACTIVE == true);
+
+            if(activeSchoolYear == null)
+            {
+                var lastSchoolYear = await _context.SchoolYears
+                    .OrderBy(y => y.ID) 
+                .LastOrDefaultAsync();
+
+                if(lastSchoolYear != null)
+                {
+                    lastSchoolYear.IS_ACTIVE = true;
+                    _context.Update(lastSchoolYear);
+                }
+            }
 
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();

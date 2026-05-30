@@ -22,15 +22,6 @@ namespace backend.Migrations
             schema: null);
 
             migrationBuilder.InsertData(
-                table: "SchoolYears",
-                columns: new[] { "ID", "DESCRIPTION" },
-                values: new object[,]
-                {
-                    { 1, "2025-2026" },
-                },
-            schema: null);
-
-            migrationBuilder.InsertData(
                 table: "BirthPlaces",
                 columns: new[] { "ID", "PLACE" },
                 values: new object[,]
@@ -191,45 +182,6 @@ namespace backend.Migrations
                     { 2, "Maintenance" },
                     { 3, "Achat de carburant" },
                     { 4, "Autre" }
-                },
-            schema: null);
-
-            migrationBuilder.InsertData(
-                table: "SchoolFess",
-                columns: new[] { "SCHOOL_YEAR_ID", "EDUCATION_LEVEL_ID", "REGISTRATION_FESS", "PRICE_FESS_1", "PRICE_FESS_2", "PRICE_FESS_3" },
-                values: new object[,]
-                {
-                    { 1, 1, 100000, 500000, 500000, 500000},
-                    { 1, 2, 100000, 500000, 500000, 500000},
-                    { 1, 3, 100000, 500000, 500000, 500000},
-                    { 1, 4, 100000, 500000, 500000, 500000},
-                    { 1, 5, 100000, 500000, 500000, 500000},
-                    { 1, 6, 100000, 500000, 500000, 500000},
-                    { 1, 7, 100000, 500000, 500000, 500000},
-                    { 1, 8, 100000, 500000, 500000, 500000},
-                    { 1, 9, 100000, 500000, 500000, 500000},
-                    { 1, 10, 100000, 500000, 500000, 500000},
-                    { 1, 11, 100000, 500000, 500000, 500000},
-                    { 1, 12, 100000, 500000, 500000, 500000},
-                    { 1, 13, 100000, 500000, 500000, 500000},
-                    { 1, 14, 100000, 500000, 500000, 500000},
-                    { 1, 15, 100000, 500000, 500000, 500000},
-                    { 1, 16, 100000, 500000, 500000, 500000},
-                    { 1, 17, 100000, 500000, 500000, 500000},
-                    { 1, 18, 100000, 500000, 500000, 500000},
-                    { 1, 19, 100000, 500000, 500000, 500000},
-                    { 1, 20, 100000, 500000, 500000, 500000},
-                    { 1, 21, 100000, 500000, 500000, 500000},
-                    { 1, 22, 100000, 500000, 500000, 500000},
-                },
-            schema: null);
-
-            migrationBuilder.InsertData(
-                table: "BusFess",
-                columns: new[] { "SCHOOL_YEAR_ID", "EDUCATION_LEVEL_ID", "PRICE_FESS_1", "PRICE_FESS_2", "PRICE_FESS_3" },
-                values: new object[,]
-                {
-                    { 1, 1, 100000, 500000, 500000 }
                 },
             schema: null);
 
