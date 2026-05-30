@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using YOMA.Helpers;
 using YOMA.Models;
 using YOMA.Models.Tables;
 
@@ -12,6 +13,7 @@ namespace YOMA.Controllers
         private readonly SchoolYearService _schoolYearService;
         private readonly string Message = "Année scolaire";
 
+
         public SchoolYearController(Context context, SchoolYearService schoolYearService)
         {
             _context = context;
@@ -23,8 +25,9 @@ namespace YOMA.Controllers
         {
             try
             {
-                var createdSchoolYear = await _schoolYearService.CreateSchoolYearAsync(schoolYear);
-                var apiResult = new ApiResult(Message, false, createdSchoolYear);
+                await _schoolYearService.CreateSchoolYearAsync(schoolYear);
+                var schoolYearList = await _schoolYearService.GetSchoolYearsAsync();
+                var apiResult = new ApiResult(ConstantHelper.SAVE_SUCCESS_MSG, false, schoolYearList);
                 return Ok(new { 
                     Message = apiResult.Message,
                     IsError = apiResult.IsError,
@@ -33,7 +36,7 @@ namespace YOMA.Controllers
             }
             catch (Exception ex)
             {
-                var apiResult = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(ConstantHelper.SAVE_ERROR_MSG, true, null);
                 return BadRequest(new { 
                     Message = apiResult.Message,
                     IsError = apiResult.IsError,
@@ -125,7 +128,7 @@ namespace YOMA.Controllers
             try
             {
                 var updatedSchoolYear = await _schoolYearService.UpdateSchoolYearAsync(schoolYear);
-                var apiResult = new ApiResult(Message, false, updatedSchoolYear);
+                var apiResult = new ApiResult(ConstantHelper.SAVE_SUCCESS_MSG, false, updatedSchoolYear);
                 return Ok(new { 
                     Message = apiResult.Message,
                     IsError = apiResult.IsError,
@@ -134,7 +137,7 @@ namespace YOMA.Controllers
             }
             catch (Exception ex)
             {
-                var apiResult = new ApiResult(Message, true, null);
+                var apiResult = new ApiResult(ConstantHelper.SAVE_ERROR_MSG, true, null);
                 return BadRequest(new { 
                     Message = apiResult.Message,
                     IsError = apiResult.IsError,

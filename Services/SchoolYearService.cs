@@ -360,7 +360,10 @@ public class SchoolYearService : ISchoolYearService
 
     public async Task<IEnumerable<SchoolYear>> GetSchoolYearsAsync()
     {
-        return await _context.SchoolYears.AsNoTracking().ToListAsync();
+        return await _context.SchoolYears
+            .AsNoTracking()
+            .OrderByDescending(x => x.ID)
+        .ToListAsync();
     }
 
     public async Task<IEnumerable<SchoolYear>> GetSchoolYearBatchAsync(int[] ids)
