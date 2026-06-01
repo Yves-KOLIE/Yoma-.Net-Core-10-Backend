@@ -46,7 +46,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = false,
-                                            Message = $"{GetDayPeriod()} {user.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(user.NAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                             Error = null,
                                             StatusCode = 200,
                                             IsChangePassword = true,
@@ -74,7 +74,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = isValidPassword,
-                                            Message = $"{GetDayPeriod()} {user.NAME}",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(user.NAME)}",
                                             Error = null,
                                             StatusCode = 200,
                                             ConnectedUser = user
@@ -99,7 +99,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = false,
-                                            Message = $"{GetDayPeriod()} {student.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(student.NAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                             Error = null,
                                             StatusCode = 200,
                                             IsChangePassword = true,
@@ -120,7 +120,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = isValidPassword,
-                                            Message = $"{GetDayPeriod()} {student.NAME}",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(student.NAME)}",
                                             Error = null,
                                             StatusCode = 200,
                                             ConnectedUser = student
@@ -145,7 +145,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = false,
-                                            Message = $"{GetDayPeriod()} {parent.NAME}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(parent.NAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                             Error = null,
                                             StatusCode = 200,
                                             IsChangePassword = true,
@@ -173,7 +173,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = isValidPassword,
-                                            Message = $"{GetDayPeriod()} {parent.NAME}",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(parent.NAME)}",
                                             Error = null,
                                             StatusCode = 200,
                                             ConnectedUser = parent
@@ -670,6 +670,15 @@ namespace YOMA.Controllers
         private string GetDayPeriod()
         {
             return DateTime.UtcNow.Hour < 12 ? "Bonjour" : "Bonsoir";
+        }
+
+        private string getSplitedUserName(string name)
+        {
+            if(name.Contains(" "))
+            {
+                return name.Split(" ")[0].Trim();
+            }
+            return name;
         }
     }
 
