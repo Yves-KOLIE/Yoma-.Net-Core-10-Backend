@@ -46,7 +46,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = false,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(user.NAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(user.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                             Error = null,
                                             StatusCode = 200,
                                             IsChangePassword = true,
@@ -74,7 +74,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = isValidPassword,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(user.NAME)}",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(user.SURNAME)} 🖐️",
                                             Error = null,
                                             StatusCode = 200,
                                             ConnectedUser = user
@@ -99,7 +99,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = false,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(student.NAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(student.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                             Error = null,
                                             StatusCode = 200,
                                             IsChangePassword = true,
@@ -120,7 +120,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = isValidPassword,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(student.NAME)}",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(student.SURNAME)} 🖐️",
                                             Error = null,
                                             StatusCode = 200,
                                             ConnectedUser = student
@@ -145,7 +145,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = false,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(parent.NAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(parent.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                             Error = null,
                                             StatusCode = 200,
                                             IsChangePassword = true,
@@ -173,7 +173,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             UserIsConnected = isValidPassword,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(parent.NAME)}",
+                                            Message = $"{GetDayPeriod()} {getSplitedUserName(parent.SURNAME)} 🖐️",
                                             Error = null,
                                             StatusCode = 200,
                                             ConnectedUser = parent
