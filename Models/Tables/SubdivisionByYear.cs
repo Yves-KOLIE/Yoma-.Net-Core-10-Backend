@@ -16,7 +16,6 @@ namespace YOMA.Models.Tables
         public DateTime CREATION_DATE { get; set; } = new DateTime();
 		public DateTime? MODIFICATION_DATE { get; set; } = null;
 
-
         [ForeignKey("SCHOOL_YEAR")]
         public int SCHOOL_YEAR_ID { get; set; }
         public SchoolYear SCHOOL_YEAR { get; set; } = null!;

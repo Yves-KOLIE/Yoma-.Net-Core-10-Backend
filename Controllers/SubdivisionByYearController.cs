@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using YOMA.Helpers;
 using YOMA.Models;
 using YOMA.Models.Tables;
 using YOMA.Models.Views;
@@ -84,12 +85,12 @@ namespace YOMA.Controllers
         }
 
         [HttpPut("BatchUpdateSubdivisionByYear")]
-        public async Task<ActionResult<ApiResult>> BatchUpdateSubdivisionByYearAsync(List<SubdivisionByYearViewModel> subdivisionByYearViewModelList)
+        public async Task<ActionResult<ApiResult>> BatchUpdateSubdivisionByYearAsync([FromBody] List<SubdivisionByYear> subdivisionByYearList)
         {
             try
             {
-                var updatedRows = await _subdivisionByYearsService.BatchUpdateSubdivisionByYearAsync(subdivisionByYearViewModelList);
-                var apiResult = new ApiResult(Message, false, updatedRows);
+                var isUpdated = await _subdivisionByYearsService.BatchUpdateSubdivisionByYearAsync(subdivisionByYearList);
+                var apiResult = new ApiResult(ConstantHelper.SAVE_SUCCESS_MSG, false, isUpdated);
                 return Ok(new { 
                     Message = apiResult.Message,
                     IsError = apiResult.IsError,
@@ -98,8 +99,7 @@ namespace YOMA.Controllers
             }
             catch (Exception ex)
             {
-                string errorMessage = "Une erreur s'est produite lors de la mise à jour des subdivisions par année.";
-                var apiResult = new ApiResult(errorMessage, true, null);
+                var apiResult = new ApiResult(ConstantHelper.SAVE_ERROR_MSG, true, false);
                 return BadRequest(new { 
                     Message = apiResult.Message,
                     IsError = apiResult.IsError,
