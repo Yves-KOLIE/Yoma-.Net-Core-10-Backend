@@ -27,12 +27,8 @@ public class SubdivisionByYearService : ISubdivisionServiceByYearService
         schoolYearId = schoolYearId ?? (await _schoolYearService.GetActivedSchoolYear())?.ID ?? 0;
         var subdivisionByYearsList = await _context.SubdivisionByYears
             .Where(sy => sy.SCHOOL_YEAR_ID == schoolYearId)
-            .Include(sy => sy.SCHOOL_YEAR)
             .Include(sy => sy.SUBDIVISION)
-            .Include(sy => sy.EDUCATION_LEVEL)
-                .ThenInclude(se => se.SCHOOL_EDUCATION)
-            .Include(sy => sy.EDUCATION_LEVEL)
-                .ThenInclude(se => se.HIGH_SCHOOL_OPTION)
+            .Include(sy => sy.EDUCATION_LEVEL).ThenInclude(se => se.HIGH_SCHOOL_OPTION)
             .OrderBy(sy => sy.ID)
             .AsNoTracking()
         .ToListAsync();

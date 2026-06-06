@@ -28,7 +28,11 @@ namespace YOMA.Controllers
             try
             {
                 var subdivisionByYears = await _subdivisionByYearsService.GetSubdivisionByYearsAsync(schoolYearId);
-                var educationLevels = await _context.EducationLevels.AsNoTracking().ToListAsync();
+                
+                var educationLevels = await _context.EducationLevels
+                    .AsNoTracking()
+                    .Include(x => x.HIGH_SCHOOL_OPTION)
+                .ToListAsync();
 
                 var updatedRows = new List<SubdivisionByYearViewModel>();
 
@@ -49,7 +53,7 @@ namespace YOMA.Controllers
                     updatedRows.Add(new SubdivisionByYearViewModel
                     {
                         SCHOOL_YEAR_ID = schoolYearId,
-                        EDUCATION_LEVEL = educationLevel.DESCRIPTION,
+                        EDUCATION_LEVEL = (educationLevel.DESCRIPTION + " " + educationLevel?.HIGH_SCHOOL_OPTION?.ABBREVIATION).Trim(),
                         SUBDIVISION_BY_YEAR_LIST = subdivisionByYearsList
                     });
                 }
