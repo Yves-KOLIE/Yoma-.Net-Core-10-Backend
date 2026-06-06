@@ -23,7 +23,7 @@ namespace YOMA.Controllers
         }
 
         [HttpGet("GetSubdivisionByYears/{schoolYearId?}")]
-        public async Task<ActionResult<ApiResult>> GetSubdivisionByYearsAsync(int? schoolYearId = null)
+        public async Task<ActionResult<ApiResult>> GetSubdivisionByYearsAsync([FromQuery] int? schoolYearId = null)
         {
             try
             {
