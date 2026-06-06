@@ -74,9 +74,9 @@ namespace backend.Migrations
                     { 4, "1ère année", 2, null },
                     { 5, "2ème année", 2, null },
                     { 6, "3ème année", 2, null },
-                    { 7, "4ème", 2, null },
-                    { 8, "5ème", 2, null },
-                    { 9, "6ème", 2, null },
+                    { 7, "4ème année", 2, null },
+                    { 8, "5ème année", 2, null },
+                    { 9, "6ème année", 2, null },
 
                     { 10, "7ème année", 3, null },
                     { 11, "8ème année", 3, null },
