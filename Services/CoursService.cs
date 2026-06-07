@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using YOMA.Models;
 using YOMA.Models.Tables;
+using YOMA.Models.Views;
 
 public interface ICourService
 {
+    Task<IEnumerable<Cours>> GetCoursAsync(int? shoolYearId);
     Task<Cours> CreateCoursAsync(Cours cours);
     Task<Cours> UpdateCoursAsync(Cours cours);
 }
@@ -11,10 +13,32 @@ public interface ICourService
 public class CoursService : ICourService
 {
     private readonly Context _context;
+    private readonly SchoolYearService _schoolYearService;
 
-    public CoursService(Context context)
+    public CoursService(Context context, SchoolYearService schoolYearService)
     {
+        _schoolYearService = schoolYearService;
         _context = context;
+    }
+
+    public async Task<IEnumerable<Cours>> GetCoursAsync(int? shoolYearId)
+    {
+        if(shoolYearId != null)
+        {
+            return await _context.Cours
+                .AsNoTracking()
+                .Where(x => x.SCHOOL_YEAR_ID == shoolYearId)
+                .OrderBy(x => x.DESCRIPTION)
+            .ToListAsync();
+        }
+
+        SchoolYear? currentShoolYear = await _schoolYearService.GetActivedSchoolYear();
+        int? currentSchoolYearId = currentShoolYear?.ID;
+        return await _context.Cours
+            .AsNoTracking()
+            .Where(x => x.SCHOOL_YEAR_ID == currentSchoolYearId)
+            .OrderBy(x => x.DESCRIPTION)
+        .ToListAsync();
     }
 
     public async Task<Cours> CreateCoursAsync(Cours cours)

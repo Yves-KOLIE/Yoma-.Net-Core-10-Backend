@@ -18,6 +18,31 @@ namespace YOMA.Controllers
             _coursService = coursService;
         }
 
+        [HttpGet("GetCours")]
+        public async Task<ActionResult<ApiResult>> GetCours([FromQuery] int? schoolYearId)
+        {
+            try
+            {
+                var coursList = await _coursService.GetCoursAsync(schoolYearId);
+                var apiResult = new ApiResult(Message, false, coursList);
+                return Ok(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data 
+                });
+            }
+            catch (Exception ex)
+            {
+                var apiResult = new ApiResult(Message, true, null);
+                return BadRequest(new { 
+                    Message = apiResult.Message,
+                    IsError = apiResult.IsError,
+                    Data = apiResult.Data,
+                    ErrorDetails = ex.Message
+                });
+            }
+        }
+
         [HttpPost("CreateCours")]
         public async Task<ActionResult<ApiResult>> CreateCours([FromBody] Cours cours)
         {
