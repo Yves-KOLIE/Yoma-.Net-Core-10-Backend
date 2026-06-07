@@ -33,6 +33,7 @@ namespace YOMA.Controllers
                 var educationLevels = await _context.EducationLevels
                     .AsNoTracking()
                     .Include(x => x.HIGH_SCHOOL_OPTION)
+                    .OrderBy(x => x.ID)
                 .ToListAsync();
 
                 var updatedRows = new List<SubdivisionByYearViewModel>();
@@ -41,15 +42,12 @@ namespace YOMA.Controllers
                 {
                     var subdivisionList = subdivisionByYears
                         .Where(sy => sy.EDUCATION_LEVEL_ID == educationLevel.ID && sy.SUBDIVISION.IS_ACTIVE == true)
-                        .OrderBy(sy => sy.ID)
+                        .OrderBy(sy => sy.EDUCATION_LEVEL_ID)
                     .ToList();
 
                     var subdivisionByYearsList = new List<SubdivisionByYear>();
 
-                    foreach (var subdivision in subdivisionList)
-                    {
-                        subdivisionByYearsList.Add(subdivision);
-                    }
+                    foreach (var subdivision in subdivisionList) subdivisionByYearsList.Add(subdivision);                    
 
                     updatedRows.Add(new SubdivisionByYearViewModel
                     {
