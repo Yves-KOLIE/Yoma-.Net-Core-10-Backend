@@ -33,6 +33,7 @@ public class SubdivisionByYearService : ISubdivisionServiceByYearService
             .Include(sy => sy.EDUCATION_LEVEL).ThenInclude(se => se.HIGH_SCHOOL_OPTION)
             .Include(sy => sy.EDUCATION_LEVEL).ThenInclude(se => se.SCHOOL_EDUCATION)
             .OrderBy(sy => sy.EDUCATION_LEVEL.ID)
+            .ThenBy(sy => sy.SUBDIVISION.DESCRIPTION)
             .AsNoTracking()
         .ToListAsync();
 
