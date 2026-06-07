@@ -22,7 +22,12 @@ namespace YOMA.Controllers
         {
             try
             {
-                var schoolEducationLevelList = await _context.EducationLevels.AsNoTracking().ToListAsync();
+                var schoolEducationLevelList = await _context.EducationLevels
+                    .AsNoTracking()
+                    .Include(x => x.HIGH_SCHOOL_OPTION)
+                    .OrderBy(x => x.ID)
+                .ToListAsync();
+
                 var apiResult = new ApiResult(Message, false, schoolEducationLevelList);
                 return Ok(new { 
                     Message = apiResult.Message,
