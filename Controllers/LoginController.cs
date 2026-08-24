@@ -11,42 +11,44 @@ namespace YOMA.Controllers
     public class LoginController : ControllerBase
     {
         private readonly Context _context;
+        private readonly LoginService _loginService;
         private readonly ForgotUserPasswordService _forgotUserPasswordService;
         private readonly JwtTokenService _jwtTokenService;
 
-        public LoginController(Context context, ForgotUserPasswordService forgotUserPasswordService, JwtTokenService jwtTokenService)
+        public LoginController(Context context, LoginService loginService, ForgotUserPasswordService forgotUserPasswordService, JwtTokenService jwtTokenService)
         {
             _context = context;
+            _loginService = loginService;
             _forgotUserPasswordService = forgotUserPasswordService;
             _jwtTokenService = jwtTokenService;
         }
 
-        [HttpPost("Auth")]
-        public async Task<ActionResult<LoginResult>> Auth([FromBody] LoginModel loginModel)
+        [HttpPost("auth")]
+        public async Task<ActionResult<LoginResult>> Auth([FromBody] LoginCredentials loginCredentials)
         {
             try
             {
-                var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == loginModel.email);
+                var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == loginCredentials.email);
                 if(userEmail != null)
                 {
                     switch(userEmail.USER_TYPE_ID)
                     {
-                        case 1: // Professeur
+                        case 1: // Encadreur
                             var user = await _context.Users
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.ID);
 
                             if(user != null)
                             {
-                                bool isValidPassword = PasswordHelper.IsValidPassword(loginModel.password, user.PASSWORD);
+                                bool isValidPassword = PasswordHelper.IsValidPassword(loginCredentials.password, user.PASSWORD);
                                 if(isValidPassword)
                                 {
-                                    if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
+                                    if(loginCredentials.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
                                     {
                                         return Ok(new LoginResult 
                                         { 
                                             userIsConnected = false,
-                                            message = $"{GetDayPeriod()} {getSplitedUserName(user.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            message = $"{_loginService.GetDayPeriod()} {_loginService.getSplitedUserName(user.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                             error = null,
                                             statusCode = 200,
                                             isChangePassword = true,
@@ -72,7 +74,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             userIsConnected = isValidPassword,
-                                            message = $"{GetDayPeriod()} {getSplitedUserName(user.SURNAME)} 🖐️",
+                                            message = $"{_loginService.GetDayPeriod()} {_loginService.getSplitedUserName(user.SURNAME)} 🖐️",
                                             error = null,
                                             statusCode = 200,
                                             user = user,
@@ -90,15 +92,15 @@ namespace YOMA.Controllers
 
                             if(student != null)
                             {
-                                bool isValidPassword = PasswordHelper.IsValidPassword(loginModel.password, student.PASSWORD);
+                                bool isValidPassword = PasswordHelper.IsValidPassword(loginCredentials.password, student.PASSWORD);
                                 if(isValidPassword)
                                 {
-                                    if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
+                                    if(loginCredentials.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
                                     {
                                         return Ok(new LoginResult 
                                         { 
                                             userIsConnected = false,
-                                            message = $"{GetDayPeriod()} {getSplitedUserName(student.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            message = $"{_loginService.GetDayPeriod()} {_loginService.getSplitedUserName(student.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                             error = null,
                                             statusCode = 200,
                                             isChangePassword = true,
@@ -117,7 +119,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             userIsConnected = isValidPassword,
-                                            message = $"{GetDayPeriod()} {getSplitedUserName(student.SURNAME)} 🖐️",
+                                            message = $"{_loginService.GetDayPeriod()} {_loginService.getSplitedUserName(student.SURNAME)} 🖐️",
                                             error = null,
                                             statusCode = 200,
                                             user = student,
@@ -135,15 +137,15 @@ namespace YOMA.Controllers
 
                             if(parent != null)
                             {
-                                bool isValidPassword = PasswordHelper.IsValidPassword(loginModel.password, parent.PASSWORD);
+                                bool isValidPassword = PasswordHelper.IsValidPassword(loginCredentials.password, parent.PASSWORD);
                                 if(isValidPassword)
                                 {
-                                    if(loginModel.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
+                                    if(loginCredentials.password.Equals(ConstantHelper.DEFAULT_PASSWORD))
                                     {
                                         return Ok(new LoginResult 
                                         { 
                                             userIsConnected = false,
-                                            message = $"{GetDayPeriod()} {getSplitedUserName(parent.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            message = $"{_loginService.GetDayPeriod()} {_loginService.getSplitedUserName(parent.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
                                             error = null,
                                             statusCode = 200,
                                             isChangePassword = true,
@@ -169,7 +171,7 @@ namespace YOMA.Controllers
                                         return Ok(new LoginResult 
                                         { 
                                             userIsConnected = isValidPassword,
-                                            message = $"{GetDayPeriod()} {getSplitedUserName(parent.SURNAME)} 🖐️",
+                                            message = $"{_loginService.GetDayPeriod()} {_loginService.getSplitedUserName(parent.SURNAME)} 🖐️",
                                             error = null,
                                             statusCode = 200,
                                             user = parent,
@@ -202,59 +204,38 @@ namespace YOMA.Controllers
             }
         }
 
-        [HttpGet("generateEmailValidationCode/{email}")]
-        public async Task<ActionResult> GenerateEmailValidationCode(string email)
+        [HttpPost("generateEmailValidationCode")]
+        public async Task<ActionResult> GenerateEmailValidationCode([FromBody] ForgotPasswordCredentials forgotPasswordCredentials)
         {
             try
             {
-                var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == email);
+                var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == forgotPasswordCredentials.email && forgotPasswordCredentials.email != null);
                 if(userEmail != null)
                 {
                     switch(userEmail.USER_TYPE_ID)
                     {
-                        case 1: // Professeur
+                        case 1: // Encadreur
                             var user = await _context.Users
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.ID);
 
                             if(user != null)
                             {
-                                var isValidForgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
+                                var isValidForgotUserPassword = await EmailHelper.IsValidForgotUserPassword(forgotPasswordCredentials.email!, _context);
                                 if(isValidForgotUserPassword != null)
                                 {
-                                    return BadRequest(new EmailValidation 
-                                    { 
-                                        success = false,
-                                        message = "Nous vous avons déjà envoyé un code encore valide.",
-                                        error = null,
-                                        statusCode = 400,
-                                        connectedUser = user
-                                    });
+                                    return BadRequest(_loginService.CodeAlreadySent());
                                 }
                                 else
                                 {
-                                    var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
+                                    var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(forgotPasswordCredentials.email!);
                                     if(forgotUserPassword != null)
                                     {
-                                        return Ok(new EmailValidation 
-                                        { 
-                                            success = true,
-                                            message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
-                                            error = null,
-                                            statusCode = 200,
-                                            connectedUser = user
-                                        }); 
+                                        return Ok(_loginService.CodeIsGenerated(forgotPasswordCredentials.email!)); 
                                     }
                                 }
 
-                                return BadRequest(new EmailValidation 
-                                { 
-                                    success = false,
-                                    message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
-                                    error = null,
-                                    statusCode = 400,
-                                    connectedUser = null
-                                });
+                                return BadRequest(_loginService.EmptyCodeGenerated());
                             }
                         break;
 
@@ -265,42 +246,21 @@ namespace YOMA.Controllers
 
                             if(student != null)
                             {
-                                var isValidForgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
+                                var isValidForgotUserPassword = await EmailHelper.IsValidForgotUserPassword(forgotPasswordCredentials.email!, _context);
                                 if(isValidForgotUserPassword != null)
                                 {
-                                    return BadRequest(new EmailValidation 
-                                    { 
-                                        success = false,
-                                        message = "Nous vous avons déjà envoyé un code encore valide.",
-                                        error = null,
-                                        statusCode = 400,
-                                        connectedUser = student
-                                    });
+                                    return BadRequest(_loginService.CodeAlreadySent());
                                 }
                                 else
                                 {
-                                    var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
+                                    var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(forgotPasswordCredentials.email!);
                                     if(forgotUserPassword != null)
                                     {
-                                        return Ok(new EmailValidation 
-                                        { 
-                                            success = true,
-                                            message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
-                                            error = null,
-                                            statusCode = 200,
-                                            connectedUser = student
-                                        }); 
+                                        return Ok(_loginService.CodeIsGenerated(forgotPasswordCredentials.email!)); 
                                     }
                                 }
 
-                                return BadRequest(new EmailValidation 
-                                { 
-                                    success = false,
-                                    message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
-                                    error = null,
-                                    statusCode = 400,
-                                    connectedUser = null
-                                });
+                                return BadRequest(_loginService.EmptyCodeGenerated());
                             }
                         break;
 
@@ -311,42 +271,21 @@ namespace YOMA.Controllers
 
                             if(parent != null)
                             {
-                                var isValidForgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
+                                var isValidForgotUserPassword = await EmailHelper.IsValidForgotUserPassword(forgotPasswordCredentials.email!, _context);
                                 if(isValidForgotUserPassword != null)
                                 {
-                                    return BadRequest(new EmailValidation 
-                                    { 
-                                        success = false,
-                                        message = "Nous vous avons déjà envoyé un code encore valide.",
-                                        error = null,
-                                        statusCode = 400,
-                                        connectedUser = parent
-                                    });
+                                    return BadRequest(_loginService.CodeAlreadySent());
                                 }
                                 else
                                 {
-                                    var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(email);
+                                    var forgotUserPassword = await _forgotUserPasswordService.CreateForgotPasswordAsync(forgotPasswordCredentials.email!);
                                     if(forgotUserPassword != null)
                                     {
-                                        return Ok(new EmailValidation 
-                                        { 
-                                            success = true,
-                                            message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
-                                            error = null,
-                                            statusCode = 200,
-                                            connectedUser = parent
-                                        }); 
+                                        return Ok(_loginService.CodeIsGenerated(forgotPasswordCredentials.email!)); 
                                     }
                                 }
 
-                                return BadRequest(new EmailValidation 
-                                { 
-                                    success = false,
-                                    message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
-                                    error = null,
-                                    statusCode = 400,
-                                    connectedUser = null
-                                });
+                                return BadRequest(_loginService.EmptyCodeGenerated());
                             }
                         break;
                     }
@@ -354,73 +293,37 @@ namespace YOMA.Controllers
 
                 return BadRequest(new EmailValidation 
                 { 
-                    success = false,
                     message = "Cette adresse email n'existe pas dans notre base de données.",
-                    error = null,
-                    statusCode = 400,
-                    connectedUser = null
                 });
             }
             catch(Exception ex)
             {
                 return BadRequest(new EmailValidation
                 { 
-                    success = false,
                     message = "Cette adresse email n'existe pas dans notre base de données.",
                     error = ex,
-                    statusCode = 400,
-                    connectedUser = null
                 });
             }
         }
 
-        [HttpGet("validateEmailCode/{email}/{generedCode}")]
-        public async Task<ActionResult> ValidateEmailCode(string email, string generedCode)
+        [HttpPost("validateEmailCode")]
+        public async Task<ActionResult> ValidateEmailCode([FromBody] ForgotPasswordCredentials forgotPasswordCredentials)
         {
             try
             {
-                var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == email);
+                var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == forgotPasswordCredentials.email && forgotPasswordCredentials.email != null);
                 if(userEmail != null)
                 {
                     switch(userEmail.USER_TYPE_ID)
                     {
-                        case 1: // Professeur
+                        case 1: // Encadreur
                             var user = await _context.Users
                                 .Include(x => x.USER_EMAIL)
                             .FirstOrDefaultAsync(x => x.USER_EMAIL_ID == userEmail.ID);
 
                             if(user != null)
                             {
-                                var forgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
-                                if(forgotUserPassword != null)
-                                {
-                                    bool isValidCode = PasswordHelper.IsValidCode(generedCode, forgotUserPassword.CODE_GENERETED);
-                                    if(isValidCode)
-                                    {
-                                        // Désactiver le code validé
-                                        await _context.ForgotUserPasswords
-                                            .Where(x => x.ID == forgotUserPassword.ID)
-                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.IS_VALIDED, true));
-
-                                        return Ok(new EmailValidation 
-                                        { 
-                                            success = true,
-                                            message = "Code validé avec succès.",
-                                            error = null,
-                                            statusCode = 400,
-                                            connectedUser = user
-                                        });
-                                    }
-                                }
-
-                                return BadRequest(new EmailValidation 
-                                { 
-                                    success = false,
-                                    message = "Le code que vous avez saisi a expiré ou est invalide.",
-                                    error = null,
-                                    statusCode = 400,
-                                    connectedUser = user
-                                });
+                                return await VerifyCode(forgotPasswordCredentials);
                             }
                         break;
 
@@ -431,36 +334,7 @@ namespace YOMA.Controllers
 
                             if(student != null)
                             {
-                                var forgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
-                                if(forgotUserPassword != null)
-                                {
-                                    bool isValidCode = PasswordHelper.IsValidCode(generedCode, forgotUserPassword.CODE_GENERETED);
-                                    if(isValidCode)
-                                    {
-                                        // Désactiver le code validé
-                                        await _context.ForgotUserPasswords
-                                            .Where(x => x.ID == forgotUserPassword.ID)
-                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.IS_VALIDED, true));
-
-                                        return Ok(new EmailValidation 
-                                        { 
-                                            success = true,
-                                            message = "Code validé avec succès.",
-                                            error = null,
-                                            statusCode = 400,
-                                            connectedUser = student
-                                        });
-                                    }
-                                }
-
-                                return BadRequest(new EmailValidation 
-                                { 
-                                    success = false,
-                                    message = "Le code que vous avez saisi a expiré ou est invalide.",
-                                    error = null,
-                                    statusCode = 400,
-                                    connectedUser = student
-                                });
+                                return await VerifyCode(forgotPasswordCredentials);
                             }
                         break;
 
@@ -471,36 +345,7 @@ namespace YOMA.Controllers
 
                             if(parent != null)
                             {
-                                var forgotUserPassword = await EmailHelper.IsValidForgotUserPassword(email, _context);
-                                if(forgotUserPassword != null)
-                                {
-                                    bool isValidCode = PasswordHelper.IsValidCode(generedCode, forgotUserPassword.CODE_GENERETED);
-                                    if(isValidCode)
-                                    {
-                                        // Désactiver le code validé
-                                        await _context.ForgotUserPasswords
-                                            .Where(x => x.ID == forgotUserPassword.ID)
-                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.IS_VALIDED, true));
-
-                                        return Ok(new EmailValidation 
-                                        { 
-                                            success = true,
-                                            message = "Code validé avec succès.",
-                                            error = null,
-                                            statusCode = 400,
-                                            connectedUser = parent
-                                        });
-                                    }
-                                }
-
-                                return BadRequest(new EmailValidation 
-                                { 
-                                    success = false,
-                                    message = "Le code que vous avez saisi a expiré ou est invalide.",
-                                    error = null,
-                                    statusCode = 400,
-                                    connectedUser = parent
-                                });
+                                return await VerifyCode(forgotPasswordCredentials);
                             }
                         break;
                     }
@@ -508,32 +353,25 @@ namespace YOMA.Controllers
 
                 return BadRequest(new EmailValidation 
                 { 
-                    success = false,
                     message = "Cette adresse email n'existe pas dans notre base de données.",
-                    error = null,
-                    statusCode = 400,
-                    connectedUser = null
                 });
             }
             catch(Exception ex)
             {
                 return BadRequest(new EmailValidation
                 { 
-                    success = false,
                     message = "Cette adresse email n'existe pas dans notre base de données.",
                     error = ex,
-                    statusCode = 400,
-                    connectedUser = null
                 });
             }
         }
 
-        [HttpPost("ChangePassword")]
-        public async Task<ActionResult<LoginResult>> ChangePassword([FromBody] LoginModel loginModel)
+        [HttpPost("resetPassword")]
+        public async Task<ActionResult<LoginResult>> ChangePassword([FromBody] ResetPasswordCredentials resetPasswordCredentials)
         {
             try
             {
-                if(loginModel.password == ConstantHelper.DEFAULT_PASSWORD)
+                if(resetPasswordCredentials.newPassword == ConstantHelper.DEFAULT_PASSWORD)
                 {
                     return BadRequest(new LoginResult 
                     { 
@@ -545,20 +383,20 @@ namespace YOMA.Controllers
                 }
                 else
                 {
-                    if(loginModel.password == loginModel.confirmPassword)
+                    if(resetPasswordCredentials.newPassword == resetPasswordCredentials.confirmPassword)
                     {
-                        var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == loginModel.email);
+                        var userEmail = await _context.UserEmails.FirstOrDefaultAsync(x => x.EMAIL == resetPasswordCredentials.email);
                         if(userEmail != null)
                         {
-                            var forgotUserPassword = await EmailHelper.IsValidForgotUserPassword(loginModel.email, _context);
+                            var forgotUserPassword = await EmailHelper.IsValidForgotUserPassword(resetPasswordCredentials.email, _context);
                             if(forgotUserPassword != null)
                             {
                                 switch(userEmail.USER_TYPE_ID)
                                 {
-                                    case 1: // Professeur
+                                    case 1: // Encadreur
                                         int updateUser = await _context.Users
                                             .Where(x => x.USER_EMAIL_ID == userEmail.ID)
-                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.PASSWORD, PasswordHelper.HashPassword(loginModel.password)));
+                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.PASSWORD, PasswordHelper.HashPassword(resetPasswordCredentials.newPassword)));
 
                                         if(updateUser > 0)
                                         {
@@ -576,7 +414,7 @@ namespace YOMA.Controllers
                                     case 2: // Élèves
                                         int updateStudent = await _context.Students
                                             .Where(x => x.USER_EMAIL_ID == userEmail.ID)
-                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.PASSWORD, PasswordHelper.HashPassword(loginModel.password)));
+                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.PASSWORD, PasswordHelper.HashPassword(resetPasswordCredentials.newPassword)));
 
                                         if(updateStudent > 0)
                                         {
@@ -594,7 +432,7 @@ namespace YOMA.Controllers
                                     case 3: // Parent d'élèves
                                         int updateParent = await _context.Parents
                                             .Where(x => x.USER_EMAIL_ID == userEmail.ID)
-                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.PASSWORD, PasswordHelper.HashPassword(loginModel.password)));
+                                        .ExecuteUpdateAsync(u => u.SetProperty(x => x.PASSWORD, PasswordHelper.HashPassword(resetPasswordCredentials.newPassword)));
 
                                         if(updateParent > 0)
                                         {
@@ -623,7 +461,7 @@ namespace YOMA.Controllers
                                 return BadRequest(new LoginResult 
                                 { 
                                     isChangePassword = false,
-                                    message = "Le code que vous avez saisi a expiré ou est invalide.",
+                                    message = "Le code précédemment saisi a expiré ou est invalide.",
                                     error = null,
                                     statusCode = 400
                                 });
@@ -645,7 +483,7 @@ namespace YOMA.Controllers
                         return BadRequest(new LoginResult 
                         { 
                             isChangePassword = false,
-                            message = "Les deux adresses email sont différentes.",
+                            message = "Les mots de passe sont différentes.",
                             error = null,
                             statusCode = 400
                         });
@@ -664,20 +502,31 @@ namespace YOMA.Controllers
             }
         }
 
-        private string GetDayPeriod()
+        private async Task<ActionResult> VerifyCode(ForgotPasswordCredentials forgotPasswordCredentials)
         {
-            return DateTime.UtcNow.Hour < 12 ? "Bonjour" : "Bonsoir";
-        }
-
-        private string getSplitedUserName(string name)
-        {
-            if(name.Contains(" "))
+            var forgotUserPassword = await EmailHelper.IsValidForgotUserPassword(forgotPasswordCredentials.email!, _context);
+            if(forgotUserPassword != null)
             {
-                return name.Split(" ")[0].Trim();
+                bool isValidCode = PasswordHelper.IsValidCode(forgotPasswordCredentials.code!, forgotUserPassword.CODE_GENERETED);
+                if(isValidCode)
+                {
+                    // Désactiver le code validé
+                    await _context.ForgotUserPasswords
+                        .Where(x => x.ID == forgotUserPassword.ID)
+                    .ExecuteUpdateAsync(u => u.SetProperty(x => x.IS_VALIDED, true));
+
+                    return Ok(new EmailValidation 
+                    { 
+                        codeIsValided = true,
+                        message = "Code validé avec succès.",
+                    });
+                }
             }
-            return name;
+
+            return BadRequest(new EmailValidation 
+            { 
+                message = "Le code que vous avez saisi a expiré ou est invalide.",
+            });
         }
     }
-
-
 }

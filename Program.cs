@@ -71,6 +71,7 @@ builder.Services.AddAuthorization();
 
 // 4. Injection des dépendances Services
 builder.Services.AddScoped<JwtTokenService>();
+builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<BankService>();
 builder.Services.AddScoped<BirthPlaceService>();
 builder.Services.AddScoped<BusFessService>();
