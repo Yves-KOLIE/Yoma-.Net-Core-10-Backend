@@ -8,6 +8,7 @@ using YOMA.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 1. Configuration des contrôleurs et du JSON (en une seule fois)
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNamingPolicy = null;
@@ -18,6 +19,18 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.WriteIndented = true;
 });
 
+// 2. Configuration CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularOrigins", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// 3. Configuration de l'Authentification JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -34,19 +47,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ClockSkew = TimeSpan.FromMinutes(1)
         };
 
-        // Intercepter l'erreur "invalid token" pour renvoyer un JSON explicite
         options.Events = new JwtBearerEvents
         {
             OnChallenge = context =>
             {
-                // Sur Unauthorized (token manquant ou invalide)
                 context.HandleResponse();
                 context.Response.StatusCode = 401;
                 context.Response.ContentType = "application/json";
 
                 var problem = new
                 {
-                    Message = "Token invalide ou expiré. Veuillez vous déconnecté et vous reconnecté à nouveau.",
+                    Message = "Token invalide ou expiré. Veuillez vous déconnecter et vous reconnecter à nouveau.",
                     Error = context.Error,
                     ErrorDescription = context.ErrorDescription
                 };
@@ -54,9 +65,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 return context.Response.WriteAsync(JsonSerializer.Serialize(problem));
             }
         };
-});
+    });
+
 builder.Services.AddAuthorization();
 
+// 4. Injection des dépendances Services
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<BankService>();
 builder.Services.AddScoped<BirthPlaceService>();
@@ -78,35 +91,23 @@ builder.Services.AddScoped<StudentService>();
 builder.Services.AddScoped<UserTypeService>();
 builder.Services.AddScoped<ForgotUserPasswordService>();
 
-
 builder.Services.AddDbContext<Context>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
-// 1. Ajoute les contrôleurs
-builder.Services.AddControllers();
-
-// 2. Ajoute CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngularOrigins", policy =>
-    {
-        policy.WithOrigins("http://localhost:4200")
-            .AllowAnyHeader()
-        .AllowAnyMethod();
-    });
-});
-
 var app = builder.Build();
 
-// 3. Active CORS (important : avant les routes)
-app.UseCors("AllowAngularOrigins");
+// --- PIPELINE DE MIDDLEWARE (L'ordre est crucial) ---
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+}
+else
+{
+    app.UseExceptionHandler("/Error");
 }
 
 app.UseExceptionHandler(errorApp =>
@@ -121,13 +122,17 @@ app.UseExceptionHandler(errorApp =>
     });
 });
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-}
+// A. CORS DOIT ÊTRE EN PREMIER (avant UseHttpsRedirection, UseRouting, Authentication, etc.)
+app.UseCors("AllowAngularOrigins");
 
+// B. Redirection HTTPS
 app.UseHttpsRedirection();
+
+// C. Authentification & Autorisation
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers(); // IMPORTANT : Expose tes contrôleurs
+
+// D. Mappage des routes
+app.MapControllers();
+
 app.Run();

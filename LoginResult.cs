@@ -2,11 +2,12 @@ namespace YOMA
 {
   public class LoginResult
   {
-    public bool UserIsConnected { get; set; }
-    public object? Error { get; set; }
-    public required string Message { get; set; }
-    public required int StatusCode { get; set; }
-    public bool IsChangePassword { get; set; }
-    public object? ConnectedUser {get; set; }
+    public bool userIsConnected { get; set; }
+    public object? error { get; set; }
+    public required string message { get; set; }
+    public required int statusCode { get; set; }
+    public bool isChangePassword { get; set; }
+    public object? user { get; set; }
+    public string? token { get; set; } = null;
   }
 }

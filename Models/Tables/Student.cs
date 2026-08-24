@@ -28,8 +28,6 @@ namespace YOMA.Models.Tables
         public bool IS_LOCK { get; set; }
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;
-        [NotMapped]
-        public string? TOKEN { get; set; }
         public DateTime? LOCK_DATE { get; set; } = null;
         public DateTime? UNLOCK_DATE { get; set; } = null;
         public DateTime? LAST_CONNEXION_DATE { get; set; } = null;
@@ -37,16 +35,13 @@ namespace YOMA.Models.Tables
         public DateTime CREATION_DATE { get; set; } = new DateTime();
 		public DateTime? MODIFICATION_DATE { get; set; } = null;
 
-
         [ForeignKey("BIRTH_PLACE")]
         public int BIRTH_PLACE_ID { get; set; }
         public BirthPlace BIRTH_PLACE { get; set; } = null!;
         
-
         [ForeignKey("USER_ROLE")]
         public int USER_ROLE_ID { get; set; }
         public UserRole USER_ROLE { get; set; } = null!;
-
 
         [ForeignKey("PARENT_1")]
         public int PARENT_1_ID { get; set; }

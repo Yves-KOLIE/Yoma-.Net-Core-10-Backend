@@ -45,12 +45,12 @@ namespace YOMA.Controllers
                                     {
                                         return Ok(new LoginResult 
                                         { 
-                                            UserIsConnected = false,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(user.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
-                                            Error = null,
-                                            StatusCode = 200,
-                                            IsChangePassword = true,
-                                            ConnectedUser = user
+                                            userIsConnected = false,
+                                            message = $"{GetDayPeriod()} {getSplitedUserName(user.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            error = null,
+                                            statusCode = 200,
+                                            isChangePassword = true,
+                                            user = user
                                         }); 
                                     }
                                     else
@@ -69,15 +69,14 @@ namespace YOMA.Controllers
                                             user.USER_ROLE = userRole;
                                         }
 
-                                        user.TOKEN = _jwtTokenService.CreateAccessToken(user.ID, user.USER_ROLE.DESCRIPTION);
-
                                         return Ok(new LoginResult 
                                         { 
-                                            UserIsConnected = isValidPassword,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(user.SURNAME)} 🖐️",
-                                            Error = null,
-                                            StatusCode = 200,
-                                            ConnectedUser = user
+                                            userIsConnected = isValidPassword,
+                                            message = $"{GetDayPeriod()} {getSplitedUserName(user.SURNAME)} 🖐️",
+                                            error = null,
+                                            statusCode = 200,
+                                            user = user,
+                                            token = _jwtTokenService.CreateAccessToken(user.ID, user.USER_ROLE.DESCRIPTION)
                                         });
                                     }
                                 }
@@ -98,12 +97,12 @@ namespace YOMA.Controllers
                                     {
                                         return Ok(new LoginResult 
                                         { 
-                                            UserIsConnected = false,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(student.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
-                                            Error = null,
-                                            StatusCode = 200,
-                                            IsChangePassword = true,
-                                            ConnectedUser = student
+                                            userIsConnected = false,
+                                            message = $"{GetDayPeriod()} {getSplitedUserName(student.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            error = null,
+                                            statusCode = 200,
+                                            isChangePassword = true,
+                                            user = student
                                         }); 
                                     }
                                     else
@@ -115,15 +114,14 @@ namespace YOMA.Controllers
                                             student.USER_ROLE = userRole;
                                         }
 
-                                        student.TOKEN = _jwtTokenService.CreateAccessToken(student.ID, student.USER_ROLE.DESCRIPTION);
-
                                         return Ok(new LoginResult 
                                         { 
-                                            UserIsConnected = isValidPassword,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(student.SURNAME)} 🖐️",
-                                            Error = null,
-                                            StatusCode = 200,
-                                            ConnectedUser = student
+                                            userIsConnected = isValidPassword,
+                                            message = $"{GetDayPeriod()} {getSplitedUserName(student.SURNAME)} 🖐️",
+                                            error = null,
+                                            statusCode = 200,
+                                            user = student,
+                                            token = _jwtTokenService.CreateAccessToken(student.ID, student.USER_ROLE.DESCRIPTION)
                                         });
                                     }
                                 }
@@ -144,12 +142,12 @@ namespace YOMA.Controllers
                                     {
                                         return Ok(new LoginResult 
                                         { 
-                                            UserIsConnected = false,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(parent.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
-                                            Error = null,
-                                            StatusCode = 200,
-                                            IsChangePassword = true,
-                                            ConnectedUser = parent
+                                            userIsConnected = false,
+                                            message = $"{GetDayPeriod()} {getSplitedUserName(parent.SURNAME)}, vous devez obligatoirement changer votre mot de passe avant de continuer.",
+                                            error = null,
+                                            statusCode = 200,
+                                            isChangePassword = true,
+                                            user = parent
                                         }); 
                                     }
                                     else
@@ -168,15 +166,14 @@ namespace YOMA.Controllers
                                             parent.USER_ROLE = userRole;
                                         }
 
-                                        parent.TOKEN = _jwtTokenService.CreateAccessToken(parent.ID, parent.USER_ROLE.DESCRIPTION);
-
                                         return Ok(new LoginResult 
                                         { 
-                                            UserIsConnected = isValidPassword,
-                                            Message = $"{GetDayPeriod()} {getSplitedUserName(parent.SURNAME)} 🖐️",
-                                            Error = null,
-                                            StatusCode = 200,
-                                            ConnectedUser = parent
+                                            userIsConnected = isValidPassword,
+                                            message = $"{GetDayPeriod()} {getSplitedUserName(parent.SURNAME)} 🖐️",
+                                            error = null,
+                                            statusCode = 200,
+                                            user = parent,
+                                            token = _jwtTokenService.CreateAccessToken(parent.ID, parent.USER_ROLE.DESCRIPTION)
                                         });
                                     }
                                 }
@@ -187,20 +184,20 @@ namespace YOMA.Controllers
 
                 return BadRequest(new LoginResult 
                 { 
-                    UserIsConnected = false,
-                    Message = "Adresse email et/ou mot de passe invalide.",
-                    Error = null,
-                    StatusCode = 400
+                    userIsConnected = false,
+                    message = "Adresse email et/ou mot de passe invalide.",
+                    error = null,
+                    statusCode = 400
                 });
             }
             catch (Exception ex)
             {
                 return BadRequest(new LoginResult 
                 { 
-                    UserIsConnected = false,
-                    Message = "Une erreur coté serveur s'est produite.",
-                    Error = ex,
-                    StatusCode = 500
+                    userIsConnected = false,
+                    message = "Une erreur coté serveur s'est produite.",
+                    error = ex,
+                    statusCode = 500
                 });
             }
         }
@@ -227,11 +224,11 @@ namespace YOMA.Controllers
                                 {
                                     return BadRequest(new EmailValidation 
                                     { 
-                                        Success = false,
-                                        Message = "Nous vous avons déjà envoyé un code encore valide.",
-                                        Error = null,
-                                        StatusCode = 400,
-                                        ConnectedUser = user
+                                        success = false,
+                                        message = "Nous vous avons déjà envoyé un code encore valide.",
+                                        error = null,
+                                        statusCode = 400,
+                                        connectedUser = user
                                     });
                                 }
                                 else
@@ -241,22 +238,22 @@ namespace YOMA.Controllers
                                     {
                                         return Ok(new EmailValidation 
                                         { 
-                                            Success = true,
-                                            Message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
-                                            Error = null,
-                                            StatusCode = 200,
-                                            ConnectedUser = user
+                                            success = true,
+                                            message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
+                                            error = null,
+                                            statusCode = 200,
+                                            connectedUser = user
                                         }); 
                                     }
                                 }
 
                                 return BadRequest(new EmailValidation 
                                 { 
-                                    Success = false,
-                                    Message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
-                                    Error = null,
-                                    StatusCode = 400,
-                                    ConnectedUser = null
+                                    success = false,
+                                    message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
+                                    error = null,
+                                    statusCode = 400,
+                                    connectedUser = null
                                 });
                             }
                         break;
@@ -273,11 +270,11 @@ namespace YOMA.Controllers
                                 {
                                     return BadRequest(new EmailValidation 
                                     { 
-                                        Success = false,
-                                        Message = "Nous vous avons déjà envoyé un code encore valide.",
-                                        Error = null,
-                                        StatusCode = 400,
-                                        ConnectedUser = student
+                                        success = false,
+                                        message = "Nous vous avons déjà envoyé un code encore valide.",
+                                        error = null,
+                                        statusCode = 400,
+                                        connectedUser = student
                                     });
                                 }
                                 else
@@ -287,22 +284,22 @@ namespace YOMA.Controllers
                                     {
                                         return Ok(new EmailValidation 
                                         { 
-                                            Success = true,
-                                            Message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
-                                            Error = null,
-                                            StatusCode = 200,
-                                            ConnectedUser = student
+                                            success = true,
+                                            message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
+                                            error = null,
+                                            statusCode = 200,
+                                            connectedUser = student
                                         }); 
                                     }
                                 }
 
                                 return BadRequest(new EmailValidation 
                                 { 
-                                    Success = false,
-                                    Message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
-                                    Error = null,
-                                    StatusCode = 400,
-                                    ConnectedUser = null
+                                    success = false,
+                                    message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
+                                    error = null,
+                                    statusCode = 400,
+                                    connectedUser = null
                                 });
                             }
                         break;
@@ -319,11 +316,11 @@ namespace YOMA.Controllers
                                 {
                                     return BadRequest(new EmailValidation 
                                     { 
-                                        Success = false,
-                                        Message = "Nous vous avons déjà envoyé un code encore valide.",
-                                        Error = null,
-                                        StatusCode = 400,
-                                        ConnectedUser = parent
+                                        success = false,
+                                        message = "Nous vous avons déjà envoyé un code encore valide.",
+                                        error = null,
+                                        statusCode = 400,
+                                        connectedUser = parent
                                     });
                                 }
                                 else
@@ -333,22 +330,22 @@ namespace YOMA.Controllers
                                     {
                                         return Ok(new EmailValidation 
                                         { 
-                                            Success = true,
-                                            Message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
-                                            Error = null,
-                                            StatusCode = 200,
-                                            ConnectedUser = parent
+                                            success = true,
+                                            message = $"Nous venons d'envoyer un code de validation à l'adresse email {email}.",
+                                            error = null,
+                                            statusCode = 200,
+                                            connectedUser = parent
                                         }); 
                                     }
                                 }
 
                                 return BadRequest(new EmailValidation 
                                 { 
-                                    Success = false,
-                                    Message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
-                                    Error = null,
-                                    StatusCode = 400,
-                                    ConnectedUser = null
+                                    success = false,
+                                    message = "Une erreur serveur est survenue lors de la génération du code. Veuillez reessayer plutard.",
+                                    error = null,
+                                    statusCode = 400,
+                                    connectedUser = null
                                 });
                             }
                         break;
@@ -357,22 +354,22 @@ namespace YOMA.Controllers
 
                 return BadRequest(new EmailValidation 
                 { 
-                    Success = false,
-                    Message = "Cette adresse email n'existe pas dans notre base de données.",
-                    Error = null,
-                    StatusCode = 400,
-                    ConnectedUser = null
+                    success = false,
+                    message = "Cette adresse email n'existe pas dans notre base de données.",
+                    error = null,
+                    statusCode = 400,
+                    connectedUser = null
                 });
             }
             catch(Exception ex)
             {
                 return BadRequest(new EmailValidation
                 { 
-                    Success = false,
-                    Message = "Cette adresse email n'existe pas dans notre base de données.",
-                    Error = ex,
-                    StatusCode = 400,
-                    ConnectedUser = null
+                    success = false,
+                    message = "Cette adresse email n'existe pas dans notre base de données.",
+                    error = ex,
+                    statusCode = 400,
+                    connectedUser = null
                 });
             }
         }
@@ -407,22 +404,22 @@ namespace YOMA.Controllers
 
                                         return Ok(new EmailValidation 
                                         { 
-                                            Success = true,
-                                            Message = "Code validé avec succès.",
-                                            Error = null,
-                                            StatusCode = 400,
-                                            ConnectedUser = user
+                                            success = true,
+                                            message = "Code validé avec succès.",
+                                            error = null,
+                                            statusCode = 400,
+                                            connectedUser = user
                                         });
                                     }
                                 }
 
                                 return BadRequest(new EmailValidation 
                                 { 
-                                    Success = false,
-                                    Message = "Le code que vous avez saisi a expiré ou est invalide.",
-                                    Error = null,
-                                    StatusCode = 400,
-                                    ConnectedUser = user
+                                    success = false,
+                                    message = "Le code que vous avez saisi a expiré ou est invalide.",
+                                    error = null,
+                                    statusCode = 400,
+                                    connectedUser = user
                                 });
                             }
                         break;
@@ -447,22 +444,22 @@ namespace YOMA.Controllers
 
                                         return Ok(new EmailValidation 
                                         { 
-                                            Success = true,
-                                            Message = "Code validé avec succès.",
-                                            Error = null,
-                                            StatusCode = 400,
-                                            ConnectedUser = student
+                                            success = true,
+                                            message = "Code validé avec succès.",
+                                            error = null,
+                                            statusCode = 400,
+                                            connectedUser = student
                                         });
                                     }
                                 }
 
                                 return BadRequest(new EmailValidation 
                                 { 
-                                    Success = false,
-                                    Message = "Le code que vous avez saisi a expiré ou est invalide.",
-                                    Error = null,
-                                    StatusCode = 400,
-                                    ConnectedUser = student
+                                    success = false,
+                                    message = "Le code que vous avez saisi a expiré ou est invalide.",
+                                    error = null,
+                                    statusCode = 400,
+                                    connectedUser = student
                                 });
                             }
                         break;
@@ -487,22 +484,22 @@ namespace YOMA.Controllers
 
                                         return Ok(new EmailValidation 
                                         { 
-                                            Success = true,
-                                            Message = "Code validé avec succès.",
-                                            Error = null,
-                                            StatusCode = 400,
-                                            ConnectedUser = parent
+                                            success = true,
+                                            message = "Code validé avec succès.",
+                                            error = null,
+                                            statusCode = 400,
+                                            connectedUser = parent
                                         });
                                     }
                                 }
 
                                 return BadRequest(new EmailValidation 
                                 { 
-                                    Success = false,
-                                    Message = "Le code que vous avez saisi a expiré ou est invalide.",
-                                    Error = null,
-                                    StatusCode = 400,
-                                    ConnectedUser = parent
+                                    success = false,
+                                    message = "Le code que vous avez saisi a expiré ou est invalide.",
+                                    error = null,
+                                    statusCode = 400,
+                                    connectedUser = parent
                                 });
                             }
                         break;
@@ -511,22 +508,22 @@ namespace YOMA.Controllers
 
                 return BadRequest(new EmailValidation 
                 { 
-                    Success = false,
-                    Message = "Cette adresse email n'existe pas dans notre base de données.",
-                    Error = null,
-                    StatusCode = 400,
-                    ConnectedUser = null
+                    success = false,
+                    message = "Cette adresse email n'existe pas dans notre base de données.",
+                    error = null,
+                    statusCode = 400,
+                    connectedUser = null
                 });
             }
             catch(Exception ex)
             {
                 return BadRequest(new EmailValidation
                 { 
-                    Success = false,
-                    Message = "Cette adresse email n'existe pas dans notre base de données.",
-                    Error = ex,
-                    StatusCode = 400,
-                    ConnectedUser = null
+                    success = false,
+                    message = "Cette adresse email n'existe pas dans notre base de données.",
+                    error = ex,
+                    statusCode = 400,
+                    connectedUser = null
                 });
             }
         }
@@ -540,10 +537,10 @@ namespace YOMA.Controllers
                 {
                     return BadRequest(new LoginResult 
                     { 
-                        IsChangePassword = false,
-                        Message = "Le nouveau mot de passe doit-être différent du mot de passe par defaut.",
-                        Error = null,
-                        StatusCode = 400
+                        isChangePassword = false,
+                        message = "Le nouveau mot de passe doit-être différent du mot de passe par defaut.",
+                        error = null,
+                        statusCode = 400
                     });
                 }
                 else
@@ -567,11 +564,11 @@ namespace YOMA.Controllers
                                         {
                                             return Ok(new LoginResult 
                                             { 
-                                                UserIsConnected = false,
-                                                Message = "Mot de passe modifié avec succès.",
-                                                Error = null,
-                                                StatusCode = 200,
-                                                IsChangePassword = true,
+                                                userIsConnected = false,
+                                                message = "Mot de passe modifié avec succès.",
+                                                error = null,
+                                                statusCode = 200,
+                                                isChangePassword = true,
                                             }); 
                                         }
                                     break;
@@ -585,11 +582,11 @@ namespace YOMA.Controllers
                                         {
                                             return Ok(new LoginResult 
                                             { 
-                                                UserIsConnected = false,
-                                                Message = "Mot de passe modifié avec succès.",
-                                                Error = null,
-                                                StatusCode = 200,
-                                                IsChangePassword = true,
+                                                userIsConnected = false,
+                                                message = "Mot de passe modifié avec succès.",
+                                                error = null,
+                                                statusCode = 200,
+                                                isChangePassword = true,
                                             }); 
                                         }
                                     break;
@@ -603,11 +600,11 @@ namespace YOMA.Controllers
                                         {
                                             return Ok(new LoginResult 
                                             { 
-                                                UserIsConnected = false,
-                                                Message = "Mot de passe modifié avec succès.",
-                                                Error = null,
-                                                StatusCode = 200,
-                                                IsChangePassword = true,
+                                                userIsConnected = false,
+                                                message = "Mot de passe modifié avec succès.",
+                                                error = null,
+                                                statusCode = 200,
+                                                isChangePassword = true,
                                             }); 
                                         }
                                     break;
@@ -615,20 +612,20 @@ namespace YOMA.Controllers
 
                                 return BadRequest(new LoginResult 
                                 { 
-                                    IsChangePassword = false,
-                                    Message = "Impossible de modifié le mot de passe. Veillez reessayer plutard.",
-                                    Error = null,
-                                    StatusCode = 400
+                                    isChangePassword = false,
+                                    message = "Impossible de modifié le mot de passe. Veillez reessayer plutard.",
+                                    error = null,
+                                    statusCode = 400
                                 });
                             }
                             else
                             {
                                 return BadRequest(new LoginResult 
                                 { 
-                                    IsChangePassword = false,
-                                    Message = "Le code que vous avez saisi a expiré ou est invalide.",
-                                    Error = null,
-                                    StatusCode = 400
+                                    isChangePassword = false,
+                                    message = "Le code que vous avez saisi a expiré ou est invalide.",
+                                    error = null,
+                                    statusCode = 400
                                 });
                             }
                         }
@@ -636,10 +633,10 @@ namespace YOMA.Controllers
                         {
                             return BadRequest(new LoginResult 
                             { 
-                                IsChangePassword = false,
-                                Message = "Cette adresse email est introuvable dans notre base de données.",
-                                Error = null,
-                                StatusCode = 400
+                                isChangePassword = false,
+                                message = "Cette adresse email est introuvable dans notre base de données.",
+                                error = null,
+                                statusCode = 400
                             });
                         }
                     }
@@ -647,10 +644,10 @@ namespace YOMA.Controllers
                     {
                         return BadRequest(new LoginResult 
                         { 
-                            IsChangePassword = false,
-                            Message = "Les deux adresses email sont différentes.",
-                            Error = null,
-                            StatusCode = 400
+                            isChangePassword = false,
+                            message = "Les deux adresses email sont différentes.",
+                            error = null,
+                            statusCode = 400
                         });
                     }
                 }
@@ -659,10 +656,10 @@ namespace YOMA.Controllers
             {
                 return BadRequest(new LoginResult 
                 { 
-                    IsChangePassword = false,
-                    Message = "Une erreur coté serveur s'est produite.",
-                    Error = ex,
-                    StatusCode = 500
+                    isChangePassword = false,
+                    message = "Une erreur coté serveur s'est produite.",
+                    error = ex,
+                    statusCode = 500
                 });
             }
         }
