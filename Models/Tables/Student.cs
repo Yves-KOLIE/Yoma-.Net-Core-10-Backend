@@ -26,6 +26,7 @@ namespace YOMA.Models.Tables
         public string? PHOTO { get; set; } = null;
 
         public bool IS_LOCK { get; set; }
+        public bool IS_DARK_THEME { get; set; } = false;
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;
         public DateTime? LOCK_DATE { get; set; } = null;

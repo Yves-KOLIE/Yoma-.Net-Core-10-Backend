@@ -28,6 +28,7 @@ namespace YOMA.Models.Tables
         public bool IS_LOCK { get; set; } = false;
         public bool IS_ACTIVE { get; set; } = true;
         public bool IS_PRINCIPAL_TEACHER { get; set; } = false;
+        public bool IS_DARK_THEME { get; set; } = false;
         public int[]? USER_POSITION_IDS { get; set; } = null;
         public int[]? SCHOOL_EDUCATION_IDS { get; set; } = null;
         public int? CREATED_USER_ID { get; set; } = null;

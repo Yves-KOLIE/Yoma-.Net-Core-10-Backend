@@ -2,15 +2,15 @@ namespace YOMA
 {
   public class ApiResult
   {
-    public bool IsError;
-    public string Message;
-    public object? Data;
-
-    public ApiResult(string message, bool isError = false, object? data = null)
+    public ApiResult(string message, bool isError, object? data)
     {
-      this.Message = message;
-      this.IsError = isError;
-      this.Data = data;
+      Message = message;
+      IsError = isError;
+      Data = data;
     }
+
+    public string Message { get; set; }
+    public bool IsError { get; set; }
+    public object? Data { get; set; }
   }
 }
