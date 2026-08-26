@@ -13,7 +13,7 @@ namespace YOMA.Controllers
     public class UserController : ControllerBase
     {
         private readonly Context _context;
-        private readonly string Message = "Les modifications ont été enregistrées";
+        private const string Message = "Les modifications ont été enregistrées";
 
         public UserController(Context context)
         {

@@ -17,14 +17,15 @@ namespace YOMA.Controllers
             _context = context;
         }
 
-        [HttpGet("GetSchoolEducationLevels")]
-        public async Task<ActionResult<ApiResult>> GetSchoolEducationLevels()
+        [HttpGet("GetEducationLevels")]
+        public async Task<ActionResult<ApiResult>> GetEducationLevels()
         {
             try
             {
                 var schoolEducationLevelList = await _context.EducationLevels
                     .AsNoTracking()
                     .Include(x => x.HIGH_SCHOOL_OPTION)
+                    .Include(x => x.SCHOOL_EDUCATION)
                     .OrderBy(x => x.ID)
                 .ToListAsync();
 
