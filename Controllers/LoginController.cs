@@ -75,7 +75,6 @@ namespace YOMA.Controllers
 
                         case 2: // Élèves
                             var student = await _context.Students
-                                .Include(x => x.BIRTH_PLACE)
                                 .Include(x => x.USER_ROLE)
                                 .Include(x => x.PARENT_1)
                                 .Include(x => x.PARENT_2)

@@ -48,7 +48,6 @@ namespace YOMA.Models
         }
 
         public DbSet<Bank> Banks { get; set; }
-        public DbSet<BirthPlace> BirthPlaces { get; set; }
         public DbSet<BusFess> BusFesses { get; set; }
         public DbSet<BusPayment> BusPayments { get; set; }
         public DbSet<Cours> Cours { get; set; }

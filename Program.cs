@@ -73,7 +73,6 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<BankService>();
-builder.Services.AddScoped<BirthPlaceService>();
 builder.Services.AddScoped<BusFessService>();
 builder.Services.AddScoped<SchoolYearService>();
 builder.Services.AddScoped<SubdivisionByYearService>();
@@ -91,6 +90,7 @@ builder.Services.AddScoped<StudentRegistrationService>();
 builder.Services.AddScoped<StudentService>();
 builder.Services.AddScoped<UserTypeService>();
 builder.Services.AddScoped<ForgotUserPasswordService>();
+builder.Services.AddScoped<ParentTypeService>();
 
 builder.Services.AddDbContext<Context>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));

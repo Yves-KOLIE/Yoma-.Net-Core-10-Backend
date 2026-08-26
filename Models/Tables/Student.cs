@@ -35,10 +35,8 @@ namespace YOMA.Models.Tables
         public DateTime? LAST_DECONNEXION_DATE { get; set; } = null;
         public DateTime CREATION_DATE { get; set; } = new DateTime();
 		public DateTime? MODIFICATION_DATE { get; set; } = null;
+        public required string CITY_OF_BIRTH { get; set; }
 
-        [ForeignKey("BIRTH_PLACE")]
-        public int BIRTH_PLACE_ID { get; set; }
-        public BirthPlace BIRTH_PLACE { get; set; } = null!;
         
         [ForeignKey("USER_ROLE")]
         public int USER_ROLE_ID { get; set; }
