@@ -7,7 +7,7 @@ public interface IParentService
 {
     Task<Parent> addNewParent(Parent parent);
     Task<bool> parentUserEmailExist(Parent parent);
-    Task<Parent?> parentExist(Parent parent);
+    Task<int?> parentExist(Parent parent);
     Task<List<Parent>> searchParentsByPhone(string telephone, char sexe);
 }
 
@@ -65,16 +65,29 @@ public class ParentService : IParentService
         return userEmail != null;
     }
 
-    public async Task<Parent?> parentExist(Parent parent)
+    public async Task<int?> parentExist(Parent parent)
     {
         if(!string.IsNullOrEmpty(parent.USER_EMAIL?.EMAIL))
         {
-            return await _context.Parents
+            var selectedParentByEmail = await _context.Parents
             .Include(x => x.USER_EMAIL)
             .FirstOrDefaultAsync(x => 
                 (x.USER_EMAIL!.EMAIL == parent.USER_EMAIL.EMAIL)
                 || x.ID == parent.ID
             );
+
+            if(selectedParentByEmail != null) return 1;
+        }
+
+        if(!string.IsNullOrEmpty(parent.TELEPHONE_1) || !string.IsNullOrEmpty(parent.TELEPHONE_2))
+        {
+            var selectedParentByTelephone = await _context.Parents
+            .FirstOrDefaultAsync(x => 
+                (x.TELEPHONE_1 == parent.TELEPHONE_1)
+                || (x.TELEPHONE_2 != null && x.TELEPHONE_2 == parent.TELEPHONE_2)
+                || x.ID == parent.ID
+            );
+            if(selectedParentByTelephone != null) return 2;
         }
         return null;
     }

@@ -30,44 +30,62 @@ public class StudentRegistrationService : IStudentRegistration
         {
             // Creation du parent 1
             var parent1 = await _parentService.parentExist(studentRegistration.STUDENT!.PARENT_1);
-            if(parent1 == null)
+            switch(parent1)
             {
-                var newParent = await _parentService.addNewParent(studentRegistration.STUDENT.PARENT_1);
-                if(newParent != null)
-                {
-                    studentRegistration.STUDENT.PARENT_1_ID = newParent.ID;
-                    studentRegistration.STUDENT.PARENT_1 = newParent;
-                }
-            }
-            else
-            {
-                await transaction.RollbackAsync();
-                return new SaveResult
-                {
-                    success = false,
-                    message = "L'adresse email du Père ou du tuteur existe déjà dans notre base de données"
-                };
+                case null:
+                    var newParent = await _parentService.addNewParent(studentRegistration.STUDENT.PARENT_1);
+                    if(newParent != null)
+                    {
+                        studentRegistration.STUDENT.PARENT_1_ID = newParent.ID;
+                        studentRegistration.STUDENT.PARENT_1 = newParent;
+                    }
+                break;
+
+                case 1: // l'email existe
+                    await transaction.RollbackAsync();
+                    return new SaveResult
+                    {
+                        success = false,
+                        message = "L'adresse email du Père ou du tuteur existe déjà dans notre base de données"
+                    };
+
+                case 2: // Le téléphone existe
+                    await transaction.RollbackAsync();
+                    return new SaveResult
+                    {
+                        success = false,
+                        message = "Le numéro de téléphone du Père ou du tuteur existe déjà dans notre base de données"
+                    };
             }
 
             // Creation du parent 2
-            var parent2 = await _parentService.parentExist(studentRegistration.STUDENT.PARENT_2);
-            if(parent2 == null)
+            var parent2 = await _parentService.parentExist(studentRegistration.STUDENT!.PARENT_2);
+            switch(parent2)
             {
-                var newParent = await _parentService.addNewParent(studentRegistration.STUDENT.PARENT_2);
-                if(newParent != null)
-                {
-                    studentRegistration.STUDENT.PARENT_2_ID = newParent.ID;
-                    studentRegistration.STUDENT.PARENT_2 = newParent;
-                }
-            }
-            else
-            {
-                await transaction.RollbackAsync();
-                return new SaveResult
-                {
-                    success = false,
-                    message = "L'adresse email de la mère ou de la tutrice existe déjà dans notre base de données"
-                };
+                case null:
+                    var newParent = await _parentService.addNewParent(studentRegistration.STUDENT.PARENT_2);
+                    if(newParent != null)
+                    {
+                        studentRegistration.STUDENT.PARENT_2_ID = newParent.ID;
+                        studentRegistration.STUDENT.PARENT_2 = newParent;
+                    }
+                break;
+
+                case 1: // l'email existe
+                    await transaction.RollbackAsync();
+                    return new SaveResult
+                    {
+                        success = false,
+                        message = "L'adresse email de la mère ou de la tutrice existe déjà dans notre base de données"
+                    };
+
+                case 2: // Le téléphone existe
+                    await transaction.RollbackAsync();
+                    return new SaveResult
+                    {
+                        success = false,
+                        message = "Le numéro de téléphone de la mère ou de la tutrice existe déjà dans notre base de données"
+                    };
             }
 
             // Création de l'élève
