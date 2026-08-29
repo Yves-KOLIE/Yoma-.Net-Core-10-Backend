@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using YOMA;
+using YOMA.Helpers;
 using YOMA.Models;
 using YOMA.Models.Tables;
 
 public interface IStudentRegistration
 {
-    Task<StudentRegistration> CreateStudentRegistrationAsync(StudentRegistration studentRegistration);
+    Task<SaveResult> registerStudentAsync(StudentRegistration studentRegistration);
     Task<StudentRegistration> UpdateStudentRegistrationAsync(StudentRegistration studentRegistration);
 }
 
@@ -12,252 +14,117 @@ public class StudentRegistrationService : IStudentRegistration
 {
     private readonly Context _context;
     private readonly StudentService _studentService;
+    private readonly ParentService _parentService;
 
-    public StudentRegistrationService(Context context, StudentService studentService)
+    public StudentRegistrationService(Context context, StudentService studentService, ParentService parentService)
     {
         _context = context;
         _studentService = studentService;
+        _parentService = parentService;
     }
 
-    public async Task<StudentRegistration> CreateStudentRegistrationAsync(StudentRegistration studentRegistration)
+    public async Task<SaveResult> registerStudentAsync(StudentRegistration studentRegistration)
     {
         await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
-            // On joute l'élève dans la table 
-            studentRegistration.STUDENT = await _studentService.CreateStudentAsync(studentRegistration.STUDENT);
+            // Création de userEmail
+            var studentUserEmail = await _context.UserEmails.FirstOrDefaultAsync(x => 
+                studentRegistration.STUDENT.USER_EMAIL != null
+                && studentRegistration.STUDENT.USER_EMAIL.EMAIL != null 
+                && x.EMAIL.Equals(studentRegistration.STUDENT.USER_EMAIL.EMAIL)
+            );
 
-            // On ajoute les parent de l'élève
-            var newStudentParent1 = new StudentParent
+            if(studentUserEmail != null)
             {
-                ID = 0,
-                CREATION_DATE = DateTime.UtcNow,
-                MODIFICATION_DATE = null,
-                STUDENT_ID = studentRegistration.STUDENT.ID,
-                STUDENT = studentRegistration.STUDENT,
-                PARENT_ID = studentRegistration.STUDENT.PARENT_1_ID,
-                PARENT = (await _context.Parents.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT.PARENT_1_ID))!,
-
-                PARENT_TYPE_ID = studentRegistration.STUDENT.PARENT_1.PARENT_ID,
-                PARENT_TYPE = (await _context.ParentTypes.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT.PARENT_1.PARENT_ID))!,
-            };
-            _context.StudentParents.Add(newStudentParent1);
-            
-            var newStudentParent2 = new StudentParent
-            {
-                ID = 0,
-                CREATION_DATE = DateTime.UtcNow,
-                MODIFICATION_DATE = null,
-                STUDENT_ID = studentRegistration.STUDENT.ID,
-                STUDENT = studentRegistration.STUDENT,
-                PARENT_ID = studentRegistration.STUDENT.PARENT_2_ID,
-                PARENT = (await _context.Parents.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT.PARENT_2_ID))!,
-
-                PARENT_TYPE_ID = studentRegistration.STUDENT.PARENT_2.PARENT_ID,
-                PARENT_TYPE = (await _context.ParentTypes.FirstOrDefaultAsync(x => x.ID == studentRegistration.STUDENT.PARENT_2.PARENT_ID))!,
-            };
-            _context.StudentParents.Add(newStudentParent2);
-
-            await _context.SaveChangesAsync();
-
-            // if(studentRegistration.SCHOOL_FESS_IS_SUPPORTED) // Si les frais de scolarité sont pris en charge par l'école
-            if(true)
-            {
-                studentRegistration.REGISTRATION_FESS = 0;
-                studentRegistration.PRICE_FESS_1 = 0;
-                studentRegistration.PRICE_FESS_2 = 0;
-                studentRegistration.PRICE_FESS_3 = 0;
-            }
-            // else if(studentRegistration.SCHOOL_FESS_IS_DISCOUNTED == false)
-            else if(false)
-            {
-                var schoolFess = await _context.SchoolFesses.FirstOrDefaultAsync(x => 
-                    x.SCHOOL_YEAR_ID == studentRegistration.SCHOOL_YEAR_ID
-                    && x.EDUCATION_LEVEL_ID == studentRegistration.EDUCATION_LEVEL_ID
-                );
-
-                if(schoolFess != null)
+                await transaction.RollbackAsync();
+                return new SaveResult
                 {
-                    studentRegistration.REGISTRATION_FESS = schoolFess.REGISTRATION_FESS;
-                    studentRegistration.PRICE_FESS_1 = schoolFess.PRICE_FESS_1;
-                    studentRegistration.PRICE_FESS_2 = schoolFess.PRICE_FESS_2;
-                    studentRegistration.PRICE_FESS_3 = schoolFess.PRICE_FESS_3;
-                }
-                else
-                {
-                    studentRegistration.REGISTRATION_FESS = 0;
-                    studentRegistration.PRICE_FESS_1 = 0;
-                    studentRegistration.PRICE_FESS_2 = 0;
-                    studentRegistration.PRICE_FESS_3 = 0;
-                }
-            }
-
-            // if(studentRegistration.BUS_PRICE_IS_SUPPORTED)
-            if(true)
-            {
-                studentRegistration.BUS_PRICE_1 = null;
-                studentRegistration.BUS_PRICE_2 = null;
-                studentRegistration.BUS_PRICE_2 = null;
-            }
-            // else if(studentRegistration.BUS_PRICE_IS_DISCOUNTED == false)
-            else if(false)
-            {
-                var busFesses = await _context.BusFesses.FirstOrDefaultAsync(x => 
-                    x.SCHOOL_YEAR_ID == studentRegistration.SCHOOL_YEAR_ID
-                );
-
-                if(busFesses != null)
-                {
-                    studentRegistration.BUS_PRICE_1 = studentRegistration.IS_SUBSCRIBE_TO_THE_BUS_FESS_1 ? busFesses.PRICE_FESS_1 : null;
-                    studentRegistration.BUS_PRICE_2 = studentRegistration.IS_SUBSCRIBE_TO_THE_BUS_FESS_2 ? busFesses.PRICE_FESS_2 : null;
-                    studentRegistration.BUS_PRICE_3 = studentRegistration.IS_SUBSCRIBE_TO_THE_BUS_FESS_3 ? busFesses.PRICE_FESS_3 : null;
-                }
-                else
-                {
-                    studentRegistration.BUS_PRICE_1 = null;
-                    studentRegistration.BUS_PRICE_2 = null;
-                    studentRegistration.BUS_PRICE_2 = null;
-                }
-            }
-
-            studentRegistration.CREATION_DATE = DateTime.UtcNow;
-
-            studentRegistration.AVERAGE_QUARTER_1 = 0.00f;
-            studentRegistration.AVERAGE_QUARTER_2 = 0.00f;
-            studentRegistration.AVERAGE_QUARTER_3 = 0.00f;
-            studentRegistration.ANNUAL_AVERAGE = 0.00f;
-
-            _context.StudentRegistrations.Add(studentRegistration);
-            await _context.SaveChangesAsync();
-
-            if(studentRegistration.EDUCATION_LEVEL.IS_EXAM_CLASS)
-            {
-                var newExamClass = new ExamClass
-                {
-                    ID = 0,
-                    IS_ADMITTED = false,
-                    CREATED_USER_ID = null,
-                    UPDATED_USER_ID = null,
-                    CREATION_DATE = DateTime.UtcNow,
-                    MODIFICATION_DATE = null,
-                    STUDENT_REGISTRATION_ID = studentRegistration.ID,
-                    STUDENT_REGISTRATION = studentRegistration
+                    success = false,
+                    message = "L'adresse email de cet élève existe déjà dans notre base de données"
                 };
-
-                _context.ExamClasses.Add(newExamClass);
-                await _context.SaveChangesAsync();
             }
-
-            var noteMonthList = await _context.NoteMonths
-                .Where(X =>
-                    X.SCHOOL_YEAR_ID == studentRegistration.SCHOOL_YEAR_ID
-                    && X.EDUCATION_LEVEL_ID == studentRegistration.EDUCATION_LEVEL_ID
-                    && (
-                        X.IS_TRIMESTER_1 == true 
-                        || X.IS_TRIMESTER_2 == true 
-                        || X.IS_TRIMESTER_3 == true
-                        || X.IS_COMPOSITION_MONTH == true
-                    )
-                )
-            .ToListAsync();
-
-            if(noteMonthList.Count > 0)
+            else
             {
-                var coursList = await _context.Cours
-                    .Where(x =>
-                        x.SCHOOL_YEAR_ID == studentRegistration.SCHOOL_YEAR_ID
-                        && x.EDUCATION_LEVEL_ID == studentRegistration.EDUCATION_LEVEL_ID
-                        && x.IS_ACTIVE == true
-                    )
-                .ToListAsync();
-
-                if(coursList.Count > 0)
+                studentRegistration.STUDENT.PASSWORD = PasswordHelper.HashPassword();
+                if(!string.IsNullOrEmpty(studentRegistration.STUDENT?.USER_EMAIL?.EMAIL))
                 {
-                    foreach(var noteMonth in noteMonthList)
+                    UserEmail newStudentUserEmail = new UserEmail
                     {
-                        foreach(var cours in coursList)
-                        {
-                            switch(noteMonth.EDUCATION_LEVEL.SCHOOL_EDUCATION_ID)
-                            {
-                                case 2: // Primaire
-                                    var newNotePrimary = new NotePrimary
-                                    {
-                                        ID = 0,
-                                        NOTE = 0.00f,
-                                        INFOS = null,
-                                        CREATED_USER_ID = null,
-                                        UPDATED_USER_ID = null,
-                                        CREATION_DATE = DateTime.UtcNow,
-                                        MODIFICATION_DATE = DateTime.UtcNow,
-                                        SCHOOL_YEAR_ID = noteMonth.SCHOOL_YEAR_ID,
-                                        SCHOOL_YEAR = noteMonth.SCHOOL_YEAR,
-                                        STUDENT_ID = studentRegistration.ID,
-                                        STUDENT = studentRegistration.STUDENT,
-                                        NOTE_MONTH_ID = noteMonth.ID,
-                                        NOTE_MONTH = noteMonth,
-                                        COURS_ID = cours.ID,
-                                        COURS = cours
-                                    };
-                                    _context.NotePrimaries.Add(newNotePrimary);
-                                break;
-
-                                case 3: // Collège
-                                    var newNoteMiddleSchool = new NoteMiddleSchool
-                                    {
-                                        ID = 0,
-                                        NOTE = 0.00f,
-                                        INFOS = null,
-                                        CREATED_USER_ID = null,
-                                        UPDATED_USER_ID = null,
-                                        CREATION_DATE = DateTime.UtcNow,
-                                        MODIFICATION_DATE = DateTime.UtcNow,
-                                        SCHOOL_YEAR_ID = noteMonth.SCHOOL_YEAR_ID,
-                                        SCHOOL_YEAR = noteMonth.SCHOOL_YEAR,
-                                        STUDENT_ID = studentRegistration.ID,
-                                        STUDENT = studentRegistration.STUDENT,
-                                        NOTE_MONTH_ID = noteMonth.ID,
-                                        NOTE_MONTH = noteMonth,
-                                        COURS_ID = cours.ID,
-                                        COURS = cours
-                                    };
-                                    _context.NoteMiddleSchools.Add(newNoteMiddleSchool);
-                                break;
-
-                                case 4: // Lycée
-                                    var newNoteHightSchool = new NoteHightSchool
-                                    {
-                                        ID = 0,
-                                        NOTE = 0.00f,
-                                        INFOS = null,
-                                        CREATED_USER_ID = null,
-                                        UPDATED_USER_ID = null,
-                                        CREATION_DATE = DateTime.UtcNow,
-                                        MODIFICATION_DATE = DateTime.UtcNow,
-                                        SCHOOL_YEAR_ID = noteMonth.SCHOOL_YEAR_ID,
-                                        SCHOOL_YEAR = noteMonth.SCHOOL_YEAR,
-                                        STUDENT_ID = studentRegistration.ID,
-                                        STUDENT = studentRegistration.STUDENT,
-                                        NOTE_MONTH_ID = noteMonth.ID,
-                                        NOTE_MONTH = noteMonth,
-                                        COURS_ID = cours.ID,
-                                        COURS = cours
-                                    };
-                                    _context.NoteHightSchools.Add(newNoteHightSchool);
-                                break;
-                            }
-                        }
-                    }
+                        ID                = 0,
+                        EMAIL             = studentRegistration.STUDENT.USER_EMAIL.EMAIL,
+                        IS_ACTIVE         = true,
+                        CREATED_USER_ID   = studentRegistration.CREATED_USER_ID,
+                        CREATION_DATE     = studentRegistration.CREATION_DATE,
+                        UPDATED_USER_ID   = null,
+                        MODIFICATION_DATE = null,
+                        USER_TYPE_ID      = 2 // Eleves
+                    };
+                    
+                    await _context.UserEmails.AddAsync(newStudentUserEmail);
+                    await _context.SaveChangesAsync();
+                    studentRegistration.STUDENT.USER_EMAIL_ID = newStudentUserEmail.ID;
                 }
+
+                var parent1 = await _parentService.parentExist(studentRegistration.STUDENT!.PARENT_1.PARENT);
+                if(parent1 == null)
+                {
+                    // Creation du parent 1
+                    await _parentService.addNewParent(studentRegistration.STUDENT.PARENT_1.PARENT);
+                }
+                else
+                {
+                    await transaction.RollbackAsync();
+                    return new SaveResult
+                    {
+                        success = false,
+                        message = "L'adresse email du Père ou du tuteur existe déjà dans notre base de données"
+                    };
+                }
+
+                var parent2 = await _parentService.parentExist(studentRegistration.STUDENT.PARENT_2.PARENT);
+                if(parent2 == null)
+                {
+                    // Creation du parent 2
+                    await _parentService.addNewParent(studentRegistration.STUDENT.PARENT_2.PARENT);
+                }
+                else
+                {
+                    await transaction.RollbackAsync();
+                    return new SaveResult
+                    {
+                        success = false,
+                        message = "L'adresse email de la mère ou de la tutrice existe déjà dans notre base de données"
+                    };
+                }
+
+
+                await _context.Students.AddAsync(studentRegistration.STUDENT);
+                await _context.SaveChangesAsync();
+
+                await _context.StudentRegistrations.AddAsync(studentRegistration);
+                await _context.SaveChangesAsync();
+
+                // await transaction.CommitAsync();
+                await transaction.RollbackAsync();
+                return new SaveResult
+                {
+                    success = true,
+                    message = "Inscription réussie"
+                };
             }
-            await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
         }
-        catch
+        catch (Exception ex)
         {
             await transaction.RollbackAsync();
+            return new SaveResult
+            {
+                success = false,
+                message = "Une erreur s'est produite pendant la création du dossier de l'élève"
+            };
         }
-        return studentRegistration;
     }
+
 
     public async Task<StudentRegistration> UpdateStudentRegistrationAsync(StudentRegistration studentRegistration)
     {

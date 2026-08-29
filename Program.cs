@@ -91,6 +91,7 @@ builder.Services.AddScoped<StudentService>();
 builder.Services.AddScoped<UserTypeService>();
 builder.Services.AddScoped<ForgotUserPasswordService>();
 builder.Services.AddScoped<ParentTypeService>();
+builder.Services.AddScoped<ParentService>();
 
 builder.Services.AddDbContext<Context>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));

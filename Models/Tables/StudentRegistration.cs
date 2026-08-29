@@ -27,14 +27,6 @@ namespace YOMA.Models.Tables
         public required float AVERAGE_QUARTER_3 { get; set; }
         public required float ANNUAL_AVERAGE { get; set; }
 
-        public bool IS_SUBSCRIBE_TO_THE_BUS_FESS_1 { get; set; }
-        public bool IS_SUBSCRIBE_TO_THE_BUS_FESS_2 { get; set; }
-        public bool IS_SUBSCRIBE_TO_THE_BUS_FESS_3 { get; set; }
-
-        public int? BUS_PRICE_1 { get; set; } = null;
-        public int? BUS_PRICE_2 { get; set; } = null;
-        public int? BUS_PRICE_3 { get; set; } = null;
-
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;
         public DateTime CREATION_DATE { get; set; } = new DateTime();

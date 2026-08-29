@@ -4,7 +4,7 @@ namespace YOMA.Helpers
 {
     public static class PasswordHelper
     {
-        public static string HashPassword(string password)
+        public static string HashPassword(string password = ConstantHelper.DEFAULT_PASSWORD)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }

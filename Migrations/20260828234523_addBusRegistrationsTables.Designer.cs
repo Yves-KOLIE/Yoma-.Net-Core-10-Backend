@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using YOMA.Models;
@@ -11,9 +12,11 @@ using YOMA.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20260828234523_addBusRegistrationsTables")]
+    partial class addBusRegistrationsTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1229,7 +1232,7 @@ namespace backend.Migrations
                     b.Property<int?>("UPDATED_USER_ID")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("USER_EMAIL_ID")
+                    b.Property<int>("USER_EMAIL_ID")
                         .HasColumnType("integer");
 
                     b.Property<int>("USER_ROLE_ID")
@@ -1893,7 +1896,7 @@ namespace backend.Migrations
                     b.Property<int?>("UPDATED_USER_ID")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("USER_EMAIL_ID")
+                    b.Property<int>("USER_EMAIL_ID")
                         .HasColumnType("integer");
 
                     b.Property<int>("USER_ROLE_ID")
@@ -2399,7 +2402,7 @@ namespace backend.Migrations
                     b.Property<int?>("UPDATED_USER_ID")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("USER_EMAIL_ID")
+                    b.Property<int>("USER_EMAIL_ID")
                         .HasColumnType("integer");
 
                     b.PrimitiveCollection<int[]>("USER_POSITION_IDS")
@@ -3067,7 +3070,9 @@ namespace backend.Migrations
 
                     b.HasOne("YOMA.Models.Tables.UserEmail", "USER_EMAIL")
                         .WithMany()
-                        .HasForeignKey("USER_EMAIL_ID");
+                        .HasForeignKey("USER_EMAIL_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("YOMA.Models.Tables.UserRole", "USER_ROLE")
                         .WithMany()
@@ -3304,7 +3309,9 @@ namespace backend.Migrations
 
                     b.HasOne("YOMA.Models.Tables.UserEmail", "USER_EMAIL")
                         .WithMany()
-                        .HasForeignKey("USER_EMAIL_ID");
+                        .HasForeignKey("USER_EMAIL_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("YOMA.Models.Tables.UserRole", "USER_ROLE")
                         .WithMany()
@@ -3455,7 +3462,9 @@ namespace backend.Migrations
 
                     b.HasOne("YOMA.Models.Tables.UserEmail", "USER_EMAIL")
                         .WithMany()
-                        .HasForeignKey("USER_EMAIL_ID");
+                        .HasForeignKey("USER_EMAIL_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("YOMA.Models.Tables.UserRole", "USER_ROLE")
                         .WithMany()

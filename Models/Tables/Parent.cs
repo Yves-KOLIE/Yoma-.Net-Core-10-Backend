@@ -42,7 +42,7 @@ namespace YOMA.Models.Tables
         public UserRole USER_ROLE { get; set; } = null!;
 
         [ForeignKey("USER_EMAIL")]
-        public int USER_EMAIL_ID { get; set; }
-        public UserEmail USER_EMAIL { get; set; } = null!;
+        public int? USER_EMAIL_ID { get; set; }
+        public UserEmail? USER_EMAIL { get; set; } = null!;
     }
 }

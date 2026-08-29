@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using YOMA.Models;
 using YOMA.Models.Tables;
 
@@ -18,18 +19,23 @@ namespace YOMA.Controllers
             _studentRegistrationService = studentRegistrationService;
         }
 
-        [HttpPost("CreateStudentRegistration")]
-        public async Task<ActionResult<ApiResult>> CreateStudentRegistration([FromBody] StudentRegistration studentRegistration)
+        [HttpPost("registerStudent")]
+        public async Task<ActionResult<ApiResult>> registerStudent([FromBody] StudentRegistration studentRegistration)
         {
             try
             {
-                var createdGasStation = await _studentRegistrationService.CreateStudentRegistrationAsync(studentRegistration);
-                var apiResult = new ApiResult(Message, false, createdGasStation);
-                return Ok(new { 
-                    Message = apiResult.Message,
-                    IsError = apiResult.IsError,
-                    Data = apiResult.Data 
-                });
+                var saveResult = await _studentRegistrationService.registerStudentAsync(studentRegistration);
+                if(saveResult.success)
+                {
+                    var apiResult = new ApiResult(Message, false, studentRegistration);
+                    return Ok(new { 
+                        Message = "Inscription effectuée avec succès",
+                        IsError = false,
+                        Data = apiResult.Data 
+                    });
+                }
+
+                throw new InvalidOperationException("Condition non remplie : passage forcé dans le catch.");
             }
             catch (Exception ex)
             {

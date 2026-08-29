@@ -101,5 +101,6 @@ namespace YOMA.Models
         public DbSet<BookCategory> BookCategories { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<BookRental> BookRentals { get; set; }
+        public DbSet<BusRegistration> BusRegistrations { get; set; }
     }
 }

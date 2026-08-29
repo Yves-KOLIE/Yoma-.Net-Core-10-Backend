@@ -51,7 +51,7 @@ namespace YOMA.Models.Tables
         public StudentParent PARENT_2 { get; set; } = null!;
 
         [ForeignKey("USER_EMAIL")]
-        public int USER_EMAIL_ID { get; set; }
-        public UserEmail USER_EMAIL { get; set; } = null!;
+        public int? USER_EMAIL_ID { get; set; }
+        public UserEmail? USER_EMAIL { get; set; } = null!;
     }
 }
