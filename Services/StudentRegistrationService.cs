@@ -156,7 +156,6 @@ public class StudentRegistrationService : IStudentRegistration
                     await _context.SaveChangesAsync();
 
                     await transaction.CommitAsync();
-                    // await transaction.RollbackAsync();
                     return new SaveResult
                     {
                         success = true,

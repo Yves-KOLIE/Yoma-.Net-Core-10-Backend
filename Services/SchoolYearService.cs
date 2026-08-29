@@ -96,29 +96,6 @@ public class SchoolYearService : ISchoolYearService
         await _context.SaveChangesAsync();
     }
 
-    private async Task CopyMonthOfSalaryAsync(SchoolYear schoolYear)
-    {
-        // Mois de l'année
-        var monthRecords = await _context.Months
-            .AsNoTracking()
-        .ToListAsync();
-
-        // Créer de nouvelles instances pour l'insertion
-        var newMonthOfSalaryRecords = monthRecords.Select(m => new MonthOfSalary
-        {
-            IS_ACTIVE = false,
-            CREATED_USER_ID = schoolYear.CREATED_USER_ID,
-            UPDATED_USER_ID = schoolYear.UPDATED_USER_ID,
-            CREATION_DATE = schoolYear.CREATION_DATE,
-            MODIFICATION_DATE = schoolYear.MODIFICATION_DATE,
-            SCHOOL_YEAR_ID = schoolYear.ID,
-            SCHOOL_YEAR = schoolYear,
-            MONTH_ID = m.ID,
-        }).ToList();
-        _context.MonthOfSalaries.AddRange(newMonthOfSalaryRecords);
-        await _context.SaveChangesAsync();
-    }
-
     private async Task CopyNoteMonthAsync(SchoolYear schoolYear)
     {
         // Mois de l'année
@@ -276,7 +253,6 @@ public class SchoolYearService : ISchoolYearService
             await CopySchoolFessAsync(lastSchoolYear, schoolYear);
             await CopySubdivisionByYearAsync(schoolYear);
             await CopyNoteMonthAsync(schoolYear);
-            await CopyMonthOfSalaryAsync(schoolYear);
 
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
@@ -322,10 +298,6 @@ public class SchoolYearService : ISchoolYearService
             .ExecuteDeleteAsync();
 
             await _context.Cours
-                .Where(b => b.SCHOOL_YEAR_ID == schoolYear.ID)
-            .ExecuteDeleteAsync();
-
-            await _context.MonthOfSalaries
                 .Where(b => b.SCHOOL_YEAR_ID == schoolYear.ID)
             .ExecuteDeleteAsync();
 
