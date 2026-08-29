@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using YOMA.Models;
@@ -11,9 +12,11 @@ using YOMA.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20260829070903_dropStudentParentsTable")]
+    partial class dropStudentParentsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1957,45 +1960,6 @@ namespace backend.Migrations
                     b.ToTable("StudentBusStatusOfCares");
                 });
 
-            modelBuilder.Entity("YOMA.Models.Tables.StudentFolder", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
-
-                    b.Property<int?>("CREATED_USER_ID")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CREATION_DATE")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DESCRIPTION")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("MODIFICATION_DATE")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("SCHOOL_YEAR_ID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("STUDENT_ID")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("UPDATED_USER_ID")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("SCHOOL_YEAR_ID");
-
-                    b.HasIndex("STUDENT_ID");
-
-                    b.ToTable("StudentFolders");
-                });
-
             modelBuilder.Entity("YOMA.Models.Tables.StudentRegistration", b =>
                 {
                     b.Property<int>("ID")
@@ -2025,6 +1989,9 @@ namespace backend.Migrations
                     b.Property<int>("EDUCATION_LEVEL_ID")
                         .HasColumnType("integer");
 
+                    b.Property<string>("FOLDER_INFORMATION")
+                        .HasColumnType("text");
+
                     b.Property<bool>("IS_ABANDON")
                         .HasColumnType("boolean");
 
@@ -2032,6 +1999,9 @@ namespace backend.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IS_DELETED")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IS_SUPPORTED")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("MODIFICATION_DATE")
@@ -3344,25 +3314,6 @@ namespace backend.Migrations
                     b.Navigation("USER_EMAIL");
 
                     b.Navigation("USER_ROLE");
-                });
-
-            modelBuilder.Entity("YOMA.Models.Tables.StudentFolder", b =>
-                {
-                    b.HasOne("YOMA.Models.Tables.SchoolYear", "SCHOOL_YEAR")
-                        .WithMany()
-                        .HasForeignKey("SCHOOL_YEAR_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("YOMA.Models.Tables.Student", "STUDENT")
-                        .WithMany()
-                        .HasForeignKey("STUDENT_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SCHOOL_YEAR");
-
-                    b.Navigation("STUDENT");
                 });
 
             modelBuilder.Entity("YOMA.Models.Tables.StudentRegistration", b =>

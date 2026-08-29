@@ -34,8 +34,15 @@ namespace YOMA.Controllers
                         Data = apiResult.Data 
                     });
                 }
+                else
+                {
+                    return Ok(new { 
+                        Message = saveResult.message,
+                        IsError = true,
+                    });
+                }
 
-                throw new InvalidOperationException("Condition non remplie : passage forcé dans le catch.");
+                // throw new InvalidOperationException("Condition non remplie : passage forcé dans le catch.");
             }
             catch (Exception ex)
             {

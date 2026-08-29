@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOMA.Models.Tables;
 
 namespace YOMA.Models
@@ -45,6 +46,23 @@ namespace YOMA.Models
             ));
 
             base.OnModelCreating(modelBuilder);
+
+
+            // Applique la conversion UTC à toutes les propriétés DateTime
+            var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
+                v => v.Kind == DateTimeKind.Utc ? v : DateTime.SpecifyKind(v, DateTimeKind.Utc),
+                v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetValueConverter(dateTimeConverter);
+                    }
+                }
+            }
         }
 
         public DbSet<Bank> Banks { get; set; }
@@ -76,7 +94,6 @@ namespace YOMA.Models
         public DbSet<SchoolPayment> SchoolPayments { get; set; }
         public DbSet<SchoolYear> SchoolYears { get; set; }
         public DbSet<Student> Students { get; set; }
-        public DbSet<StudentParent> StudentParents { get; set; }
         public DbSet<StudentRegistration> StudentRegistrations { get; set; }
         public DbSet<Subdivision> Subdivisions { get; set; }
         public DbSet<SubdivisionByYear> SubdivisionByYears { get; set; }
@@ -102,5 +119,6 @@ namespace YOMA.Models
         public DbSet<Language> Languages { get; set; }
         public DbSet<BookRental> BookRentals { get; set; }
         public DbSet<BusRegistration> BusRegistrations { get; set; }
+        public DbSet<StudentFolder> StudentFolders { get; set; }
     }
 }

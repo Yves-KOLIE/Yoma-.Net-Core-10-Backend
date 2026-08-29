@@ -25,7 +25,7 @@ public class ParentService : IParentService
         parent.PASSWORD = PasswordHelper.HashPassword();
         if(!string.IsNullOrEmpty(parent?.USER_EMAIL?.EMAIL))
         {
-            UserEmail newParent1UserEmail = new UserEmail
+            UserEmail userEmail = new UserEmail
             {
                 ID                = 0,
                 EMAIL             = parent.USER_EMAIL.EMAIL,
@@ -36,10 +36,16 @@ public class ParentService : IParentService
                 MODIFICATION_DATE = null,
                 USER_TYPE_ID      = 3 // Parents
             };
-            await _context.UserEmails.AddAsync(newParent1UserEmail);
+            await _context.UserEmails.AddAsync(userEmail);
             await _context.SaveChangesAsync();
 
-            parent.USER_EMAIL_ID = newParent1UserEmail.ID;
+            parent.USER_EMAIL_ID = userEmail.ID;
+            parent.USER_EMAIL = userEmail;
+        }
+        else
+        {
+            parent!.USER_EMAIL_ID = null;
+            parent.USER_EMAIL = null;
         }
 
         parent!.USER_ROLE_ID = 12; // Parent d'élève
@@ -61,20 +67,16 @@ public class ParentService : IParentService
 
     public async Task<Parent?> parentExist(Parent parent)
     {
-        return await _context.Parents
+        if(!string.IsNullOrEmpty(parent.USER_EMAIL?.EMAIL))
+        {
+            return await _context.Parents
             .Include(x => x.USER_EMAIL)
             .FirstOrDefaultAsync(x => 
-                (
-                    (
-                        parent.USER_EMAIL != null 
-                        && parent.USER_EMAIL.EMAIL != null 
-                        && x.USER_EMAIL != null
-                        && x.USER_EMAIL.EMAIL != null
-                        && x.USER_EMAIL.EMAIL == parent.USER_EMAIL.EMAIL
-                    )
-                    || x.ID == parent.ID
-                )
+                (x.USER_EMAIL!.EMAIL == parent.USER_EMAIL.EMAIL)
+                || x.ID == parent.ID
             );
+        }
+        return null;
     }
 
     public async Task<List<Parent>> searchParentsByPhone(string telephone, char sexe)

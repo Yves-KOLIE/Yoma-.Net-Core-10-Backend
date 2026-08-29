@@ -28,95 +28,129 @@ public class StudentRegistrationService : IStudentRegistration
         await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
-            // Création de userEmail
-            var studentUserEmail = await _context.UserEmails.FirstOrDefaultAsync(x => 
-                studentRegistration.STUDENT.USER_EMAIL != null
-                && studentRegistration.STUDENT.USER_EMAIL.EMAIL != null 
-                && x.EMAIL.Equals(studentRegistration.STUDENT.USER_EMAIL.EMAIL)
-            );
-
-            if(studentUserEmail != null)
+            // Creation du parent 1
+            var parent1 = await _parentService.parentExist(studentRegistration.STUDENT!.PARENT_1);
+            if(parent1 == null)
+            {
+                var newParent = await _parentService.addNewParent(studentRegistration.STUDENT.PARENT_1);
+                if(newParent != null)
+                {
+                    studentRegistration.STUDENT.PARENT_1_ID = newParent.ID;
+                    studentRegistration.STUDENT.PARENT_1 = newParent;
+                }
+            }
+            else
             {
                 await transaction.RollbackAsync();
                 return new SaveResult
                 {
                     success = false,
-                    message = "L'adresse email de cet élève existe déjà dans notre base de données"
+                    message = "L'adresse email du Père ou du tuteur existe déjà dans notre base de données"
+                };
+            }
+
+            // Creation du parent 2
+            var parent2 = await _parentService.parentExist(studentRegistration.STUDENT.PARENT_2);
+            if(parent2 == null)
+            {
+                var newParent = await _parentService.addNewParent(studentRegistration.STUDENT.PARENT_2);
+                if(newParent != null)
+                {
+                    studentRegistration.STUDENT.PARENT_2_ID = newParent.ID;
+                    studentRegistration.STUDENT.PARENT_2 = newParent;
+                }
+            }
+            else
+            {
+                await transaction.RollbackAsync();
+                return new SaveResult
+                {
+                    success = false,
+                    message = "L'adresse email de la mère ou de la tutrice existe déjà dans notre base de données"
+                };
+            }
+
+            // Création de l'élève
+            studentRegistration.STUDENT.MATRICULE = MatriculeGenerator.GenererMatricule(studentRegistration.STUDENT.SURNAME, studentRegistration.STUDENT.NAME, studentRegistration.STUDENT.BIRTH_DAY_DATE);
+            var matricule = await _context.Students.FirstOrDefaultAsync(x => x.MATRICULE == studentRegistration.STUDENT.MATRICULE);
+            if(matricule != null)
+            {
+                await transaction.RollbackAsync();
+                return new SaveResult
+                {
+                    success = false,
+                    message = studentRegistration.STUDENT.SEXE == 'M' ?
+                    "Le matricule de cet élève existe déjà dans notre base de données"
+                    : "Le matricule de cette élève existe déjà dans notre base de données"
                 };
             }
             else
             {
-                studentRegistration.STUDENT.PASSWORD = PasswordHelper.HashPassword();
-                if(!string.IsNullOrEmpty(studentRegistration.STUDENT?.USER_EMAIL?.EMAIL))
+                var student = await _studentService.AddStudentAsync(studentRegistration.STUDENT);
+                if(student == null)
                 {
-                    UserEmail newStudentUserEmail = new UserEmail
+                    await transaction.RollbackAsync();
+                    return new SaveResult
                     {
-                        ID                = 0,
-                        EMAIL             = studentRegistration.STUDENT.USER_EMAIL.EMAIL,
-                        IS_ACTIVE         = true,
-                        CREATED_USER_ID   = studentRegistration.CREATED_USER_ID,
-                        CREATION_DATE     = studentRegistration.CREATION_DATE,
-                        UPDATED_USER_ID   = null,
-                        MODIFICATION_DATE = null,
-                        USER_TYPE_ID      = 2 // Eleves
+                        success = false,
+                        message = studentRegistration.STUDENT.SEXE == 'M' ?
+                        "L'adresse email de cet élève existe déjà dans notre base de données"
+                        : "L'adresse email de cette élève existe déjà dans notre base de données"
                     };
-                    
-                    await _context.UserEmails.AddAsync(newStudentUserEmail);
+                }
+                else
+                {
+                    switch(studentRegistration.STUDENT_SCHOOL_STATUS_OF_CARE_ID)
+                    {
+                        case 1: // Normal
+                            var schoolFess = await _context.SchoolFesses.FirstOrDefaultAsync(x => 
+                                x.SCHOOL_YEAR_ID == studentRegistration.SCHOOL_YEAR_ID
+                                && x.EDUCATION_LEVEL_ID == studentRegistration.EDUCATION_LEVEL_ID
+                            );
+
+                            if(schoolFess != null)
+                            {
+                                studentRegistration.REGISTRATION_FESS = schoolFess.REGISTRATION_FESS;
+                                studentRegistration.PRICE_FESS_1 = schoolFess.PRICE_FESS_1;
+                                studentRegistration.PRICE_FESS_2 = schoolFess.PRICE_FESS_2;
+                                studentRegistration.PRICE_FESS_3 = schoolFess.PRICE_FESS_3;
+                            }
+                            else
+                            {
+                                studentRegistration.REGISTRATION_FESS = 0;
+                                studentRegistration.PRICE_FESS_1 = 0;
+                                studentRegistration.PRICE_FESS_2 = 0;
+                                studentRegistration.PRICE_FESS_3 = 0;
+                            }
+                        break;
+
+                        case 3: // Pris en charge
+                            studentRegistration.REGISTRATION_FESS = 0;
+                            studentRegistration.PRICE_FESS_1 = 0;
+                            studentRegistration.PRICE_FESS_2 = 0;
+                            studentRegistration.PRICE_FESS_3 = 0;
+                        break;
+                    }
+
+                    studentRegistration.STUDENT_ID = student.ID;
+
+                    await _context.StudentRegistrations.AddAsync(studentRegistration);
                     await _context.SaveChangesAsync();
-                    studentRegistration.STUDENT.USER_EMAIL_ID = newStudentUserEmail.ID;
-                }
 
-                var parent1 = await _parentService.parentExist(studentRegistration.STUDENT!.PARENT_1.PARENT);
-                if(parent1 == null)
-                {
-                    // Creation du parent 1
-                    await _parentService.addNewParent(studentRegistration.STUDENT.PARENT_1.PARENT);
-                }
-                else
-                {
-                    await transaction.RollbackAsync();
+                    await transaction.CommitAsync();
+                    // await transaction.RollbackAsync();
                     return new SaveResult
                     {
-                        success = false,
-                        message = "L'adresse email du Père ou du tuteur existe déjà dans notre base de données"
+                        success = true,
+                        message = "Inscription réussie"
                     };
                 }
-
-                var parent2 = await _parentService.parentExist(studentRegistration.STUDENT.PARENT_2.PARENT);
-                if(parent2 == null)
-                {
-                    // Creation du parent 2
-                    await _parentService.addNewParent(studentRegistration.STUDENT.PARENT_2.PARENT);
-                }
-                else
-                {
-                    await transaction.RollbackAsync();
-                    return new SaveResult
-                    {
-                        success = false,
-                        message = "L'adresse email de la mère ou de la tutrice existe déjà dans notre base de données"
-                    };
-                }
-
-
-                await _context.Students.AddAsync(studentRegistration.STUDENT);
-                await _context.SaveChangesAsync();
-
-                await _context.StudentRegistrations.AddAsync(studentRegistration);
-                await _context.SaveChangesAsync();
-
-                // await transaction.CommitAsync();
-                await transaction.RollbackAsync();
-                return new SaveResult
-                {
-                    success = true,
-                    message = "Inscription réussie"
-                };
             }
         }
-        catch (Exception ex)
+        catch (DbUpdateException ex)
         {
             await transaction.RollbackAsync();
+            var innerMessage = ex.InnerException?.Message ?? ex.Message;
             return new SaveResult
             {
                 success = false,
@@ -124,7 +158,6 @@ public class StudentRegistrationService : IStudentRegistration
             };
         }
     }
-
 
     public async Task<StudentRegistration> UpdateStudentRegistrationAsync(StudentRegistration studentRegistration)
     {

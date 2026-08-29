@@ -42,13 +42,26 @@ namespace YOMA.Models.Tables
         public int USER_ROLE_ID { get; set; }
         public UserRole USER_ROLE { get; set; } = null!;
 
+
         [ForeignKey("PARENT_1")]
         public int PARENT_1_ID { get; set; }
-        public StudentParent PARENT_1 { get; set; } = null!;
+        public Parent PARENT_1 { get; set; } = null!;
+
+
+        [ForeignKey("PARENT_1_TYPE")]
+        public int PARENT_1_TYPE_ID { get; set; }
+        public ParentType PARENT_1_TYPE { get; set; } = null!;
+
 
         [ForeignKey("PARENT_2")]
         public int PARENT_2_ID { get; set; }
-        public StudentParent PARENT_2 { get; set; } = null!;
+        public Parent PARENT_2 { get; set; } = null!;
+
+
+        [ForeignKey("PARENT_2_TYPE")]
+        public int PARENT_2_TYPE_ID { get; set; }
+        public ParentType PARENT_2_TYPE { get; set; } = null!;
+
 
         [ForeignKey("USER_EMAIL")]
         public int? USER_EMAIL_ID { get; set; }

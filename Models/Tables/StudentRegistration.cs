@@ -10,11 +10,9 @@ namespace YOMA.Models.Tables
     {
         [Key]
 		public int ID { get; set; }
-        public string? FOLDER_INFORMATION { get; set; } = null;
         public bool IS_ACTIVE { get; set; } = true;
         public bool IS_DELETED { get; set; }
         public bool IS_ABANDON { get; set; }
-        public bool IS_SUPPORTED { get; set; }
 
         public required int REGISTRATION_FESS { get; set; }
         public required int PRICE_FESS_1 { get; set; }
