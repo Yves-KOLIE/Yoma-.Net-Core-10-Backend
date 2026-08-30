@@ -245,7 +245,10 @@ public class SchoolYearService : ISchoolYearService
                 await CopyCoursAsync(lastSchoolYear, schoolYear);
 
                 var schoolYearList = await _context.SchoolYears.Where(x => x.ID != schoolYear.ID).ToListAsync();
-                foreach (var currentSchoolYear in schoolYearList) currentSchoolYear.IS_ACTIVE = false;
+                foreach (var currentSchoolYear in schoolYearList)
+                {
+                    currentSchoolYear.IS_ACTIVE = false;
+                }
                 _context.SchoolYears.UpdateRange(schoolYearList);
             }
 
@@ -358,6 +361,10 @@ public class SchoolYearService : ISchoolYearService
             .ExecuteDeleteAsync();
 
             await _context.UserPrimes
+                .Where(b => b.SCHOOL_YEAR_ID == schoolYear.ID)
+            .ExecuteDeleteAsync();
+
+            await _context.StudentFolders
                 .Where(b => b.SCHOOL_YEAR_ID == schoolYear.ID)
             .ExecuteDeleteAsync();
 

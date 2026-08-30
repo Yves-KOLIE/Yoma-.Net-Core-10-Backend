@@ -6,25 +6,25 @@ namespace YOMA.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BankController : ControllerBase
+    public class SchoolBusController : ControllerBase
     {
         private readonly Context _context;
-        private readonly BankService _bankService;
-        private readonly string Message = "Banques";
+        private readonly SchoolBusService _schoolBusService;
+        private readonly string Message = "Station de carburant";
 
-        public BankController(Context context, BankService bankService)
+        public SchoolBusController(Context context, SchoolBusService schoolBusService)
         {
             _context = context;
-            _bankService = bankService;
+            _schoolBusService = schoolBusService;
         }
 
-        [HttpPost("CreateBank")]
-        public async Task<ActionResult<ApiResult>> CreateBank([FromBody] Bank bank)
+        [HttpPost("CreateSchoolBus")]
+        public async Task<ActionResult<ApiResult>> CreateSchoolBus([FromBody] SchoolBus schoolBus)
         {
             try
             {
-                var createdBank = await _bankService.CreateBankAsync(bank);
-                var apiResult = new ApiResult(Message, false, createdBank);
+                var createdGasStation = await _schoolBusService.CreateSchoolBusAsync(schoolBus);
+                var apiResult = new ApiResult(Message, false, createdGasStation);
                 return Ok(new { 
                     Message = apiResult.Message,
                     IsError = apiResult.IsError,
@@ -43,13 +43,14 @@ namespace YOMA.Controllers
             }
         }
 
-        [HttpGet("GetBanks")]
-        public async Task<ActionResult<ApiResult>> GetBanks()
+
+        [HttpGet("GetSchoolBus")]
+        public async Task<ActionResult<ApiResult>> GetGasStations()
         {
             try
             {
-                var banks = await _bankService.GetBanksAsync();
-                var apiResult = new ApiResult(Message, false, banks);
+                var gasStations = await _schoolBusService.GetSchoolBusAsync();
+                var apiResult = new ApiResult(Message, false, gasStations);
                 return Ok(new { 
                     Message = apiResult.Message,
                     IsError = apiResult.IsError,
@@ -68,13 +69,13 @@ namespace YOMA.Controllers
             }
         }
 
-        [HttpPut("UpdateBank")]
-        public async Task<ActionResult<ApiResult>> UpdateBank([FromBody] Bank bank)
+        [HttpPut("UpdateSchoolBus")]
+        public async Task<ActionResult<ApiResult>> UpdateGasStation([FromBody] SchoolBus schoolBus)
         {
             try
             {
-                var updatedBank = await _bankService.UpdateBankAsync(bank);
-                var apiResult = new ApiResult(Message, false, updatedBank);
+                var updatedGasStation = await _schoolBusService.UpdateSchoolBusAsync(schoolBus);
+                var apiResult = new ApiResult(Message, false, updatedGasStation);
                 return Ok(new { 
                     Message = apiResult.Message,
                     IsError = apiResult.IsError,

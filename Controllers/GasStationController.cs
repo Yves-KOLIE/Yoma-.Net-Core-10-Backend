@@ -43,30 +43,6 @@ namespace YOMA.Controllers
             }
         }
 
-        [HttpGet("GetGasStation/{id}")]
-        public async Task<ActionResult<ApiResult>> GetGasStation(int id)
-        {
-            try
-            {
-                var gasStation = await _gasStationService.GetGasStationAsync(id);
-                var apiResult = new ApiResult(Message, false, gasStation);
-                return Ok(new { 
-                    Message = apiResult.Message,
-                    IsError = apiResult.IsError,
-                    Data = apiResult.Data 
-                });
-            }
-            catch (Exception ex)
-            {
-                var apiResult = new ApiResult(Message, true, null);
-                return BadRequest(new { 
-                    Message = apiResult.Message,
-                    IsError = apiResult.IsError,
-                    Data = apiResult.Data,
-                    ErrorDetails = ex.Message
-                });
-            }
-        }
 
         [HttpGet("GetGasStations")]
         public async Task<ActionResult<ApiResult>> GetGasStations()
@@ -100,31 +76,6 @@ namespace YOMA.Controllers
             {
                 var updatedGasStation = await _gasStationService.UpdateGasStationAsync(gasStation);
                 var apiResult = new ApiResult(Message, false, updatedGasStation);
-                return Ok(new { 
-                    Message = apiResult.Message,
-                    IsError = apiResult.IsError,
-                    Data = apiResult.Data 
-                });
-            }
-            catch (Exception ex)
-            {
-                var apiResult = new ApiResult(Message, true, null);
-                return BadRequest(new { 
-                    Message = apiResult.Message,
-                    IsError = apiResult.IsError,
-                    Data = apiResult.Data,
-                    ErrorDetails = ex.Message
-                });
-            }
-        }
-
-        [HttpPut("BatchUpdateGasStations")]
-        public async Task<ActionResult<ApiResult>> BatchUpdateGasStations([FromBody] List<GasStation> gasStations)
-        {
-            try
-            {
-                var updatedGasStations = await _gasStationService.BatchUpdateGasStationsAsync(gasStations);
-                var apiResult = new ApiResult(Message, false, updatedGasStations);
                 return Ok(new { 
                     Message = apiResult.Message,
                     IsError = apiResult.IsError,
