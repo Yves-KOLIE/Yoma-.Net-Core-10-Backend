@@ -11,6 +11,7 @@ namespace YOMA.Models.Tables
         [Key]
 		public int ID { get; set; }
         public bool IS_CHECK { get; set; } = false;
+        public int NUMBER_OF_SEAT { get; set; } = 0;
         public int? CREATED_USER_ID { get; set; } = null;
         public int? UPDATED_USER_ID { get; set; } = null;
         public DateTime CREATION_DATE { get; set; } = new DateTime();

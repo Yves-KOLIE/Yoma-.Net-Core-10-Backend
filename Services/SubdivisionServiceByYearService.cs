@@ -96,6 +96,7 @@ public class SubdivisionByYearService : ISubdivisionServiceByYearService
                 await _context.SubdivisionByYears.Where(x => x.ID == su.ID)
                 .ExecuteUpdateAsync(setters => setters
                     .SetProperty(p => p.IS_CHECK, p => su.IS_CHECK)
+                    .SetProperty(p => p.NUMBER_OF_SEAT, p => su.NUMBER_OF_SEAT)
                 );
             }
 
